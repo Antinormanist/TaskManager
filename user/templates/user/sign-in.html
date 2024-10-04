@@ -1,0 +1,29 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "user/css/sign-in.css" %}">
+    <title>Sign-in</title>
+</head>
+<body>
+    <form method="post" class="block">
+        {% csrf_token %}
+        <label for="login">Ваш логин</label>
+        <div class="input">
+            <input type="text" name="login" id="login">
+        </div>
+        <label for="password">Ваш пароль</label>
+        <div class="input">
+            <input type="password" name="password" id="password">
+        </div>
+        <div class="start">
+             <button>войти</button>
+        </div>
+        <a class="have" href="./sign-up.html">У меня нет аккаунта</a>
+        <a href="./password-reset.html" class="have">Забыл пароль</a>
+    </form>
+</body>
+</html>
