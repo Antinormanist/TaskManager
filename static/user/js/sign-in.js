@@ -79,11 +79,6 @@ window.addEventListener('click', event => {
                             document.querySelector('.emailP').innerText = `Отправленно письмо на почту ${email}`
                             dataFrame.classList.add('none')
                             emailFrame.classList.remove('none')
-                            $.ajax({
-                                url: sendUrl,
-                                method: 'post',
-                                data: {send_message: 1, email: email}
-                            })
                         }
                     },
                 })
