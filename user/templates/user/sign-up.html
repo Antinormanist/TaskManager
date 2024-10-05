@@ -1,0 +1,51 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "user/css/sign-up.css" %}">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <input type="hidden" name="check-url" value="{% url "user:check-user" %}">
+    <input type="hidden" name="send-url" value="{% url "user:sign-up" %}">
+    <input type="hidden" name="window-url" value="">
+    <div class="wrong-message none">
+        <h2 class="diff-pass none">Пароли не совпадают</h2>
+        <h2 class="taken-login none">Логин занят</h2>
+        <h2 class="not-all none">Заполнено не всё</h2>
+    </div>
+    <form method="post" class="block">
+        {% csrf_token %}
+        <label for="login">Логин</label>
+        <div class="input">
+            <input type="text" name="login" id="login">
+        </div>
+        <label for="email">Почта</label>
+        <div class="input">
+            <input type="email" name="email" id="email">
+        </div>
+        <label for="password">Пароль</label>
+        <div class="input">
+            <input type="password" name="password" id="password">
+        </div>
+        <label for="password2">Повторите пароль</label>
+        <div class="input">
+            <input type="password" name="password2" id="password2">
+        </div>
+        <div class="start">
+             <button>зарегестрироваться</button>
+        </div>
+        <a class="have" href="{% url "user:sign-in" %}">У меня есть аккаунт</a>
+    </form>
+
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous">
+    </script>
+    <script src="{% static "user/js/sign-up.js" %}"></script>
+</body>
+</html>
