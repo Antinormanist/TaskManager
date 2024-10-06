@@ -139,6 +139,9 @@ EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
+CELERY_BROKER_URL = config('REDIS_FOR_CELERY_URL')
+CELERY_RESULT_BACKEND = config('REDIS_FOR_CELERY_URL')
+CELERY_TIMEZONE = 'Europe/Moscow'
 # STATIC_ROOT = BASE_DIR / 'static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

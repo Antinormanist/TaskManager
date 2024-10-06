@@ -1,13 +1,13 @@
 from random import randint
 
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login
-from django.http import JsonResponse, HttpResponse
-from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 
 from .models import User
 from .utils import HTML_EMAIL_CODE_MSG
+from .tasks import send_email
 
 # Create your views here.
 def sign_in(request):
@@ -25,14 +25,11 @@ def sign_in(request):
             if user:
                 code = randint(1000, 9999)
                 email = user.email
-                # GIVE THAT TASK TO CELERY
                 subject = "Tasko authentication"
                 from_email = settings.EMAIL_HOST_USER
-                to = email
-                html_content = HTML_EMAIL_CODE_MSG.format(code=code)
-                msg = EmailMultiAlternatives(subject=subject, from_email=from_email, to=[to])
-                msg.attach_alternative(html_content, "text/html")
-                msg.send()
+                to_email = email
+                html_content = HTML_EMAIL_CODE_MSG.format(username=user.username, code=code)
+                send_email.delay_on_commit(subject, from_email, to_email, html_content)
                 return JsonResponse({'status': 200, 'code': code, 'email': user.email})
             return JsonResponse({'status': 403, 'message': 'wrong credentials'})
     context = {
