@@ -139,6 +139,16 @@ EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": config('REDIS_LOCATION'),
+        "OPTIONS": {
+            "db": config('REDIS_CACHE_DB')
+        }
+    }
+}
+
 CELERY_BROKER_URL = config('REDIS_FOR_CELERY_URL')
 CELERY_RESULT_BACKEND = config('REDIS_FOR_CELERY_URL')
 CELERY_TIMEZONE = 'Europe/Moscow'

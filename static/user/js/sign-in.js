@@ -27,7 +27,6 @@ let tries = 5
 
 window.addEventListener('click', event => {
     if (code) {
-        console.log(code)
         if (event.target.closest('.emailF')) {
                 event.preventDefault()
                 const userCode = parseInt(emailFrame.querySelector('input[name="code"]').value)
@@ -73,6 +72,8 @@ window.addEventListener('click', event => {
                             setTimeout(() => {
                                 wrongFrame.classList.add('none')
                             }, 1500)
+                        } else if (data.trust) {
+                            window.location = data.successUrl
                         } else {
                             code = data.code
                             email = data.email
