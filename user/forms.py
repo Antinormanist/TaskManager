@@ -3,9 +3,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 
 
-class UserRegistration(UserCreationForm):
+class UserRegistrationForm(UserCreationForm):
     username = forms.CharField(max_length=64)
-    email = forms.CharField(max_length=255)
+    email = forms.EmailField(max_length=255)
     password1 = forms.CharField(max_length=255)
     password2 = forms.CharField(max_length=255)
 

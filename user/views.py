@@ -7,8 +7,9 @@ from django.conf import settings
 from django.core.cache import cache
 
 from .models import User
-from .utils import HTML_EMAIL_CODE_MSG, get_client_ip
+from .utils import HTML_EMAIL_CODE_MSG, get_client_ip, HTML_EMAIL_REG_CODE_MSG
 from .tasks import send_email
+from .forms import UserRegistrationForm
 
 # Create your views here.
 REDIS_IP = 'user_ip-{id}'
@@ -22,7 +23,7 @@ def sign_in(request):
             if user:
                 if cache.get(REDIS_EMAIL_SUBMIT.format(id=user.id)) is None:
                     # CHANGE IT TO 3600 * 24 * 30
-                    cache.set(REDIS_EMAIL_SUBMIT.format(id=user.id), 'confirmed', timeout=60)
+                    cache.set(REDIS_EMAIL_SUBMIT.format(id=user.id), 'confirmed', timeout=3600 * 24 * 30)
                 if cache.get(REDIS_IP.format(id=user.id)) != get_client_ip(request):
                     cache.set(REDIS_IP.format(id=user.id), get_client_ip(request), timeout=3600 * 24 * 90)
                 login(request, user)
@@ -53,10 +54,33 @@ def sign_in(request):
 
 
 def sign_up(request):
+    if request.method == 'POST':
+        if request.POST.get('sendEmail'):
+            code = randint(1000, 9999)
+            email = request.POST.get('email')
+            username = request.POST.get('username')
+            subject = "Tasko registration"
+            from_email = settings.EMAIL_HOST_USER
+            to_email = email
+            html_content = HTML_EMAIL_REG_CODE_MSG.format(username=username, code=code)
+            send_email.delay_on_commit(subject, from_email, to_email, html_content)
+            return JsonResponse({'status': 200, 'code': code})
+        elif request.POST.get('success'):
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            email = request.POST.get('email')
+            form = UserRegistrationForm({'username': username, 'email': email, 'password1': password, 'password2': password})
+            print(form)
+            if form.is_valid():
+                user = form.save()
+                login(request, user)
+                cache.set(REDIS_EMAIL_SUBMIT.format(id=user.id), 'confirmed', timeout=3600 * 24 * 30)
+                cache.set(REDIS_IP.format(id=user.id), 'confirmed', timeout=3600 * 24 * 90)
+                return JsonResponse({'status': 201, 'successUrl': 'https://google.com'})
+
     context = {
         'title': 'Tasko sign-up'
     }
-    # SAVE USER'S IP IN REDIS AND HIS REG TIME. AFTER 30 DAYS USER MUST WRITE CODE FROM EMAIL
     return render(request, 'user/sign-up.html', context)
 
 

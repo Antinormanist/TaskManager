@@ -9,15 +9,15 @@
     <title>{{ title }}</title>
 </head>
 <body>
-    <input type="hidden" name="check-url" value="{% url "user:check-user" %}">
-    <input type="hidden" name="send-url" value="{% url "user:sign-up" %}">
-    <input type="hidden" name="window-url" value="">
+    <input type="hidden" name="checkUrl" value="{% url "user:check-user" %}">
+    <input type="hidden" name="sendUrl" value="{% url "user:sign-up" %}">
     <div class="wrong-message none">
         <h2 class="diff-pass none">Пароли не совпадают</h2>
         <h2 class="taken-login none">Логин занят</h2>
         <h2 class="not-all none">Заполнено не всё</h2>
+        <h2 class="pasvalid none" style="font-size: 1.25rem;">Убедитесь, что в пароле минимум 8 символов, среди которых хотя-бы одна цифра, символ и заглавная буква</h2>
     </div>
-    <form method="post" class="block">
+    <form method="post" class="firs block">
         {% csrf_token %}
         <label for="login">Логин</label>
         <div class="input">
@@ -35,10 +35,26 @@
         <div class="input">
             <input type="password" name="password2" id="password2">
         </div>
-        <div class="start">
+        <div class="start dataF">
              <button>зарегестрироваться</button>
         </div>
         <a class="have" href="{% url "user:sign-in" %}">У меня есть аккаунт</a>
+    </form>
+<!--    DO IT-->
+    <form method="post" class="secon block none">
+        {% csrf_token %}
+        <p class="emailP"></p>
+        <p class="tries">осталось попыток 5</p>
+        <label for="code">Введите код</label>
+        <div class="input code">
+            <input type="text" name="code" id="code">
+        </div>
+        <div class="start emailF">
+             <button>продолжить</button>
+        </div>
+        <div class="back">
+            <a href="{% url "user:sign-up" %}">назад</a>
+        </div>
     </form>
 
     <script
