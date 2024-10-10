@@ -132,6 +132,8 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static'
 ]
 
+WEATHER_API_KEY = config('WEATHER_API_KEY')
+
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 EMAIL_HOST = config('EMAIL_HOST')
@@ -157,3 +159,21 @@ CELERY_TIMEZONE = 'Europe/Moscow'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "class": 'logging.FileHandler',
+            "filename": "general.log",
+            "level": "DEBUG"
+        }
+    },
+    'loggers': {
+        "": {
+            "level": "DEBUG",
+            "handlers": ["file"]
+        }
+    }
+}

@@ -1,0 +1,2327 @@
+html, body {
+    margin: 0;
+    height: 100vh;
+}
+
+.mgtop34 {
+    margin-top: 34rem;
+}
+
+.mgtop2 {
+    margin-top: 2rem;
+}
+
+body {
+    background-image: linear-gradient(152.55deg, #FF8C4E 50%, #5BD3FF 50%);
+    display: flex;
+}
+
+body .none {
+    display: none;
+}
+
+button {
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.btn-back {
+    background-color: #E1DDDD;
+    color: #7E7E7E;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+.btn-subred {
+    color: #fff;
+    background-color: #F87878;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+h4 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.nav {
+    height: 99.8%;
+    width: 300px;
+    display: grid;
+    grid-template-rows: 188px 2px 700px 83px;
+    background-color: #FFF5F5;
+    border: 1.5px solid #000;
+    border-radius: 0 15px 15px 0;
+}
+
+.settings {
+    position: absolute;
+    left: 7px;
+    top: 77px;
+    display: grid;
+    grid-template-columns: 28px 251px;
+    align-items: center;
+    background-color: #fff;
+    width: 279px;
+    height: 83px;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+}
+
+.result-btn {
+    grid-column: 1/3;
+    display: flex;
+    margin: 3px 0 0 7px;
+}
+
+.result-p {
+    margin: 4px 0 0 9px;
+}
+
+.divide-settings {
+    grid-column: 1/3;
+    background-color: #000;
+    height: 1px;
+    width: 100%;
+    margin-top: 3px;
+}
+
+.settings-btn {
+    grid-column: 1/3;
+    display: flex;
+    margin: 4px 0 0 5px;
+}
+
+.settings-p {
+    margin: 6px 0 0 9px;
+}
+
+.exit-btn {
+    align-items: center;
+    grid-column: 1/3;
+    display: flex;
+    margin: 0 0 4px 9px;
+}
+
+.exit-p {
+    margin: 0 0 0 9px;
+}
+
+.btns {
+    display: grid;
+    grid-template-columns: 59px 94px 106px 41px;
+    grid-template-rows: 78px 36px 29px;
+}
+
+.avatar-img {
+    margin: 11px 0 0 7px;
+    width: 50px;
+    height: 50px;
+}
+
+.username {
+    font-size: 1.5rem;
+    margin-left: 7px;
+}
+
+.down-btn {
+    width: 24px;
+    height: 24px;
+    align-self: center;
+    margin-left: 3px;
+}
+
+.down-btn:hover {
+    cursor: pointer;
+}
+
+.down-img {
+    height: 100%;
+    width: 100%;
+}
+
+.notification-btn {
+    width: 24px;
+    height: 24px;
+}
+
+.notification-img {
+    height: 100%;
+    width: 100%;
+    margin: 24px 17px 0 0;
+}
+
+.add-btn2 {
+    height: 36px;
+    grid-column: 1/5;
+    display: flex;
+    align-items: center;
+    margin-left: 14px;
+}
+
+.add-btn2 h4 {
+    font-size: 1.5rem;
+    margin-left: 9px;
+    font-weight: 400;
+}
+
+.filter-btn {
+    height: 28px;
+    grid-column: 1/5;
+    display: flex;
+    align-items: center;
+    margin-left: 18px;
+}
+
+.filter-btn h4 {
+    font-size: 1.5rem;
+    margin-left: 13px;
+    font-weight: 400;
+}
+
+
+
+.weather {
+    display: grid;
+    grid-template-rows: 160px 52px 46px 1px 46px;
+    grid-template-columns: 127px 2px 127px;
+    margin-top: 46px;
+    justify-self: center;
+    height: 306px;
+    width: 256px;
+    background-color: #A4CEFF;
+    border-radius: 15px;
+}
+
+.weather-img {
+    margin-top: 1rem;
+    grid-column: 1/4;
+    justify-self: center;
+    height: 128px;
+    width: 128px;
+}
+
+.temperature-c, .temperature-f {
+    font-size: 2rem;
+    justify-self: center;
+    margin: 0;
+}
+
+.temperature-f {
+    grid-column-start: 3;
+}
+
+.divide {
+    background-color: #000;
+    grid-column-start: 2;
+    grid-row-start: 2;
+}
+
+.time-city {
+    grid-column: 1/4;
+    margin-left: 2rem;
+}
+
+.divide-down {
+    background-color: #000;
+    grid-column: 1/4;
+    margin: 0 2rem;
+}
+
+.text {
+    margin: 0;
+    grid-column: 1/4;
+    text-align: center;
+}
+
+.template-btn {
+    grid-row-start: 4;
+    display: flex;
+    margin: 0 0 22px 14px;
+    align-self: flex-end;
+    align-items: center;
+    height: 36px;
+}
+
+.template-btn h4 {
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+main {
+    width: 100%;
+    display: grid;
+    justify-content: center;
+    overflow-y: scroll;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+}
+
+.no-task {
+    display: grid;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    width: 348px;
+    height: 255px;
+    justify-content: center;
+    top: 25%;
+    left: 50%;
+    position: absolute
+}
+
+.no-task-img {
+    margin-top: 16px;
+    justify-self: center;
+}
+
+.no-task h2 {
+    font-size: 2rem;
+    font-weight: 400;
+}
+
+.add-btn {
+    display: flex;
+    height: 24px;
+    width: 348px;
+    justify-content: center;
+    margin-top: 22px;
+    top: 50%;
+    left: 50%;
+    position: absolute
+}
+
+.add-btn h4 {
+    margin-left: 10px;
+    align-self: center;
+}
+
+.task-results {
+    display: grid;
+    grid-template-columns: 257px 211px 260px;
+    background-color: #fff;
+    position: absolute;
+    width: 730px;
+    height: 215px;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    top: 31px;
+    left: 30%;
+}
+
+.bar {
+    margin: 0 16px 0 12px;
+    width: 229px;
+    height: 27px;
+    border: 1.5px solid #000;
+    border-radius: 15px 0 15px 0;
+    overflow: hidden;
+}
+
+.gray {
+    background-color: #D1D1D1;
+    height: 100%;
+}
+
+.green {
+    background-color: #1CD44D;
+    height: 100%;
+    width: 184px;
+    position: relative;
+    top: -27px;
+}
+
+.divide-thing2 {
+    background-color: black;
+    height: 1px;
+    width: 128px;
+    margin-left: 12px;
+}
+
+.complete p {
+    color: rgba(0, 0, 0, 0.75);
+    margin: 10px 0 5px 12px;
+}
+
+.complete .completed-tasks {
+    color: #000;
+}
+
+.priority {
+    width: 49px;
+    height: 16px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.usual {
+    background-color: #E7E7E7;
+}
+
+.simple {
+    background-color: #3DDF99;
+}
+
+.important {
+    background-color: #F8FF2C;
+}
+
+.strong {
+    background-color: #FF1818;
+}
+
+.priority-tasks {
+    margin: 0;
+    margin: 11px 0 3px 0;
+}
+
+.priority p {
+    font-size: 12px;
+    margin: 0;
+}
+
+.pri-p {
+    margin: 0;
+    margin-left: 6px;
+}
+
+.no-time {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.75)
+}
+
+.minutes {
+    color: rgba(0, 0, 0, 0.8)
+}
+
+.info-completed, .info-uncompleted {
+    display: grid;
+    grid-template-columns: 52px auto;
+    grid-template-rows: 33px 19px 19px 19px 27px 2px 35px 22px 41px;
+}
+
+.priority-tasks {
+    grid-column: 1/3;
+}
+
+.completed-time, .minutes, .no-time {
+    grid-column: 1/3;
+    margin: 0;
+    align-self: center;
+}
+
+.divide-thing3 {
+    background-color: #000;
+    height: 1px;
+    grid-column: 1/3;
+}
+
+.exit {
+    width: 68px;
+    height: 27px;
+    background-color: #E1DDDD;
+    border-radius: 5px;
+    align-self: flex-end;
+    margin: 0 6px 6px 0;
+}
+
+.exit button p {
+    margin: 0;
+    font-size: 20px;
+    text-align: center;
+    color: #7E7E7E;
+}
+
+.exit button {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: none;
+}
+
+.account-exit {
+    width: 219px;
+    height: 79px;
+    left: 50%;
+    top: 71px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+}
+
+.account-exit p, .account-exit button {
+    font-size: 20px;
+    margin: 0;
+    text-align: center;
+}
+
+.account-exit p {
+    margin-top: 8px;
+}
+
+.account-exit .account-exit-btn, .account-exit .account-close-btn {
+    margin: 12px 0 0 16px;
+}
+
+.account-exit .account-exit-btn {
+    margin-left: 39px;
+}
+
+.account-exit .account-close-btn {
+    width: 80px;
+    height: 27px;
+}
+
+.account-exit .account-exit-btn {
+    width: 68px;
+    height: 26px;
+}
+
+.notifications-frame {
+    display: grid;
+    overflow-y: scroll;
+    flex-direction: column;
+    align-items: center;
+    width: 505px;
+    max-height: 279px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    left: 40%;
+    top: 26px;
+}
+
+.notifications-close-btn {
+    justify-self: flex-end;
+    width: 92px;
+    height: 27px;
+    margin: 6px 12px 0 0;
+}
+
+.notifications-divide {
+    background-color: #000;
+    height: 1px;
+    margin-top: 5px;
+}
+
+.notifications-date {
+    font-weight: 400;
+}
+
+.date-divide {
+    background-color: #aaaaaa;
+    height: 1px;
+    margin: 0 58px;
+}
+
+.notifications-frame h2, .notifications-frame p {
+    margin: 6px 0;
+}
+
+.notifications-frame h2 {
+    justify-self: center;
+}
+
+.notifications-frame p {
+    margin: 2px 58px;
+}
+
+.account-settings {
+    display: grid;
+    grid-template-columns: 419px 250px;
+    position: absolute;
+    left: 30%;
+    top: 124px;
+    width: 669px;
+    height: 340px;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    background-color: #fff;
+}
+
+.name-input, .change-username-p, .change-email-p {
+    width: 345px;
+    height: 27px;
+    background-color: #EEEEEE;
+    border: 1.5px solid #000;
+    border-radius: 5px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    margin-top: 6px;
+    margin-left: 1rem;
+}
+
+.btn-change {
+    width: 88px;
+    height: 22px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 6px;
+    margin-left: 1rem;
+}
+
+.change-pfp  {
+    display: grid;
+    grid-template-rows: 303px 38px;
+    grid-template-columns: 250px;
+}
+
+.change-info {
+    display: grid;
+    grid-template-rows: 104px 88px 111px 38px;
+}
+
+.delete-account {
+    width: 169px;
+    height: 26px;
+    justify-self: flex-end;
+    grid-row-start: 4;
+}
+
+.change-info p {
+    margin: 0;
+    margin-left: 1rem;
+}
+
+.name-form p {
+    margin-top: 8px;
+}
+
+.account-settings-close-btn {
+    width: 80px;
+    height: 27px;
+    justify-self: flex-end;
+    margin-right: 12px;
+}
+
+.ava {
+    width: 128px;
+    height: 128px;
+    grid-row-start: 1;
+    grid-column-start: 1;
+    justify-self: center;
+    margin-top: 1rem;
+}
+
+.change-pfp-btn {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    justify-self: center;
+    margin: 0;
+    margin-top: 9rem;
+}
+
+.account-delete-sumbit-frame {
+    display: grid;
+    grid-template-rows: 44px 33px 37px;
+    width: 348px;
+    height: 114px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    left: 50%;
+    top: 31px;
+}
+
+.account-delete-sumbit-frame p, .account-delete-sumbit-frame button {
+    font-size: 20px;
+}
+
+.account-delete-sumbit-frame p {
+    align-self: center;
+    justify-self: center;
+}
+
+.account-delete-sumbit-close-btn {
+    width: 80px;
+    height: 27px;
+    grid-row-start: 3;
+    grid-column-start: 1;
+    justify-self: flex-end;
+    margin-right: 110px;
+    align-self: center;
+}
+
+.account-delete-sumbit-delete-btn {
+    width: 87px;
+    height: 26px;
+    grid-row-start: 3;
+    grid-column-start: 1;
+    justify-self: flex-end;
+    align-self: center;
+    margin-right: 10px;
+}
+
+.account-delete-sumbit-frame input {
+    width: 199px;
+    height: 23px;
+    border: 1.5px solid #000;
+    border-radius: 5px;
+    justify-self: center;
+}
+
+.avatar-frame {
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 245px 103px;
+    grid-template-rows: 40px 33px;
+    width: 348px;
+    height: 73px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    left: 50%;
+    top: 124px;
+}
+
+.input-custom {
+    border: none;
+    background-color: #83D8F6;
+    width: 138px;
+    text-align: center;
+    height: 25px;
+    font-size: 22px;
+    padding: 1px 5px;
+    border-radius: 5px;
+    margin: 6px 0 0 6px;
+}
+
+.input-custom:hover {
+    cursor: pointer;
+}
+
+.avatar-frame input {
+    display: none;
+}
+
+.avatar-close-btn {
+    grid-row-start: 2;
+    grid-column-start: 2;
+    width: 80px;
+    height: 27px;
+    align-self: center;
+    justify-self: center;
+}
+
+.avatar-change-btn {
+    width: 97px;
+    height: 28px;
+    align-self: center;
+    justify-self: center;
+}
+
+.change-login-frame {
+    display: grid;
+    grid-template-rows: 44px 33px 44px 33px 37px;
+    width: 348px;
+    height: 200px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    left: 50%;
+    top: 31px;
+}
+
+.change-login-frame p, .change-login-frame button {
+    font-size: 20px;
+}
+
+.change-login-frame p {
+    align-self: center;
+    justify-self: center;
+}
+
+.change-login-close-btn {
+    width: 80px;
+    height: 27px;
+    grid-row-start: 5;
+    grid-column-start: 1;
+    justify-self: flex-end;
+    margin-right: 110px;
+    align-self: center;
+}
+
+.change-login-submit-btn {
+    width: 97px;
+    height: 28px;
+    grid-row-start: 5;
+    grid-column-start: 1;
+    justify-self: flex-end;
+    align-self: center;
+    margin-right: 10px;
+}
+
+.change-login-frame input {
+    width: 199px;
+    height: 23px;
+    border: 1.5px solid #000;
+    border-radius: 5px;
+    justify-self: center;
+}
+
+.change-email-frame {
+    display: grid;
+    grid-template-rows: 44px 33px 44px 33px 37px;
+    width: 348px;
+    height: 200px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    left: 50%;
+    top: 31px;
+}
+
+.change-email-submit-btn {
+    width: 97px;
+    height: 28px;
+    grid-row-start: 5;
+    grid-column-start: 1;
+    justify-self: flex-end;
+    align-self: center;
+    margin-right: 10px;
+}
+
+.change-email-frame input {
+    width: 199px;
+    height: 23px;
+    border: 1.5px solid #000;
+    border-radius: 5px;
+    justify-self: center;
+}
+
+.change-email-frame p, .change-email-frame button {
+    font-size: 20px;
+}
+
+.change-email-frame p {
+    align-self: center;
+    justify-self: center;
+}
+
+.change-email-close-btn {
+    width: 80px;
+    height: 27px;
+    grid-row-start: 5;
+    grid-column-start: 1;
+    justify-self: flex-end;
+    margin-right: 110px;
+    align-self: center;
+}
+
+.filter-frame {
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: 92px 147px 131px;
+    grid-template-rows: 29px 31px 33px 30px;
+    width: 386px;
+    height: 123px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    left: 48%;
+    top: 1rem;
+    gap: 0 0.5rem;
+}
+
+.filter-frame h2 {
+    margin: 0;
+    grid-column: 1/4;
+    grid-row-start: 1;
+    font-size: 24px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.filterr-btn {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    height: 26px;
+}
+
+.date-inc, .date-decr {
+    grid-column: 1/2;
+}
+
+.priority-inc, .priority-decr {
+    grid-column: 2/3;
+}
+
+.time-inc, .time-decr {
+    grid-column: 3/4;
+}
+
+.filter-btn-back {
+    width: 100px;
+    height: 27px;
+    grid-column: 2/3;
+    justify-self: center;
+}
+
+.add-task-frame {
+    display: grid;
+    grid-template-rows: repeat(5, 35px) 1px 30px;
+    width: 348px;
+    height: 218px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    top: 51px;
+    left: 48.5%;
+}
+
+.add-task-frame input {
+    border: none;
+    background: none;
+    font-size: 1rem;
+    margin-left: 1rem;
+    outline: none;
+}
+
+.task-priority-btn, .task-remind-btn {
+    color: #747474;
+    font-size: 1rem;
+    display: flex;
+    margin-left: 1rem;
+}
+
+.task-priority-btn img, .task-remind-btn img {
+    margin-right: 0.5rem;
+}
+
+.task-priority-btn p, .task-remind-btn p {
+    margin: 0;
+}
+
+.task-divide {
+    height: 1px;
+    background-color: #000;
+}
+
+.task-close-btn {
+    width: 75px;
+    height: 25px;
+    grid-row-start: 7;
+    grid-column-start: 1;
+    justify-self: flex-end;
+    margin: 6px;
+    margin-right: 11rem;
+}
+
+.task-add-btn {
+    width: 160px;
+    height: 25px;
+    grid-row-start: 7;
+    grid-column-start: 1;
+    margin: 6px;
+    justify-self: flex-end;
+}
+
+.choose-priority {
+    position: absolute;
+    left: 5px;
+    top: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 336px;
+    height: 26px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 10px;
+}
+
+.priority-choose-btn {
+    font-size: 1rem;
+    width: 80px;
+    height: 20px;
+    border-radius: 10px;
+}
+
+.pcb1 {
+    background-color: #E7E7E7;
+    border-radius: 10px;
+}
+
+.pcb2 {
+    background-color: #3DDF99;
+    border-radius: 10px;
+}
+
+.pcb3 {
+    background-color: #F8FF2C;
+    border-radius: 10px;
+}
+
+.pcb4 {
+    background-color: #FF1818;
+    border-radius: 10px;
+}
+
+.choose-date {
+    display: grid;
+    grid-template-columns: 41px 96px auto;
+    width: 300px;
+    height: 55px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 5px;
+    position: absolute;
+    left: 15px;
+    top: 160px;
+    align-items: center;
+}
+
+.choose-date input {
+    width: 35px;
+    height: 20px;
+    border: 1.5px solid #000;
+    border-radius: 5px;
+    margin: 0;
+    margin-left: 0.5rem;
+}
+
+.choose-month {
+    width: 96px;
+    border: 1.5px solid #000;
+    border-radius: 5px;
+    font-size: 1rem;
+    display: flex;
+    height: 24px;
+    margin-left: 1rem;
+    align-items: center;
+}
+
+.choose-month p {
+    margin: 0;
+}
+
+.choose-date-btn-back {
+    width: 70px;
+    height: 24px;
+}
+
+.choose-date-btn-submit {
+    width: 222px;
+    justify-self: flex-end;
+    grid-column: 2/4;
+    height: 24px;
+}
+
+.choose-date .year {
+    margin-left: 1.5rem;
+}
+
+.months {
+    width: 69px;
+    height: 228px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 5px;
+    position: absolute;
+    left: 70px;
+    top: 25px;
+}
+
+.months button {
+    font-size: 1rem;
+    width: 100%;
+    text-align: start;
+}
+
+.months button:hover {
+    background-color: #A4CEFF;
+}
+
+.task {
+    width: 515px;
+    display: flex;
+    margin-top: 1rem;
+}
+
+.task-infos {
+    width: 101px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.task-nade {
+    width: 414px;
+}
+
+.task-name {
+    font-size: 16px;
+    word-break: break-all;
+    font-weight: 400;
+    margin: 0;
+    text-align: start;
+}
+
+.task-description, .task-remind, .task-time {
+    font-size: 12px;
+    word-break: break-all;
+    margin: 0;
+    font-weight: 400;
+    opacity: 0.5;
+}
+
+.task-remind, .task-time {
+    z-index: -1;
+}
+
+.task-remind, .task-time, .task-btn {
+    margin-right: 0.5rem;
+}
+
+.task-description {
+    text-align: start;
+    position: relative;
+    z-index: -1;
+}
+
+.task-delete {
+    height: 27px;
+    visibility: hidden;
+}
+
+.task:hover {
+    .task-delete {
+        visibility: visible;
+    }
+}
+
+.task-delete-frame {
+    width: 216px;
+    height: 79px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    left: 50%;
+    top: 31px;
+    display: grid;
+    grid-template-rows: 50% 50%;
+}
+
+.task-delete-frame h2 {
+    font-weight: 400;
+    font-size: 20px;
+    text-align: center;
+    margin: 0;
+    margin-top: 8px;
+    grid-column: 1/3;
+}
+
+.task-delete-btn-back {
+    width: 80px;
+    height: 27px;
+    grid-row-start: 2;
+    margin-left: 1rem;
+}
+
+.task-delete-submit-btn {
+    width: 87px;
+    height: 26px;
+    grid-row-start: 2;
+    margin-right: 1rem;
+}
+
+.done-task {
+    width: 515px;
+    display: flex;
+    opacity: 0.5;
+    margin-top: 0.5rem;
+    margin-right: 1rem;
+}
+
+.done-tasks {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 400px;
+    display: grid;
+    grid-template-rows: 1px 30px 30px 136px;
+    flex-direction: column;
+}
+
+.done-task-btn {
+    justify-self: center;
+    width: 115px;
+    height: 24px;
+}
+
+.done-tasks-h2 {
+    justify-self: center;
+    margin: 0;
+}
+
+.done-task .task-btn:hover, .done-task .task-nade:hover {
+    cursor: default;
+}
+
+.task-dividerer {
+    background-color: #000;
+    height: 1px;
+}
+
+.done-task-return {
+    height: 27px;
+    visibility: hidden;
+}
+
+.done-task:hover {
+    .task-delete {
+        visibility: visible;
+    }
+
+    .done-task-return {
+        visibility: visible;
+    }
+}
+
+.task-detail-info {
+    z-index: 10;
+    width: 643px;
+    min-height: 680px;
+    max-height: 942px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px 15px 0 0;
+    position: absolute;
+    top: 0.5rem;
+    left: 40%;
+    display: grid;
+    grid-template-columns: 500px 143px;
+    grid-template-rows: 615px;
+}
+
+.namedescription {
+    width: 459px;
+    height: 580px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    justify-self: center;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.namedescription textarea {
+    margin-top: 1rem;
+    width: 400px;
+    height: 50%;
+    outline: none;
+    border: none;
+    word-break: break-all;
+}
+
+.namedescription textarea:nth-child(1) {
+    font-size: 1.5rem;
+}
+
+.priority-remind {
+    height: 200px;
+}
+
+.detail-priority-btn {
+    display: flex;
+    align-items: center;
+}
+
+.detail-remind-btn {
+    display: flex;
+    align-items: center;
+}
+
+.priority-remind p {
+    margin: 0;
+}
+
+.detail-divider {
+    height: 1px;
+    background-color: #000;
+    margin-top: 0.5rem;
+}
+
+.priority-remind .ppp {
+    margin-top: 0.5rem;
+}
+
+.priority-remind button p {
+    margin-left: 0.5rem;
+}
+
+.detail-btn-back, .detail-btn-subred {
+    justify-self: flex-end;
+    grid-row-start: 1;
+    grid-column-start: 1;
+}
+
+.detail-btn-back {
+    margin-right: 8rem;
+}
+
+.detail-btn-subred {
+    margin-right: 1.25rem;
+}
+
+.save-detail {
+    display: grid;
+    grid-template-rows: 100%;
+}
+
+.commentaries-btn {
+    display: flex;
+    align-items: center;
+}
+
+.weak-p {
+    margin-left: 0.5rem;
+    opacity: 0.5;
+}
+
+.comment-divider {
+    height: 1px;
+    background-color: #000;
+}
+
+.comment {
+    display: grid;
+    grid-template-columns: 24px auto;
+    margin-top: 0.5rem;
+    margin-bottom: 4px;
+}
+
+.comment-avatar {
+    width: 24px;
+    height: 24px;
+}
+
+.comment-login {
+    font-size: 1rem;
+    font-weight: normal;
+    margin: 0;
+}
+
+.comment-time {
+    font-size: 12px;
+    opacity: 0.5;
+    margin: 0;
+    margin-left: 2px;
+}
+
+.comment-comment {
+    margin: 0;
+    grid-column-start: 2;
+    margin-left: 0.5rem;
+}
+
+.comment-main {
+    display: grid;
+}
+
+.comment-head {
+    margin-left: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.comment-edit-btn {
+    width: 20px;
+    height: 20px;
+    margin-left: 4px;
+    visibility: hidden
+}
+
+.comment-delete-btn {
+    width: 20px;
+    height: 20px;
+    margin-left: 4px;
+    visibility: hidden
+}
+
+.comment:hover {
+    .comment-edit-btn {
+        visibility: visible
+    }
+    .comment-delete-btn {
+        visibility: visible
+    }
+}
+
+.comment-delete-btn img {
+    width: 100%;
+    height: 100%;
+}
+
+.comment-edit-btn img {
+    width: 100%;
+    height: 100%;
+}
+
+.comment-comment {
+    width: 590px;
+    word-break: break-all;
+    opacity: 0.75;
+}
+
+.comments-more {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    max-height: 250px;
+    display: grid;
+    /* width: ; */
+}
+
+.make-comment {
+    width: 500px;
+    height: 72px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 5px;
+    justify-self: center;
+    display: grid;
+    grid-template-rows: 50px 22px;
+    margin-top: 4px;
+}
+
+.comment-btn-subred {
+    font-size: 16px;
+    width: 128px;
+    height: 22px;
+    justify-self: flex-end;
+}
+
+.btns-and-comments {
+    grid-column: 1/3;
+}
+
+.make-comment textarea {
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+.delete-comment {
+    width: 201px;
+    height: 70px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    top: 284px;
+    left: 30%;
+    display: grid;
+    grid-template-rows: 30px 40px;
+}
+
+.delete-comment h2 {
+    font-size: 1.25rem;
+    font-weight: normal;
+    justify-self: center;
+    align-self: center;
+}
+
+.delete-comment-btn-back {
+    width: 70px;
+    height: 21px;
+    grid-row-start: 2;
+    grid-column-start: 1;
+    justify-self: flex-end;
+    align-self: flex-end;
+    margin: 0 0.5rem 0.5rem 0;
+    margin-right: 7.5rem;
+}
+
+.delete-comment-btn-subred {
+    width: 80px;
+    height: 24px;
+    grid-row-start: 2;
+    grid-column-start: 1;
+    justify-self: flex-end;
+    align-self: flex-end;
+    margin: 0 0.5rem 0.5rem 0;
+}
+
+.change-comment-form {
+    width: 590px;
+    height: 100px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 5px;
+    grid-column-start: 2;
+    margin-left: 0.5rem;
+    display: grid;
+    grid-template-rows: 77px auto;
+}
+
+.change-comment-form textarea {
+    border: none;
+    outline: none;
+    border-radius: 5px;
+}
+
+.change-comment-btn-back {
+    width: 72px;
+    height: 22px;
+    grid-row-start: 2;
+    grid-column-start: 1;
+    justify-self: flex-end;
+    margin-right: 6.5rem;
+}
+
+.change-comment-btn-subred {
+    width: 90px;
+    height: 22px;
+    grid-row-start: 2;
+    grid-column-start: 1;
+    justify-self: flex-end;
+}
+
+.too-many-characters-frame {
+    width: 500px;
+    height: 100px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    top: 31px; 
+    left: 45%;
+    z-index: 10000;
+}
+
+.too-many-characters-frame h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.too-many-characters-frame p {
+    font-size: 1.25rem;
+    margin: 0;
+    display: inline;
+}
+
+.too-many-characters-frame .fp {
+    margin-left: 1rem;
+}
+
+.too-many-characters-frame p {
+    margin-left: 2px;
+}
+
+.priority-changer {
+    width: 116px;
+    height: 47px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 10px;
+    position: absolute;
+    left: 77.4%;
+    top: 60px;
+    display: grid;
+    grid-template-rows: 50% 50%;
+    grid-template-columns: 50% 50%;
+}
+
+.priority-changer button {
+    border-radius: 10px;
+}
+
+.remind-changer {
+    display: grid;
+    grid-template-columns: 41px 96px auto;
+    grid-template-rows: 26px 29px;
+    width: 300px;
+    height: 55px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 5px;
+    position: absolute;
+    left: 77.5%;
+    top: 105px;
+    align-items: center;
+}
+
+.months2 {
+    width: 69px;
+    height: 228px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 5px;
+    position: absolute;
+    left: 70px;
+    top: 25px;
+}
+
+.remind-changer-btn-back {
+    width: 70px;
+    height: 24px;
+}
+
+.remind-changer-btn-submit {
+    width: 222px;
+    justify-self: flex-end;
+    grid-column: 2/4;
+    height: 24px;
+}
+
+.remind-changer .year2 {
+    margin-left: 2rem;
+}
+
+.year2 {
+    width: 33px;
+    height: 15px;
+}
+
+.remind-changer-month {
+    width: 96px;
+    border: 1.5px solid #000;
+    border-radius: 5px;
+    font-size: 1rem;
+    display: flex;
+    height: 24px;
+    margin-left: 1rem;
+    align-items: center;
+}
+
+.months2 {
+    width: 69px;
+    height: 228px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 5px;
+    position: absolute;
+    left: 70px;
+    top: 25px;
+}
+
+.months2 button {
+    font-size: 1rem;
+    width: 100%;
+    text-align: start;
+}
+
+.months2 button:hover {
+    background-color: #A4CEFF;
+}
+
+.template-choose {
+    width: 601px;
+    height: 65px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    top: 46px;
+    left: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.template-choose button {
+    width: 185px;
+    height: 33px;
+}
+
+.template-download {
+    width: 531px;
+    height: 395px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    top: 49px; 
+    left: 40%;
+    display: grid;
+    grid-template-columns: 444px 87px;
+}
+
+.template-download-btns {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.template-download-btns button {
+    margin-top: 0.5rem;
+    margin-right: 0.25rem;
+}
+
+.template-download-template {
+    width: 415px;
+    height: 65px;
+    border-radius: 15px;
+    display: grid;
+    grid-template-columns: 361px 25px auto;
+}
+
+.template-name {
+    margin: 0;
+    font-weight: normal;
+    width: 361px;
+    word-break: break-all;
+    text-align: start;
+    margin-left: 6px;
+    margin-top: 2px;
+}
+
+.template-description {
+    font-size: 16px;
+    opacity: 0.5;
+    margin: 0;
+    text-align: start;
+    margin-left: 6px;
+    margin-top: 2px;
+}
+
+.template-delete {
+    align-self: flex-start;
+    margin-left: 4px;
+    margin-top: 2px;
+}
+
+.template-download-templates {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.selected {
+    background-color: #9BE5FF;
+}
+
+.mouse-not-selected{
+    background-color: #C2EFFF;
+} 
+    
+.mouse-selected {
+    background-color: #EDEDED;
+}
+
+.template-delete {
+    visibility: hidden;
+}
+
+.template-download-template:hover {
+    .template-delete {
+        visibility: visible;
+    }
+}
+
+.delete-template-submit {
+    width: 216px;
+    height: 79px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    top: 31px;
+    left: 45%;
+    z-index: 8;
+    display: grid;
+    grid-template-rows: 44px auto;
+    align-items: center;
+}
+
+.delete-template-submit h2 {
+    font-size: 20px;
+    font-weight: normal;
+    margin: 0;
+    margin-top: 4px;
+    text-align: center;
+}
+
+.delete-template-submit button {
+    grid-row-start: 2;
+    grid-column-start: 1;
+}
+
+.bbc {
+    width: 80px;
+    height: 24px;
+    justify-self: center;
+    margin-right: 7rem;
+}
+
+.bbs {
+    width: 80px;
+    height: 24px;
+    justify-self: center;
+    margin-left: 7rem;
+}
+
+.template-frame {
+    width: 942px;
+    display: grid;
+    grid-template-columns: 820px 122px;
+    height: 500px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    top: 21px;
+    left: 30%;
+    z-index: 9;
+}
+
+.template-frame-btns {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.template-frame-btns button {
+    margin-top: 0.5rem;
+}
+
+.template-tasks {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.template-task {
+    /* display: grid;
+    width: 589px;
+    min-height: 16px;
+    grid-template-columns: 96px 493px;
+    grid-template-rows: ; */
+    display: flex;
+}
+
+.prt-info p, .template-name-and-description p {
+    margin: 0;
+}
+
+.prt-info {
+    width: 190px;
+    display: grid;
+    grid-template-rows: repeat(3, 22px);
+}
+
+.template-name-and-description {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.template-task-description {
+    opacity: 0.5;
+    width: 100%;
+    word-break: break-all;
+    text-align: start;
+    font-size: 1rem;
+}
+
+.template-task-name {
+    width: 100%;
+    word-break: break-all;
+    text-align: start;
+    font-size: 1rem;
+}
+
+.prt-info .template-task-priority {
+    width: 69px;
+    height: 20px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    justify-self: flex-end;
+    margin-right: 8px;
+    margin-top: 4px;
+    font-size: 0.9rem;
+}
+
+.prt-info .template-task-remind, .prt-info .template-task-time {
+    opacity: 0.5;
+    justify-self: flex-end;
+    margin-right: 8px;
+    margin-top: 4px;
+    font-size: 0.9rem;
+}
+
+.template-template-name, .template-template-description {
+    margin: 0;
+    margin-top: 0.25rem;
+    margin-left: 0.5rem;
+    width: 800px;
+    word-break: break-all;
+}
+
+.template-template-description {
+    opacity: 0.5;
+}
+
+.divider23 {
+    height: 1px;
+    background-color: #000;
+}
+
+.template-create {
+    width: 691px;
+    height: 514px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    top: 15px;
+    left: 40%;
+    display: grid;
+    grid-template-columns: 600px 91px;
+}
+
+.template-create-btns {
+    display: flex;
+    flex-direction: column;
+    grid-column-start: 2;
+}
+
+.template-create-btns button {
+    justify-self: center;
+    margin-top: 0.5rem;
+}
+
+.template-create-tasks {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.template-create-no-task-message {
+    align-self: center;
+    font-size: 1.5rem;
+}
+
+.template-create-divider {
+    height: 2px;
+    background-color: #000;
+    margin-top: 0.5rem;
+    opacity: 0.5;
+    width: 550px;
+    align-self: center;
+}
+
+.template-create-tasks input {
+    margin-top: 0.5rem;
+    margin-left: 4px;
+    width: 550px;
+    outline: none;
+    border: none;
+}
+
+.template-create-name {
+    font-size: 1.5rem;
+}
+
+.template-create-delete-btn {
+    align-self: flex-start;
+    visibility: hidden;
+}
+
+.template-create-task:hover {
+    .template-create-delete-btn {
+        visibility: visible;
+    }
+}
+
+.template-create-task {
+    display: flex;
+    margin-top: 0.5rem;
+}
+
+.template-create-task p {
+    margin: 0;
+}
+
+.template-create-task .template-create-task-priority {
+    width: 70px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
+    margin-right: 4px;
+}
+
+.tprt-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    width: 125px;
+}
+
+.template-create-task .template-create-task-remind, .template-create-task .template-create-task-time {
+    opacity: 0.5;
+    margin-right: 4px;
+    margin-top: 4px;
+}
+
+.template-create-task-name-and-description {
+    width: 420px;
+}
+
+.template-create-task-name {
+    font-size: 1.5rem;
+    width: 420px;
+    word-break: break-all;
+}
+
+.template-create-task-description {
+    opacity: 0.5;
+    width: 420px;
+    word-break: break-all;
+}
+
+.template-create-task-delete-frame {
+    width: 200px;
+    height: 100px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    top: 31px;
+    left: 50%;
+    z-index: 1
+
+}
+
+.template-create-task-delete-frame h2 {
+    font-weight: normal;
+    text-align: center;
+}
+
+.task-delete-btn-back-template {
+    margin-left: 1.5rem;
+}
+
+.task-delete-submit-btn-template {
+    margin-left: 4px;
+}
+
+.template-change {
+    top: 49px;
+    width: 531px;
+    height: 395px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    left: 40%;
+    display: grid;
+    grid-template-columns: 444px 87px;
+}
+
+.template-change-btn-back {
+    width: 70px;
+    height: 22px;
+    justify-self: center;
+    margin-top: 1rem;
+}
+
+.template-change-templates {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.template-change-template {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 15px;
+    display: flex;
+}
+
+.template-change-template-name {
+    font-weight: normal;
+    width: 376px;
+    word-break: break-all;
+    margin: 0;
+    text-align: start;
+}
+
+.template-change-template-description{
+    opacity: 0.5;
+    width: 376px;
+    word-break: break-all;
+    margin: 0;
+    text-align: start;
+}
+
+.template-change-template-delete-btn {
+    align-self: flex-start;
+    visibility: hidden;
+}
+
+.template-change-template:hover {
+    .template-change-template-delete-btn {
+        visibility: visible;
+    }
+}
+
+.template-change-delete-frame {
+    width: 216px;
+    height: 79px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    top: 31px;
+    left: 45%;
+}
+
+.template-change-delete-frame h2 {
+    margin: 0;
+    font-weight: normal;
+    text-align: center;
+    margin-top: 4px;
+    margin-bottom: 20px;
+}
+
+.template-change-btn-back2 {
+    margin-left: 1.5rem;
+    margin-right: 1rem;
+}
+
+.template-change-template-one {
+    width: 691px;
+    height: 514px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    top: 15px;
+    left: 40%;
+    display: flex;
+}
+
+.inf-and-tasks {
+    width: 581px;
+}
+
+.template-change-one-btns {
+    width: 110px;
+    display: flex;
+    flex-direction: column;
+}
+
+.template-change-one-btns button {
+    margin-top: 4px;
+}
+
+.template-change-template-one p {
+    margin: 0;
+}
+
+.inf-and-tasks {
+    display: grid;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.inf-and-tasks textarea {
+    height: 75px;
+    outline: none;
+    border: none;
+    margin: 4px;
+}
+
+.inf-and-tasks textarea:nth-child(1) {
+    font-size: 20px;;
+}
+
+.inf-and-tasks textarea:nth-child(2) {
+    font-size: 14px;
+    opacity: 0.5;
+}
+
+.template-change-divider {
+    background-color: #000;
+    height: 1px;
+}
+
+.template-change-task {
+    display: flex;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.left-bar {
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    height: 58px;
+    align-items: flex-end;
+}
+
+.template-change-task-priority {
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+}
+
+.template-change-template-one .template-change-task-remind, .template-change-template-one .template-change-task-time {
+    opacity: 0.5;
+    margin-right: 4px;
+} 
+
+.right-bar {
+    width: 420px;
+}
+
+.template-change-task-description {
+    opacity: 0.5;
+    width: 420px;
+}
+
+.template-change-task-name {
+    font-size: 1rem;
+    width: 420px;
+}
+
+.template-change-task-name, .template-change-task-description {
+    word-break: break-all;
+    text-align: start;
+}
+
+.template-change-task-delete-btn2 {
+    width: 24px;
+    height: 24px;
+    visibility: hidden;
+}
+
+.template-change-task-btn {
+    width: 540px;
+    display: flex;
+}
+
+.template-change-task:hover {
+    .template-change-task-delete-btn2 {
+        visibility: visible
+    }
+}
+
+.template-change-delete-template-frame {
+    width: 216px;
+    height: 79px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    top: 31px;
+    left: 50%;
+}
+
+.template-change-delete-template-frame h2 {
+    margin: 0;
+    font-weight: normal;
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+.template-change-delete-template-frame button {
+    margin-top: 1rem;
+    width: 80px;
+}
+
+.template-change-delete-btn-back {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.template-change-delete-task-frame {
+    width: 216px;
+    height: 79px;
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    top: 31px;
+    left: 50%;
+    z-index: 20;
+}
+
+.template-change-delete-task-frame h2 {
+    margin: 0;
+    text-align: center;
+    font-weight: normal;
+    margin-top: 0.5rem;
+}
+
+.template-change-delete-task-frame button {
+    margin-top: 1rem;
+}
+
+.bbq {
+    margin-left: 1.5rem;
+    margin-right: 1rem;
+}
+
+.exit {
+    margin-left: 1rem;
+    margin-top: 1.5rem;
+}
+
+/* MEDIA QUERIES */
+
+@media screen and (max-width: 1024px) {
+        .task-detail-info {
+            left: 32.5%;
+        }
+        nav, .nav {
+            width: 250px;
+        }
+        .btns {
+            grid-template-columns: 59px 94px 24px 109px;
+        }
+        .weather {
+            justify-self: start;
+            width: 250px;
+        }
+        .task-results {
+            left: 24.5%;
+        }
+        .template-choose {
+            left: 30%;
+        }
+        .template-frame {
+            left: 24.5%;
+            width: 774px;
+            grid-template-columns: 652px 122px;
+        }
+        .template-create {
+            left: 30%;
+        }
+        .template-change-template-one {
+            left: 30%;
+        }
+        .remind-changer {
+            left: 60%;
+        }
+}

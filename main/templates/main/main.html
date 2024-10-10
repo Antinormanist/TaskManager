@@ -1,0 +1,674 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "main/css/main.css" %}" %}">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <div class="settings none">
+        <button class="result-btn">
+            <span><img class="result-img" src="{% static "main/images/result.svg" %}" alt="result"></span><p class="result-p">результат</p>
+        </button>
+        <div class="divide-settings">
+        </div>
+        <button class="settings-btn">
+            <span><img class="settings-img" src="{% static "main/images/settings.svg" %}" alt="settings"></span><p class="settings-p">настройки</p>
+        </button>
+        <button class="exit-btn">
+            <span><img class="exit-img" src="{% static "main/images/exit.svg" %}" alt="exit"></span><p class="exit-p">выйти</p>
+        </button>
+    </div>
+    <div style="z-index: 6;" class="task-results none">
+        <div class="complete">
+            <p class="completed-tasks">Выполнено 80% тасков</p>
+            <div class="bar">
+                <div class="gray">
+                </div>
+                <div class="green">
+                </div>
+            </div>
+            <p>всего 10 тасков</p>
+            <div class="divide-thing2">
+            </div>
+            <p>8 выполненных</p>
+            <p>2 невыполненных</p>
+            <div class="exit">
+                <button><p>выйти</p></button>
+            </div>
+        </div>
+        <div class="info-completed">
+            <p class="priority-tasks">приоритет выполненных</p>
+            <div class="priority usual">
+                <p>обычный</p>
+            </div><p class="pri-p">1</p>
+            <div class="priority simple">
+                <p>простой</p>
+            </div><p class="pri-p">0</p>
+            <div class="priority important">
+                <p>важный</p>
+            </div><p class="pri-p">3</p>
+            <div class="priority strong">
+                <p>сильный</p>
+            </div><p class="pri-p">4</p>
+            <div class="divide-thing3">
+            </div>
+            <p class="completed-time">время выполненных</p>
+            <p class="minutes">99999999999 минут</p>
+            <p class="no-time">у 2 тасков не указано время выполнения</p>
+        </div>
+        <div class="info-uncompleted">
+            <p class="priority-tasks">приоритет невыполненных</p>
+            <div class="priority usual">
+                <p>обычный</p>
+            </div><p class="pri-p">1</p>
+            <div class="priority simple">
+                <p>простой</p>
+            </div><p class="pri-p">0</p>
+            <div class="priority important">
+                <p>важный</p>
+            </div><p class="pri-p">3</p>
+            <div class="priority strong">
+                <p>сильный</p>
+            </div><p class="pri-p">4</p>
+            <div class="divide-thing3">
+            </div>
+            <p class="completed-time">время невыполненных</p>
+            <p class="minutes">37 минут</p>
+        </div>
+    </div>
+    <div class="account-exit none">
+        <p>Выйти с аккаунта?</p>
+        <button class="account-close-btn btn-back">отмена</button>
+        <button class="account-exit-btn btn-subred">выйти</button>
+    </div>
+    <div style="z-index: 6;" class="notifications-frame none">
+        <button class="notifications-close-btn btn-back">Закрыть</button>
+        <div class="notifications-divide">
+        </div>
+        <h2 class="notifications-date">12 сентября 2024</h2>
+        <div class="date-divide">
+        </div>
+        <p class="notifications-notification">напоминание о таске "анаконда"</p>
+        <p class="notifications-notification">напоминание о таске "хэлоу ворлд"</p>
+        <h2 class="notifications-date">11 сентября 2024</h2>
+        <div class="date-divide">
+        </div>
+        <p class="notifications-notification">напоминание о таске "работа получ..."</p>
+        <p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p>
+        <h2 class="notifications-date">8 сентября 2024</h2>
+        <div class="date-divide">
+        </div>
+        <p class="notifications-notification">напоминание о таске "работа получ..."</p>
+        <p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p>
+    </div>
+    <div style="z-index: 6;" class="account-settings none">
+        <div class="change-info">
+            <form class="name-form" method="post">
+                <p>Имя</p>
+                <input class="name-input" type="text" name="name" value="Акакий">
+                <button class="btn-change change-name-btn"><img src="{% static "main/images/edit.svg" %}" alt="pencil">изменить</button>
+            </form>
+            <div class="change-div">
+                <p>Логин</p>
+                <p class="change-username-p">akakiy_okakiyProfi</p>
+                <button class="btn-change change-username-btn"><img src="{% static "main/images/edit.svg" %}" alt="pencil">изменить</button>
+            </div>
+            <div class="change-div">
+                <p>Почта</p>
+                <p class="change-email-p">akakiy_pochta@gmail.com</p>
+                <button class="btn-change change-email-btn"><img src="{% static "main/images/edit.svg" %}" alt="pencil">изменить</button>
+            </div>
+            <button class="delete-account btn-subred">удалить аккаунт</button>
+        </div>
+        <div class="change-pfp">
+            <img class="ava" src="../images/avatar.svg" alt="Avatar">
+            <button class="btn-change change-pfp-btn"><img src="{% static "main/images/edit.svg" %}" alt="pencil">изменить</button>
+            <button class="account-settings-close-btn btn-back">отмена</button>
+        </div>
+    </div>
+    <form method="post" style="z-index: 7;" class="account-delete-sumbit-frame none">
+        <p>Пароль</p>
+        <input type="password" name="password" id="">
+        <button class="account-delete-sumbit-close-btn btn-back">отмена</button>
+        <button class="account-delete-sumbit-delete-btn btn-subred">удалить</button>
+    </form>
+    <form method="post" style="z-index: 7;" class="avatar-frame none">
+        <label class="input-custom" for="inp">выбрать файл</label>
+        <input id="inp" type="file" name="file" title="выбрать файл">
+        <button class="avatar-close-btn btn-back">отмена</button>
+        <button class="avatar-change-btn btn-subred">изменить</button>
+    </form>
+    <form method="post" style="z-index: 7;" class="change-login-frame none">
+        <p>Пароль</p>
+        <input type="password" name="password" id="">
+        <p>Новый логин</p>
+        <input type="text" name="login" id="">
+        <button class="change-login-close-btn btn-back">отмена</button>
+        <button class="change-login-submit-btn btn-subred">изменить</button>
+    </form>
+    <form method="post" style="z-index: 7;" class="change-email-frame none">
+        <p>Пароль</p>
+        <input type="password" name="password" id="">
+        <p>Новая почта</p>
+        <input type="email" name="email" id="">
+        <button class="change-email-close-btn btn-back">отмена</button>
+        <button class="change-email-submit-btn btn-subred">изменить</button>
+    </form>
+    <div class="filter-frame none">
+        <h2>Фильтровать по...</h2>
+        <button class="filterr-btn date-inc btn-subred">дате <img src="{% static "main/images/incr.svg" %}" alt="inc"></button>
+        <button class="filterr-btn priority-inc btn-subred">приоритету <img src="{% static "main/images/incr.svg" %}" alt="inc"></button>
+        <button class="filterr-btn time-inc btn-subred">времени <img src="{% static "main/images/incr.svg" %}" alt="inc"></button>
+        <button class="filterr-btn date-decr btn-subred">дате <img src="{% static "main/images/decr.svg" %}" alt="inc"></button>
+        <button class="filterr-btn priority-decr btn-subred">приоритету <img src="{% static "main/images/decr.svg" %}" alt="inc"></button>
+        <button class="filterr-btn time-decr btn-subred">времени <img src="{% static "main/images/decr.svg" %}" alt="inc"></button>
+        <button class="filter-btn-back btn-back">сбросить</button>
+    </div>
+    <form method="post" style="z-index: 6;" class="add-task-frame none">
+        <!-- INPUT FOR TEMPLATE -->
+        <input type="hidden" name="is-template" value="no">
+        <div class="choose-priority none">
+            <button class="priority-choose-btn pcb1">обычный</button>
+            <button class="priority-choose-btn pcb2">простой</button>
+            <button class="priority-choose-btn pcb3">важный</button>
+            <button class="priority-choose-btn pcb4">сильный</button>
+        </div>
+        <div class="choose-date none">
+            <div class="months none">
+                <input type="hidden" name="month" value="9">
+                <button class="mth1 mbg">январь</button>
+                <button class="mth2 mbg">февраль</button>
+                <button class="mth3 mbg">март</button>
+                <button class="mth4 mbg">апрель</button>
+                <button class="mth5 mbg">май</button>
+                <button class="mth6 mbg">июнь</button>
+                <button class="mth7 mbg">июль</button>
+                <button class="mth8 mbg">август</button>
+                <button class="mth9 mbg">сентябрь</button>
+                <button class="mth10 mbg">октябрь</button>
+                <button class="mth11 mbg">ноябрь</button>
+                <button class="mth12 mbg">декабрь</button>
+            </div>
+            <input type="text" name="day" placeholder="день">
+            <button class="choose-month"><p>сентябрь</p><img src="{% static "main/images/down.svg" %}" alt="down"></button>
+            <input class="year" type="text" name="year" placeholder="год">
+            <button class="choose-date-btn-back btn-back">отмена</button>
+            <button class="choose-date-btn-submit btn-subred">добавить напоминание</button>
+        </div>
+        <input type="hidden" name="priority" value="common">
+        <!-- Example of input of remind value="5/24/2025" -->
+        <input type="hidden" name="remind" value="no">
+        <input type="text" name="name" placeholder="название задачи">
+        <input type="text" name="description" placeholder="описание">
+        <input type="text" name="task-time" placeholder="время на выполнение(в минутах)">
+        <button class="task-priority-btn"><img src="{% static "main/images/flag.svg" %}" alt="flag"> <p>приоритет(обычный)</p></button>
+        <button class="task-remind-btn"><img src="{% static "main/images/clock.svg" %}" alt="clock"> <p class="prta">напоминание(нет)</p></button>
+        <div class="task-divide">
+        </div>
+        <button class="task-close-btn btn-back">отмена</button>
+        <button class="task-add-btn btn-subred">добавить задачу</button>
+    </form>
+    <form method="post" class="task-delete-frame none">
+        <input type="hidden" name="id">
+        <input type="hidden" name="is-completed-task" value="no">
+        <h2>Удалить таск?</h2>
+        <button class="task-delete-btn-back btn-back">отмена</button>
+        <button class="task-delete-submit-btn btn-subred">удалить</button>
+    </form>
+    <div class="too-many-characters-frame none">
+        <h2>Слишком много символов в комментарии</h2>
+        <p class="fp">
+            Кол-во ваших:<p class="user-characters"></p>
+        </p>
+        <p class="max-characters">Максимум можно 2000 символов</p>
+    </div>
+    <div class="task-detail-info none">
+        <input type="hidden" name="is-template" value="no">
+        <input type="hidden" name="id">
+        <input type="hidden" name="priority">
+        <input type="hidden" name="remind">
+        <div class="priority-changer none">
+            <button class="priority-changer-common pcb1">обычный</button>
+            <button class="priority-changer-simple pcb2">простой</button>
+            <button class="priority-changer-important pcb3">важный</button>
+            <button class="priority-changer-strong pcb4">сильный</button>
+        </div>
+        <div class="remind-changer none">
+            <div class="months2 none">
+                <input type="hidden" name="month" value="9">
+                <button class="mth12 mbg2">январь</button>
+                <button class="mth22 mbg2">февраль</button>
+                <button class="mth32 mbg2">март</button>
+                <button class="mth42 mbg2">апрель</button>
+                <button class="mth52 mbg2">май</button>
+                <button class="mth62 mbg2">июнь</button>
+                <button class="mth72 mbg2">июль</button>
+                <button class="mth82 mbg2">август</button>
+                <button class="mth92 mbg2">сентябрь</button>
+                <button class="mth102 mbg2">октябрь</button>
+                <button class="mth112 mbg2">ноябрь</button>
+                <button class="mth122 mbg2">декабрь</button>
+            </div>
+            <input type="text" name="day" placeholder="день">
+            <button class="remind-changer-month"><p>сентябрь</p><img src="{% static "main/images/down.svg" %}" alt="down"></button>
+            <input class="year2" type="text" name="year" placeholder="год">
+            <button class="remind-changer-btn-back btn-back">отмена</button>
+            <button class="remind-changer-btn-submit btn-subred">изменить напоминание</button>
+        </div>
+        <div class="namedescription">
+            <textarea class="name-inp" type="text" name="name">WWWWWWWWWWWWWWWW</textarea>
+            <textarea class="description-inp" type="text" name="description">WWWWWWWWWa</textarea>
+        </div>
+        <div class="priority-remind">
+            <p class="ppp">Приоритет</p>
+            <button class="detail-priority-btn"><img src="{% static "main/images/flag.svg" %}" alt="priority"> <p>обычный</p></button>
+            <div class="detail-divider">
+            </div>
+            <p class="ppp">Напоминание</p>
+            <button class="detail-remind-btn"><img src="{% static "main/images/clock.svg" %}" alt="remind"> <p>нет</p></button>
+        </div>
+        <div class="btns-and-comments">
+            <form method="post" class="save-detail">
+                <button class="detail-btn-back btn-back">отмена</button>
+                <button class="detail-btn-subred btn-subred">сохранить</button>
+            </form>
+            <button class="commentaries-btn">
+                <img class="" src="{% static "main/images/right.svg" %}" alt="right">
+                <img class="none" src="{% static "main/images/down.svg" %}" alt="down">
+                <p>Комментарии</p>
+                <p class="weak-p">99+</p>
+            </button>
+            <div class="comment-divider none">
+            </div>
+            <div class="comments-more none">
+                <form method="post" class="make-comment">
+                    <textarea type="text" name="comment" placeholder="комментарий"></textarea>
+                    <button class="comment-btn-subred btn-subred">комментировать</button>
+                </form>
+                <div class="comment">
+                    <input type="hidden" name="id" value="1">
+                    <img class="comment-avatar" src="{% static "main/images/avatar.svg" %}" alt="ava">
+                    <div class="comment-head">
+                        <h3 class="comment-login">WWWWWWWWWWWWWWWWWWWW...</h3>
+                        <p class="comment-time">Сегодня 20:01</p>
+                        <button class="comment-edit-btn"><img src="{% static "main/images/edit2.svg" %}" alt="edit"></button>
+                        <button class="comment-delete-btn"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+                    </div>
+                    <form method="post" class="change-comment-form none">
+                        <textarea name="new-comment" placeholder="комментарий">qwe</textarea>
+                        <button class="change-comment-btn-back btn-back">отмена</button>
+                        <button class="change-comment-btn-subred btn-subred">изменить</button>
+                    </form>
+                    <p class="comment-comment">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW...</p>
+                </div>
+                <div class="comment">
+                    <input type="hidden" name="id" value="2">
+                    <img class="comment-avatar" src="{% static "main/images/avatar.svg" %}" alt="ava">
+                    <div class="comment-head">
+                        <h3 class="comment-login">WWWWWWWWWWWWWWWWWWWW...</h3>
+                        <p class="comment-time">Сегодня 20:01</p>
+                        <button class="comment-edit-btn"><img src="{% static "main/images/edit2.svg" %}" alt="edit"></button>
+                        <button class="comment-delete-btn"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+                    </div>
+                    <form method="post" class="change-comment-form none">
+                        <textarea name="new-comment" placeholder="комментарий">qwe</textarea>
+                        <button class="change-comment-btn-back btn-back">отмена</button>
+                        <button class="change-comment-btn-subred btn-subred">изменить</button>
+                    </form>
+                    <p class="comment-comment">Каепаба997</p>
+                </div>
+            </div>
+        </div>
+        <form method="post" class="delete-comment none">
+            <h2>Удалить комментарий?</h2>
+            <input type="hidden" name="id">
+            <button class="delete-comment-btn-back btn-back">отмена</button>
+            <button class="delete-comment-btn-subred btn-subred">удалить</button>
+        </form>
+    </div>
+    <div class="template-choose none">
+        <button class="template-btn-open btn-subred">загрузить шаблон</button>
+        <button class="template-btn-change btn-subred">изменить шаблон</button>
+        <button class="template-btn-create btn-subred">создать шаблон</button>
+    </div>
+    <form method="post" class="delete-template-submit none">
+        <input type="hidden" name="id">
+        <h2>Удалить шаблон?</h2>
+        <button class="bbc btn-back">отмена</button>
+        <button class="bbs btn-subred">удалить</button>
+    </form>
+    <form method="post" class="template-frame none">
+        <input type="hidden" name="id">
+        <div class="template-tasks">
+            <p class="template-template-name">Шаблона имя</p>
+            <p class="template-template-description">Шаблон описание</p>
+            <div class="divider23">
+            </div>
+            <div class="template-task">
+                <div class="prt-info">
+                    <p class="template-task-priority pcb2">простой</p>
+                    <p class="template-task-remind">с напоминанием</p>
+                    <p class="template-task-time">99999... минут</p>
+                </div>
+                <div class="template-name-and-description">
+                    <p class="template-task-name">Купить Данте дакимакуру</p>
+                    <p class="template-task-description">Пройти Lona RPG</p>
+                </div>
+            </div>
+        </div>
+        <div class="template-frame-btns">
+            <button class="dwn-btn-with btn-subred">загрузить, добавив к остальным таскам</button>
+            <button class="dwn-btn-archive btn-subred">загрузить, архивировав остальные таски</button>
+            <button class="dwn-btn-close btn-back">отмена</button>
+        </div>
+    </form>
+    <div style="z-index:2;" class="template-download none">
+        <div class="template-download-templates">
+            <div class="template-download-template selected">
+                <input type="hidden" name="id" value="1">
+                <button class="template-btn2">
+                    <h2 class="template-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW...</h2>
+                    <p class="template-description">WWWWWWWWWWWWWWWW...</p>
+                </button>
+                <button class="template-delete"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+                <button class="template-select"><img src="{% static "main/images/circle.svg" %}" alt="select"></button>
+            </div>
+            <div class="template-download-template">
+                <input type="hidden" name="id" value="2">
+                <button class="template-btn2">
+                    <h2 class="template-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW...</h2>
+                    <p class="template-description">WWWWWWWWWWWWWWWW...</p>
+                </button>
+                <button class="template-delete"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+                <button class="template-select"><img src="{% static "main/images/circle.svg" %}" alt="select"></button>
+            </div>
+        </div>
+        <div class="template-download-btns">
+            <button class="template-download2-donwload-all btn-subred">загрузить всё</button>
+            <button class="template-download2-donwload btn-subred">загрузить</button>
+            <button class="template-download2-back btn-back">отмена</button>
+        </div>
+    </div>
+    <form method="post" class="template-create-task-delete-frame none">
+        <input type="hidden" name="id">
+        <h2>Удалить таск?</h2>
+        <button class="task-delete-btn-back-template btn-back">отмена</button>
+        <button class="task-delete-submit-btn-template btn-subred">удалить</button>
+    </form>
+    <div style="z-index:2;" class="template-create none">
+        <div class="template-create-tasks">
+            <input type="text" class="template-create-name" placeholder="Название шаблона">
+            <input type="text" class="template-create-description" placeholder="Описание шаблона">
+            <div class="template-create-divider">&#8203
+            </div>
+            <!-- IF NO TASKS -->
+            <p class="template-create-no-task-message none">Здесь будут таски</p>
+            <!-- IF TASKS -->
+            <div class="template-create-task">
+                <input type="hidden" name="id" value="1">
+                <div class="tprt-info">
+                    <p class="template-create-task-priority pcb1">обычный</p>
+                    <p class="template-create-task-remind">с напоминанием</p>
+                    <p class="template-create-task-time">99999... минут</p>
+                </div>
+                <div class="template-create-task-name-and-description">
+                    <p class="template-create-task-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</p>
+                    <p class="template-create-task-description">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</p>
+                </div>
+                <button class="template-create-delete-btn"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+            </div>
+            <div class="template-create-task">
+                <input type="hidden" name="id" value="2">
+                <div class="tprt-info">
+                    <p class="template-create-task-priority pcb3">важный</p>
+                    <p class="template-create-task-time">99999... минут</p>
+                </div>
+                <div class="template-create-task-name-and-description">
+                    <p class="template-create-task-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</p>
+                    <p class="template-create-task-description">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</p>
+                </div>
+                <button class="template-create-delete-btn"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+            </div>
+            <div class="template-create-task">
+                <input type="hidden" name="id" value="3">
+                <div class="tprt-info">
+                    <p class="template-create-task-priority pcb4">сильный</p>
+                </div>
+                <div class="template-create-task-name-and-description">
+                    <p class="template-create-task-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</p>
+                </div>
+                <button class="template-create-delete-btn"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+            </div>
+        </div>
+        <div class="template-create-btns">
+            <button class="template-create-subred1 btn-subred">создать шаблон</button>
+            <button class="template-create-subred2 btn-subred">добавить</button>
+            <button class="template-create-back btn-back">отмена</button>
+        </div>
+    </div>
+    <div style="z-index:2;" class="template-change none">
+        <div class="template-change-templates">
+            <div class="template-change-template">
+                <input type="hidden" name="id" value="1">
+                <button class="template-change-template-btn">
+                    <h2 class="template-change-template-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW...(32 is max)</h2>
+                    <p class="template-change-template-description">WWWWWWWWWWWWWWWW...(16 is max)</p>
+                </button>
+                <button class="template-change-template-delete-btn"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+            </div>
+            <div class="template-change-template">
+                <input type="hidden" name="id" value="2">
+                <button class="template-change-template-btn">
+                    <h2 class="template-change-template-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW...(32 is max)</h2>
+                    <p class="template-change-template-description">WWWWWWWWWWWWWWWW...(16 is max)</p>
+                </button>
+                <button class="template-change-template-delete-btn"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+            </div>
+        </div>
+        <button class="template-change-btn-back btn-back">отмена</button>
+    </div>
+    <form method="post" class="template-change-delete-frame none">
+        <input type="hidden" name="id">
+        <h2>Удалить шаблон?</h2>
+        <button class="template-change-btn-back2 btn-back">отмена</button>
+        <button class="template-change-btn-subred2 btn-subred">удалить</button>
+    </form>
+    <form style="z-index:3;" method="post" class="template-change-template-one none">
+        <input type="hidden" name="id">
+        <div class="inf-and-tasks">
+            <textarea name="name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</textarea>
+            <textarea name="description">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</textarea>
+            <div class="template-change-divider">
+            </div>
+            <div class="template-change-task">
+                <input type="hidden" name="id" value="1">
+                <button class="template-change-task-btn">
+                    <div class="left-bar">
+                        <img class="template-change-task-priority" src="{% static "main/images/simplerad.svg" %}" alt="simple">
+                        <p class="template-change-task-remind">с напоминанием</p>
+                        <p class="template-change-task-time">999999... минут</p>
+                    </div>
+                    <div class="right-bar">
+                        <p class="template-change-task-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</p>
+                        <p class="template-change-task-description">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</p>
+                    </div>
+                </button>
+                <button class="template-change-task-delete-btn2"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+            </div>
+            <div class="template-change-task">
+                <input type="hidden" name="id" value="2">
+                <button class="template-change-task-btn">
+                    <div class="left-bar">
+                        <img class="template-change-task-priority" src="{% static "main/images/importantrad.svg" %}" alt="simple">
+                    </div>
+                    <div class="right-bar">
+                        <p class="template-change-task-name">Купить пончек</p>
+                        <p class="template-change-task-description">Седня</p>
+                    </div>
+                </button>
+                <button class="template-change-task-delete-btn2"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+            </div>
+        </div>
+        <div class="template-change-one-btns">
+            <button class="tcobdel btn-subred">удалить шаблон</button>
+            <button class="tcobsave btn-subred">сохранить</button>
+            <button class="tcobadd btn-subred">добавить</button>
+            <button class="tcobback btn-back">отмена</button>
+        </div>
+    </form>
+    <form method="post" class="template-change-delete-template-frame none">
+        <input type="hidden" name="id">
+        <h2>Удалить шаблон?</h2>
+        <button class="template-change-delete-btn-back btn-back">отмена</button>
+        <button class="template-change-delete-btn-subred btn-subred">удалить</button>
+    </form>
+    <form method="post" class="template-change-delete-task-frame none">
+        <input type="hidden" name="id">
+        <h2>Удалить таск?</h2>
+        <button class="bbq btn-back">отмена</button>
+        <button class="bbg btn-subred">удалить</button>
+    </form>
+    <nav>
+        <div class="nav">
+            <div class="btns">
+                <img class="avatar-img" src="{% static "main/images/avatar.svg" %}" alt="avatar">
+                <h3 class="username">Акакий</h3>
+                <button class="down-btn">
+                    <img class="down-img" src="{% static "main/images/down.svg" %}" alt="open">
+                </button>
+                <button class="notification-btn">
+                    <img class="notification-img" src="{% static "main/images/notifications.svg" %}" alt="notification">
+                </button>
+                <button class="add-btn2">
+                    <span><img class="add2-img" src="{% static "main/images/add_circle.svg" %}" alt="add"></span><h4>добавить задачу</h4>
+                </button>
+                <button class="filter-btn">
+                    <span><img class="filter-img" src="{% static "main/images/filter.svg" %}" alt="filter"></span><h4>фильтровать</h4>
+                </button>
+            </div>
+            <div class="weather">
+                <img class="weather-img" src="{{ w_data.current.condition.icon }}" alt="weather">
+                <h3 class="temperature-c">{{ w_data.current.temp_c }}&#8451</h3>
+                <h3 class="temperature-f">{{ w_data.current.temp_f }}&#8457</h3>
+                <div class="divide">
+                </div>
+                <p style="justify-self: center;font-size: 1.5rem;align-self: center" class="time-city">{{ w_data.location.localtime|slice:"-5:"}} {{ w_data.location.name }}</p>
+                <div class="divide-down">
+                </div>
+                {% if 0 <= w_hours and w_hours < 5 %}
+                    <p class="text">It's better to sleep, take care!</p>
+                {% elif 24 <= w_data.current.temp_c %}
+                    <p class="text">It's better to find ice cream as soon as possible!</p>
+                {% elif 13 <= w_data.current.temp_c and w_data.current.temp_c < 24 %}
+                    <p class="text">It's great weather to complete your tasks!</p>
+                {% elif 4 <= w_data.current.temp_c and w_data.current.temp_c < 13 %}
+                    <p class="text">It's great weather to wear pants and shirts</p>
+                {% else %}
+                    <p class="text">It's better to be at home and drink hot cacao lying down~</p>
+                {% endif %}
+            </div>
+            <button class="template-btn">
+                <span><img class="template-img" src="{% static "main/images/template.svg" %}" alt="template"></span> <h4>шаблоны</h4>
+            </button>
+        </div>
+    </nav>
+    <main>
+        <div class="main">
+            <!-- IF THERE ARE NO TASKS -->
+            <div class="no-task">
+                <img class="no-task-img" src="{% static "main/images/task.svg" %}" alt="task">
+                <h2>Задач на сегодня нет</h2>
+            </div>
+            <button class="add-btn">
+                <span><img class="add-img" src="{% static "main/images/add.svg" %}" alt="add"></span><h4>добавить задачу</h4>
+            </button>
+            <!-- IF THERE IS AT LEAST ONE TASK -->
+            <!-- <div class="task">
+                <input type="hidden" name="id" value="1">
+                <div class="task-infos">
+                    <button class="task-btn"><img src="{% static "main/images/strongrad.svg" %}" alt="radio" class="task-rad common-rad"></button>
+                    <h3 class="task-remind">с напоминанием</h3>
+                    <h3 class="task-time">999999 минут</h3>
+                </div>
+                <button class="task-nade">
+                    <h2 class="task-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW...(128 characters are max)</h2>
+                    <h3 class="task-description">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</h3>
+                </button>
+                <button class="task-delete"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+            </div> -->
+            <!-- DONE TASKS -->
+            <!-- <div class="done-tasks mgtop34">
+                <div class="task-dividerer">
+                </div>
+                <h2 class="done-tasks-h2">Выполненные таски</h2>
+                <button class="done-task-btn btn-subred">удалить все</button>
+                <div class="done-task">
+                    <input type="hidden" name="id" value="1">
+                    <div class="task-infos">
+                        <button class="task-btn"><img src="{% static "main/images/strongrad.svg" %}" alt="radio" class="task-rad common-rad"></button>
+                    <h3 class="task-remind">с напоминанием</h3>
+                    <h3 class="task-time">999999 минут</h3>
+                    </div>
+                    <button class="task-nade">
+                    <h2 class="task-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW...(128 characters are max)</h2>
+                    <h3 class="task-description">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</h3>
+                    </button>
+                    <button class="task-delete"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+                    <button class="done-task-return"><img src="{% static "main/images/return.svg" %}" alt="ret"></button>
+                </div>
+            </div> -->
+        </div>
+    </main>
+
+<!--    <script src="{% static "main/js/clock.js" %}"></script>-->
+<!--    <script src="{% static "main/js/down-arr-click.js" %}"></script>-->
+<!--    <script src="{% static "main/js/see-result.js" %}"></script>-->
+<!--    <script src="{% static "main/js/account-exit.js" %}"></script>-->
+<!--    <script src="{% static "main/js/notifications.js" %}"></script>-->
+<!--    <script src="{% static "main/js/settings.js" %}"></script>-->
+<!--    <script src="{% static "main/js/delete-account.js" %}"></script>-->
+<!--    <script src="{% static "main/js/avatar-close.js" %}"></script>-->
+<!--    <script src="{% static "main/js/login-change.js" %}"></script>-->
+<!--    <script src="{% static "main/js/email-change.js" %}"></script>-->
+<!--    <script src="{% static "main/js/filter.js" %}"></script>-->
+<!--    <script src="{% static "main/js/add-task.js" %}"></script>-->
+<!--    <script src="{% static "main/js/priority.js" %}"></script>-->
+<!--    <script src="{% static "main/js/choose-priority.js" %}"></script>-->
+<!--    <script src="{% static "main/js/choose-date.js" %}"></script>-->
+<!--    <script src="{% static "main/js/choose-month.js" %}"></script>-->
+<!--    <script src="{% static "main/js/month-select.js" %}"></script>-->
+<!--    <script src="{% static "main/js/month-add.js" %}"></script>-->
+<!--    <script src="{% static "main/js/delete-task.js" %}"></script>-->
+<!--    <script src="{% static "main/js/open-comments.js" %}"></script>-->
+<!--    <script src="{% static "main/js/delete-comment.js" %}"></script>-->
+<!--    <script src="{% static "main/js/open-task.js" %}"></script>-->
+<!--    <script src="{% static "main/js/edit-comment.js" %}"></script>-->
+<!--    <script src="{% static "main/js/write-comment.js" %}"></script>-->
+<!--    <script src="{% static "main/js/update-comment.js" %}"></script>-->
+<!--    <script src="{% static "main/js/priority-changer.js" %}"></script>-->
+<!--    <script src="{% static "main/js/month2-select.js" %}"></script>-->
+<!--    <script src="{% static "main/js/month2-add.js" %}"></script>-->
+<!--    <script src="{% static "main/js/open-remind-changer.js" %}"></script>-->
+<!--    <script src="{% static "main/js/open-template.js" %}"></script>-->
+<!--    <script src="{% static "main/js/template-download.js" %}"></script>-->
+<!--    <script src="{% static "main/js/css-template.js" %}"></script>-->
+<!--    <script src="{% static "main/js/delete-template.js" %}"></script>-->
+<!--    <script src="{% static "main/js/open-template-tasks.js" %}"></script>-->
+<!--    <script src="{% static "main/js/template-create-task-delete.js" %}"></script>-->
+<!--    <script src="{% static "main/js/template-create-task-delete.js" %}"></script>-->
+<!--    <script src="{% static "main/js/template-create-add-task.js" %}"></script>-->
+<!--    <script src="{% static "main/js/templates-open-create-template.js" %}"></script>-->
+<!--    <script src="{% static "main/js/template-change-delete-template.js" %}"></script>-->
+<!--    <script src="{% static "main/js/template-change-opening.js" %}"></script>-->
+<!--    <script src="{% static "main/js/template-change-delete-frame-open.js" %}"></script>-->
+<!--    <script src="{% static "main/js/template-change-add-task.js" %}"></script>-->
+<!--    <script src="{% static "main/js/template-change-open-js.js" %}"></script>-->
+<!--    <script src="{% static "main/js/template-change-delete-task-js.js" %}"></script>-->
+<!--    <script src="{% static "main/js/template-change-open-task.js" %}"></script>-->
+<!--    <script src="{% static "main/js/undo-completed-task.js" %}"></script>-->
+</body>
+</html>

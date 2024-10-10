@@ -1,7 +1,7 @@
 from random import randint
 
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login
 from django.conf import settings
 from django.core.cache import cache
@@ -16,6 +16,8 @@ REDIS_IP = 'user_ip-{id}'
 REDIS_EMAIL_SUBMIT = 'user_email_submit-{id}'
 
 def sign_in(request):
+    if request.user.is_authenticated:
+        return redirect(reverse('main:main'))
     if request.method == 'POST':
         data = request.POST.copy()
         if data.get('success'):
@@ -28,7 +30,7 @@ def sign_in(request):
                     cache.set(REDIS_IP.format(id=user.id), get_client_ip(request), timeout=3600 * 24 * 90)
                 login(request, user)
                 #   CHANGE TO NORMAL REVERSE URL
-                return JsonResponse({'status': 200, 'successUrl': 'https://google.com'})
+                return JsonResponse({'status': 200, 'successUrl': reverse('main:main')})
         else:
             if not User.objects.filter(username=data.get('username')).exists():
                 return JsonResponse({'status': 404, 'message': 'no user with such username'})
@@ -37,7 +39,7 @@ def sign_in(request):
                 if cache.get(REDIS_IP.format(id=user.id)) == get_client_ip(request) and cache.get(REDIS_EMAIL_SUBMIT.format(id=user.id)):
                     login(request, user)
                     #   CHANGE TO NORMAL REVERSE URL
-                    return JsonResponse({'status': 200, 'trust': 1, 'successUrl': 'https://google.com'})
+                    return JsonResponse({'status': 200, 'trust': 1, 'successUrl': reverse('main:main')})
                 code = randint(1000, 9999)
                 email = user.email
                 subject = "Tasko authentication"
@@ -54,6 +56,8 @@ def sign_in(request):
 
 
 def sign_up(request):
+    if request.user.is_authenticated:
+        return redirect(reverse('main:main'))
     if request.method == 'POST':
         if request.POST.get('sendEmail'):
             code = randint(1000, 9999)
@@ -75,8 +79,8 @@ def sign_up(request):
                 user = form.save()
                 login(request, user)
                 cache.set(REDIS_EMAIL_SUBMIT.format(id=user.id), 'confirmed', timeout=3600 * 24 * 30)
-                cache.set(REDIS_IP.format(id=user.id), 'confirmed', timeout=3600 * 24 * 90)
-                return JsonResponse({'status': 201, 'successUrl': 'https://google.com'})
+                cache.set(REDIS_IP.format(id=user.id), get_client_ip(request), timeout=3600 * 24 * 90)
+                return JsonResponse({'status': 201, 'successUrl': reverse('main:main')})
 
     context = {
         'title': 'Tasko sign-up'
