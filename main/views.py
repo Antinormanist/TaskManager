@@ -21,12 +21,11 @@ def welcome(request):
 def main(request):
     logger.info('Hello! It\'s an info message!!!')
     ip = get_client_ip(request)
-    data = requests.get('http://api.weatherapi.com/v1/current.json', params={'q': '122.34.69.73', 'key': settings.WEATHER_API_KEY}).json()
-    print(data)
-    # TO GET INFO ABOUT WEATHER
+    data = requests.get('http://api.weatherapi.com/v1/current.json', params={'q': '123.223.34.34', 'key': settings.WEATHER_API_KEY}).json()
     context = {
         'title': 'Tasko Main',
         'w_data': data,
-        'w_hours': int(data['location']['localtime'][-5:-3])
     }
+    if data.get('location'):
+        context.update({'w_hours': int(data['location']['localtime'][-5:-3])})
     return render(request, 'main/main.html', context)

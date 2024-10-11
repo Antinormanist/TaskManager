@@ -550,27 +550,29 @@
                     <span><img class="filter-img" src="{% static "main/images/filter.svg" %}" alt="filter"></span><h4>фильтровать</h4>
                 </button>
             </div>
-            <div class="weather">
-                <img class="weather-img" src="{{ w_data.current.condition.icon }}" alt="weather">
-                <h3 class="temperature-c">{{ w_data.current.temp_c }}&#8451</h3>
-                <h3 class="temperature-f">{{ w_data.current.temp_f }}&#8457</h3>
-                <div class="divide">
+            {% if w_data.current and w_data.location %}
+                <div class="weather">
+                    <img class="weather-img" src="{{ w_data.current.condition.icon }}" alt="weather">
+                    <h3 class="temperature-c">{{ w_data.current.temp_c }}&#8451</h3>
+                    <h3 class="temperature-f">{{ w_data.current.temp_f }}&#8457</h3>
+                    <div class="divide">
+                    </div>
+                    <p style="justify-self: center;font-size: 1.5rem;align-self: center" class="time-city">{{ w_data.location.localtime|slice:"-5:"}} {{ w_data.location.name }}</p>
+                    <div class="divide-down">
+                    </div>
+                    {% if 0 <= w_hours and w_hours < 5 %}
+                        <p class="text">It's better to sleep, take care!</p>
+                    {% elif 24 <= w_data.current.temp_c %}
+                        <p class="text">It's better to find ice cream as soon as possible!</p>
+                    {% elif 13 <= w_data.current.temp_c and w_data.current.temp_c < 24 %}
+                        <p class="text">It's great weather to complete your tasks!</p>
+                    {% elif 4 <= w_data.current.temp_c and w_data.current.temp_c < 13 %}
+                        <p class="text">It's great weather to wear pants and shirts</p>
+                    {% else %}
+                        <p class="text">It's better to be at home and drink hot cacao lying down~</p>
+                    {% endif %}
                 </div>
-                <p style="justify-self: center;font-size: 1.5rem;align-self: center" class="time-city">{{ w_data.location.localtime|slice:"-5:"}} {{ w_data.location.name }}</p>
-                <div class="divide-down">
-                </div>
-                {% if 0 <= w_hours and w_hours < 5 %}
-                    <p class="text">It's better to sleep, take care!</p>
-                {% elif 24 <= w_data.current.temp_c %}
-                    <p class="text">It's better to find ice cream as soon as possible!</p>
-                {% elif 13 <= w_data.current.temp_c and w_data.current.temp_c < 24 %}
-                    <p class="text">It's great weather to complete your tasks!</p>
-                {% elif 4 <= w_data.current.temp_c and w_data.current.temp_c < 13 %}
-                    <p class="text">It's great weather to wear pants and shirts</p>
-                {% else %}
-                    <p class="text">It's better to be at home and drink hot cacao lying down~</p>
-                {% endif %}
-            </div>
+            {% endif %}
             <button class="template-btn">
                 <span><img class="template-img" src="{% static "main/images/template.svg" %}" alt="template"></span> <h4>шаблоны</h4>
             </button>
@@ -624,51 +626,16 @@
         </div>
     </main>
 
-<!--    <script src="{% static "main/js/clock.js" %}"></script>-->
-<!--    <script src="{% static "main/js/down-arr-click.js" %}"></script>-->
-<!--    <script src="{% static "main/js/see-result.js" %}"></script>-->
-<!--    <script src="{% static "main/js/account-exit.js" %}"></script>-->
-<!--    <script src="{% static "main/js/notifications.js" %}"></script>-->
-<!--    <script src="{% static "main/js/settings.js" %}"></script>-->
-<!--    <script src="{% static "main/js/delete-account.js" %}"></script>-->
-<!--    <script src="{% static "main/js/avatar-close.js" %}"></script>-->
-<!--    <script src="{% static "main/js/login-change.js" %}"></script>-->
-<!--    <script src="{% static "main/js/email-change.js" %}"></script>-->
-<!--    <script src="{% static "main/js/filter.js" %}"></script>-->
-<!--    <script src="{% static "main/js/add-task.js" %}"></script>-->
-<!--    <script src="{% static "main/js/priority.js" %}"></script>-->
-<!--    <script src="{% static "main/js/choose-priority.js" %}"></script>-->
-<!--    <script src="{% static "main/js/choose-date.js" %}"></script>-->
-<!--    <script src="{% static "main/js/choose-month.js" %}"></script>-->
-<!--    <script src="{% static "main/js/month-select.js" %}"></script>-->
-<!--    <script src="{% static "main/js/month-add.js" %}"></script>-->
-<!--    <script src="{% static "main/js/delete-task.js" %}"></script>-->
-<!--    <script src="{% static "main/js/open-comments.js" %}"></script>-->
-<!--    <script src="{% static "main/js/delete-comment.js" %}"></script>-->
-<!--    <script src="{% static "main/js/open-task.js" %}"></script>-->
-<!--    <script src="{% static "main/js/edit-comment.js" %}"></script>-->
-<!--    <script src="{% static "main/js/write-comment.js" %}"></script>-->
-<!--    <script src="{% static "main/js/update-comment.js" %}"></script>-->
-<!--    <script src="{% static "main/js/priority-changer.js" %}"></script>-->
-<!--    <script src="{% static "main/js/month2-select.js" %}"></script>-->
-<!--    <script src="{% static "main/js/month2-add.js" %}"></script>-->
-<!--    <script src="{% static "main/js/open-remind-changer.js" %}"></script>-->
-<!--    <script src="{% static "main/js/open-template.js" %}"></script>-->
-<!--    <script src="{% static "main/js/template-download.js" %}"></script>-->
-<!--    <script src="{% static "main/js/css-template.js" %}"></script>-->
-<!--    <script src="{% static "main/js/delete-template.js" %}"></script>-->
-<!--    <script src="{% static "main/js/open-template-tasks.js" %}"></script>-->
-<!--    <script src="{% static "main/js/template-create-task-delete.js" %}"></script>-->
-<!--    <script src="{% static "main/js/template-create-task-delete.js" %}"></script>-->
-<!--    <script src="{% static "main/js/template-create-add-task.js" %}"></script>-->
-<!--    <script src="{% static "main/js/templates-open-create-template.js" %}"></script>-->
-<!--    <script src="{% static "main/js/template-change-delete-template.js" %}"></script>-->
-<!--    <script src="{% static "main/js/template-change-opening.js" %}"></script>-->
-<!--    <script src="{% static "main/js/template-change-delete-frame-open.js" %}"></script>-->
-<!--    <script src="{% static "main/js/template-change-add-task.js" %}"></script>-->
-<!--    <script src="{% static "main/js/template-change-open-js.js" %}"></script>-->
-<!--    <script src="{% static "main/js/template-change-delete-task-js.js" %}"></script>-->
-<!--    <script src="{% static "main/js/template-change-open-task.js" %}"></script>-->
-<!--    <script src="{% static "main/js/undo-completed-task.js" %}"></script>-->
+    <script src="{% static "main/js/down-arr-click.js" %}" async></script>
+    <script src="{% static "main/js/account-exit.js" %}" async></script>
+    <script src="{% static "main/js/priority.js" %}" async></script>
+    <script src="{% static "main/js/choose-month.js" %}" async></script>
+    <script src="{% static "main/js/priority-changer.js" %}" async></script>
+    <script src="{% static "main/js/open-template.js" %}" async></script>
+    <script src="{% static "main/js/bobr.js" %}" async></script>
+    <script src="{% static "main/js/cat.js" %}" async></script>
+    <script src="{% static "main/js/dog.js" %}" async></script>
+    <script src="{% static "main/js/bird.js" %}" async></script>
+    <script src="{% static "main/js/rabbit.js" %}" async></script>
 </body>
 </html>
