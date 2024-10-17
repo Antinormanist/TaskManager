@@ -1,0 +1,3 @@
+AddOutputFilter DEFLATE css js
+ExpiresActive On
+ExpiresByType application/x-javascript A2592000

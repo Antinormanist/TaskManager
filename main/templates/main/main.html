@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <scrip src="{% static "main/js/gulpfile.js" %}" async></scrip>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static "main/css/main.css" %}" %}">
@@ -393,7 +394,7 @@
             <button class="template-download2-back btn-back">отмена</button>
         </div>
     </div>
-    <form method="post" class="template-create-task-delete-frame none">
+    <form style="z-index: 11;" method="post" class="template-create-task-delete-frame none">
         <input type="hidden" name="id">
         <h2>Удалить таск?</h2>
         <button class="task-delete-btn-back-template btn-back">отмена</button>
@@ -471,7 +472,7 @@
         </div>
         <button class="template-change-btn-back btn-back">отмена</button>
     </div>
-    <form method="post" class="template-change-delete-frame none">
+    <form style="z-index: 11;" method="post" class="template-change-delete-frame none">
         <input type="hidden" name="id">
         <h2>Удалить шаблон?</h2>
         <button class="template-change-btn-back2 btn-back">отмена</button>
@@ -637,5 +638,6 @@
     <script src="{% static "main/js/dog.js" %}" async></script>
     <script src="{% static "main/js/bird.js" %}" async></script>
     <script src="{% static "main/js/rabbit.js" %}" async></script>
+    <script src="{% static "main/js/clock.js" async%}"></script>
 </body>
 </html>

@@ -26,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'user.User'
 # Application definition
@@ -129,8 +129,12 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    BASE_DIR / 'static'
+    BASE_DIR / 'static/'
 ]
+STATIC_ROOT = BASE_DIR / 'staticfiles/'
+
+MEDIA_ROOT = BASE_DIR / 'avatars/'
+MEDIA_URL = 'media/'
 
 WEATHER_API_KEY = config('WEATHER_API_KEY')
 
