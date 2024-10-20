@@ -10,6 +10,7 @@
     <title>{{ title }}</title>
 </head>
 <body>
+    <input type="hidden" name="urlLogout" value="{% url "user:logout" %}">
     <div class="settings none">
         <button class="result-btn">
             <span><img class="result-img" src="{% static "main/images/result.svg" %}" alt="result"></span><p class="result-p">результат</p>
@@ -126,7 +127,7 @@
             <button class="delete-account btn-subred">удалить аккаунт</button>
         </div>
         <div class="change-pfp">
-            <img class="ava" src="../images/avatar.svg" alt="Avatar">
+            <img class="ava" src="{% static "main/images/avatar.svg" %}" alt="Avatar">
             <button class="btn-change change-pfp-btn"><img src="{% static "main/images/edit.svg" %}" alt="pencil">изменить</button>
             <button class="account-settings-close-btn btn-back">отмена</button>
         </div>
@@ -627,6 +628,11 @@
         </div>
     </main>
 
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous">
+    </script>
     <script src="{% static "main/js/down-arr-click.js" %}" async></script>
     <script src="{% static "main/js/account-exit.js" %}" async></script>
     <script src="{% static "main/js/priority.js" %}" async></script>

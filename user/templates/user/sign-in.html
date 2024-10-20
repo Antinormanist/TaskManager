@@ -28,7 +28,7 @@
              <button>войти</button>
         </div>
         <a class="have" href="{% url "user:sign-up" %}">У меня нет аккаунта</a>
-        <a href="./password-reset.html" class="have">Забыл пароль</a>
+        <a href="{% url "user:password_reset" %}" class="have">Забыл пароль</a>
     </form>
     <form method="post" class="secon block none">
         {% csrf_token %}

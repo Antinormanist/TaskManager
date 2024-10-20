@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 
 from decouple import config
-from django.conf.global_settings import EMAIL_HOST
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -164,20 +163,4 @@ CELERY_TIMEZONE = 'Europe/Moscow'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "file": {
-            "class": 'logging.FileHandler',
-            "filename": "general.log",
-            "level": "DEBUG"
-        }
-    },
-    'loggers': {
-        "": {
-            "level": "DEBUG",
-            "handlers": ["file"]
-        }
-    }
-}
+LOGIN_URL = '/user/sign-in'

@@ -88,7 +88,6 @@ window.addEventListener('click', event => {
                             const chars = '[A-ZА-Я]'
                             const nums = '[0-9]'
                             const symbol = /\W/
-                            console.log(password.match(chars), password.match(nums), password.match(symbol))
                             if (8 <= password.length && password.match(chars) && password.match(nums) && password.match(symbol)) {
                                 $.ajax({
                                     url: sendUrl,

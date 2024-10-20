@@ -11,6 +11,14 @@ window.addEventListener('click', (event) => {
     if (event.target.closest('.exit-btn') && accountExitFrame.classList.contains('none')) {
         accountExitFrame.classList.remove('none')
     }
+    else if (event.target.closest('.account-exit-btn')) {
+        $.ajax({
+            url: document.querySelector('input[name="urlLogout"]').value,
+            success: function(data) {
+                window.location = data.url
+            }
+        })
+    }
     else if (event.target.closest('.account-close-btn')) {
         accountExitFrame.classList.add('none')
     }

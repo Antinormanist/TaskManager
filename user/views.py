@@ -1,13 +1,14 @@
-from random import randint
+from random import randint, sample
+from string import printable
 
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.conf import settings
 from django.core.cache import cache
 
 from .models import User
-from .utils import HTML_EMAIL_CODE_MSG, get_client_ip, HTML_EMAIL_REG_CODE_MSG
+from .utils import HTML_EMAIL_CODE_MSG, get_client_ip, HTML_EMAIL_REG_CODE_MSG, HTML_PASSWORD_RESET_CODE_MSG
 from .tasks import send_email
 from .forms import UserRegistrationForm
 
@@ -95,3 +96,43 @@ def check_user(request):
             if User.objects.filter(username=username).exists():
                 return JsonResponse({'status': 409, 'message': 'user with such username already exists'})
     return JsonResponse({'status': 200, 'message': 'no user with such username'})
+
+
+def logout_acc(request):
+    logout(request)
+    return JsonResponse({'status': 200, 'url': reverse('user:sign-in')})
+
+
+def password_reset(request):
+    if request.method == 'POST':
+        if request.POST.get('check_user'):
+            username = request.POST.get('username')
+            user = User.objects.filter(username=username).first()
+            if user:
+                code = randint(1000, 9999)
+                subject = "Tasko registration"
+                from_email = settings.EMAIL_HOST_USER
+                to_email = user.email
+                html_content = HTML_PASSWORD_RESET_CODE_MSG.format(username=username, code=code)
+                send_email.delay_on_commit(subject, from_email, to_email, html_content)
+                return JsonResponse({'status': 200, 'code': code, 'email': user.email})
+            else:
+                return JsonResponse({'status': 404, 'message': 'user with such username doesn\'t exist'})
+        elif request.POST.get('startReset'):
+            secret_key = ''.join(sample(printable, 32))
+            return JsonResponse({'status': 200, 'secret_key': secret_key})
+        elif request.POST.get('reset'):
+            if request.POST.get('secretKey'):
+                username = request.POST.get('username')
+                password = request.POST.get('password')
+                user = User.objects.filter(username=username).first()
+                user.set_password(password)
+                user.save()
+                login(request, user)
+                return JsonResponse({'status': 200, 'successUrl': reverse('main:main')})
+            else:
+                return JsonResponse({'status': 403, 'message': 'nuh-uh'})
+    context = {
+        'title': 'Tasko reset'
+    }
+    return render(request, 'user/password-reset.html', context)

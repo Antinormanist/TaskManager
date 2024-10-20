@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 import requests
 
 import logging
@@ -18,6 +19,7 @@ def welcome(request):
     return render(request, 'main/welcome.html', context)
 
 
+@login_required
 def main(request):
     logger.info('Hello! It\'s an info message!!!')
     ip = get_client_ip(request)
