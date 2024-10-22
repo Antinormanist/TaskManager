@@ -136,6 +136,7 @@ MEDIA_ROOT = BASE_DIR / 'avatars/'
 MEDIA_URL = 'media/'
 
 WEATHER_API_KEY = config('WEATHER_API_KEY')
+WEATHER_API_LINK = config('WEATHER_API_LINK')
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
