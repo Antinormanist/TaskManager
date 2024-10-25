@@ -10,7 +10,11 @@
     <title>{{ title }}</title>
 </head>
 <body>
+    <input type="hidden" name="sendUrl" value="{% url "main:main" %}">
     <input type="hidden" name="urlLogout" value="{% url "user:logout" %}">
+    <div class="wrong-message none" style="z-index: 100;">
+        <h2>Нет пользователя с таким логином</h2>
+    </div>
     <div class="settings none">
         <button class="result-btn">
             <span><img class="result-img" src="{% static "main/images/result.svg" %}" alt="result"></span><p class="result-p">результат</p>
@@ -111,17 +115,17 @@
         <div class="change-info">
             <form class="name-form" method="post">
                 <p>Имя</p>
-                <input class="name-input" type="text" name="name" value="Акакий">
+                <input class="name-input" type="text" name="name" value="{% if user.firstname%}{{ user.firstname }}{% endif %}">
                 <button class="btn-change change-name-btn"><img src="{% static "main/images/edit.svg" %}" alt="pencil">изменить</button>
             </form>
             <div class="change-div">
                 <p>Логин</p>
-                <p class="change-username-p">akakiy_okakiyProfi</p>
+                <p class="change-username-p">{{ user.username }}</p>
                 <button class="btn-change change-username-btn"><img src="{% static "main/images/edit.svg" %}" alt="pencil">изменить</button>
             </div>
             <div class="change-div">
                 <p>Почта</p>
-                <p class="change-email-p">akakiy_pochta@gmail.com</p>
+                <p class="change-email-p">{{ user.email }}</p>
                 <button class="btn-change change-email-btn"><img src="{% static "main/images/edit.svg" %}" alt="pencil">изменить</button>
             </div>
             <button class="delete-account btn-subred">удалить аккаунт</button>
@@ -133,18 +137,21 @@
         </div>
     </div>
     <form method="post" style="z-index: 7;" class="account-delete-sumbit-frame none">
+        {% csrf_token %}
         <p>Пароль</p>
         <input type="password" name="password" id="">
         <button class="account-delete-sumbit-close-btn btn-back">отмена</button>
         <button class="account-delete-sumbit-delete-btn btn-subred">удалить</button>
     </form>
     <form method="post" style="z-index: 7;" class="avatar-frame none">
+        {% csrf_token %}
         <label class="input-custom" for="inp">выбрать файл</label>
         <input id="inp" type="file" name="file" title="выбрать файл">
         <button class="avatar-close-btn btn-back">отмена</button>
         <button class="avatar-change-btn btn-subred">изменить</button>
     </form>
     <form method="post" style="z-index: 7;" class="change-login-frame none">
+        {% csrf_token %}
         <p>Пароль</p>
         <input type="password" name="password" id="">
         <p>Новый логин</p>
@@ -153,6 +160,7 @@
         <button class="change-login-submit-btn btn-subred">изменить</button>
     </form>
     <form method="post" style="z-index: 7;" class="change-email-frame none">
+        {% csrf_token %}
         <p>Пароль</p>
         <input type="password" name="password" id="">
         <p>Новая почта</p>
@@ -171,6 +179,7 @@
         <button class="filter-btn-back btn-back">сбросить</button>
     </div>
     <form method="post" style="z-index: 6;" class="add-task-frame none">
+        {% csrf_token %}
         <!-- INPUT FOR TEMPLATE -->
         <input type="hidden" name="is-template" value="no">
         <div class="choose-priority none">
@@ -215,6 +224,7 @@
         <button class="task-add-btn btn-subred">добавить задачу</button>
     </form>
     <form method="post" class="task-delete-frame none">
+        {% csrf_token %}
         <input type="hidden" name="id">
         <input type="hidden" name="is-completed-task" value="no">
         <h2>Удалить таск?</h2>
@@ -338,12 +348,14 @@
         <button class="template-btn-create btn-subred">создать шаблон</button>
     </div>
     <form method="post" class="delete-template-submit none">
+        {% csrf_token %}
         <input type="hidden" name="id">
         <h2>Удалить шаблон?</h2>
         <button class="bbc btn-back">отмена</button>
         <button class="bbs btn-subred">удалить</button>
     </form>
     <form method="post" class="template-frame none">
+        {% csrf_token %}
         <input type="hidden" name="id">
         <div class="template-tasks">
             <p class="template-template-name">Шаблона имя</p>
@@ -396,6 +408,7 @@
         </div>
     </div>
     <form style="z-index: 11;" method="post" class="template-create-task-delete-frame none">
+        {% csrf_token %}
         <input type="hidden" name="id">
         <h2>Удалить таск?</h2>
         <button class="task-delete-btn-back-template btn-back">отмена</button>
@@ -474,12 +487,14 @@
         <button class="template-change-btn-back btn-back">отмена</button>
     </div>
     <form style="z-index: 11;" method="post" class="template-change-delete-frame none">
+        {% csrf_token %}
         <input type="hidden" name="id">
         <h2>Удалить шаблон?</h2>
         <button class="template-change-btn-back2 btn-back">отмена</button>
         <button class="template-change-btn-subred2 btn-subred">удалить</button>
     </form>
     <form style="z-index:3;" method="post" class="template-change-template-one none">
+        {% csrf_token %}
         <input type="hidden" name="id">
         <div class="inf-and-tasks">
             <textarea name="name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</textarea>
@@ -523,12 +538,14 @@
         </div>
     </form>
     <form method="post" class="template-change-delete-template-frame none">
+        {% csrf_token %}
         <input type="hidden" name="id">
         <h2>Удалить шаблон?</h2>
         <button class="template-change-delete-btn-back btn-back">отмена</button>
         <button class="template-change-delete-btn-subred btn-subred">удалить</button>
     </form>
     <form method="post" class="template-change-delete-task-frame none">
+        {% csrf_token %}
         <input type="hidden" name="id">
         <h2>Удалить таск?</h2>
         <button class="bbq btn-back">отмена</button>
@@ -538,7 +555,7 @@
         <div class="nav">
             <div class="btns">
                 <img class="avatar-img" src="{% static "main/images/avatar.svg" %}" alt="avatar">
-                <h3 class="username">Акакий</h3>
+                <h3 class="username">{% if user.firstname %}{{ user.firstname|truncatechars:7 }}{% else %}{{ user.username|truncatechars:7 }}{% endif %}</h3>
                 <button class="down-btn">
                     <img class="down-img" src="{% static "main/images/down.svg" %}" alt="open">
                 </button>

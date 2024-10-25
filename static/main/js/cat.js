@@ -1,3 +1,20 @@
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
 const delTask = document.querySelector('.task-delete-frame')
 const dtempDel = document.querySelector('.delete-template-submit')
 const emailFrame = document.querySelector('.change-email-frame')
@@ -8,6 +25,8 @@ const mInpUt = document.querySelector('.months2').querySelector('input')
 const showMonth2 = document.querySelector('.remind-changer-month').querySelector('p')
 const date = document.querySelector('.add-task-frame').querySelector('input[name=remind]')
 const btn = document.querySelector('.choose-date-btn-submit')
+const sendUrl = document.querySelector('input[name="sendUrl"]').value
+const wrongFrameMsg = document.querySelector('.wrong-message')
 
 window.addEventListener('click', (event) => {
     if (event.target.closest('.task-delete') && delTask.classList.contains('none')) {
@@ -70,6 +89,36 @@ window.addEventListener('click', (event) => {
     else if (event.target.closest('.change-login-close-btn')) {
         event.preventDefault();
         loginFrame.classList.add('none')
+    }
+    else if (event.target.closest('.change-login-submit-btn')) {
+        event.preventDefault();
+        password = event.target.closest('.change-login-frame').querySelector('input[name="password"]').value.trim();
+        newLogin = event.target.closest('.change-login-frame').querySelector('input[name="login"]').value.trim();
+        console.log(password, newLogin);
+        if (password && newLogin) {
+            $.ajax({
+                url: sendUrl,
+                method: "post",
+                headers: {'X-CSRFToken': csrftoken},
+                data: {changeLogin: 1, password: password, newLogin: newLogin},
+                success: function(data) {
+                    if (data.status === 201) {
+                        console.log('SUCCESS', data);
+                        document.querySelector('.change-username-p').innerText = newLogin;
+                        document.querySelector('nav').querySelector('.username').innerText = newLogin;
+                        event.target.closest('.change-login-frame').querySelector('input[name="password"]').value = ''
+                        event.target.closest('.change-login-frame').querySelector('input[name="login"]').value = ''
+                        event.target.closest('.change-login-frame').classList.add('none')
+                    } else if (data.status === 403) {
+                        wrongFrameMsg.querySelector('h2').innerText = 'Неверный пароль';
+                        wrongFrameMsg.classList.remove('none');
+                        setTimeout(() => {
+                            wrongFrameMsg.classList.add('none');
+                        }, 1500);
+                    }
+                }
+            });
+        }
     }
     else if (event.target.closest('.remind-changer-btn-submit')) {
         event.preventDefault();

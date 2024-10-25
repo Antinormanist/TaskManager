@@ -1,9 +1,9 @@
 const clockd = document.querySelector('.time-city')
-const time_n_city = document.querySelector('.time-city').innerText + ''
+const time_n_city = clockd.innerText
 const wTime = time_n_city.split(' ')[0]
 let wHours = parseInt(wTime.split(':')[0])
 let wMinutes = parseInt(wTime.split(':')[1])
-const wCity = time_n_city.split()[1]
+const wCity = time_n_city.split(' ').slice(1).join(' ')
 setInterval(() => {
     wMinutes += 1
     if (wMinutes === 60) {

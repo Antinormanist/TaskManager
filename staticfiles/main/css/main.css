@@ -133,6 +133,7 @@ h4 {
     width: 24px;
     height: 24px;
     align-self: center;
+    justify-self: flex-end;
     margin-left: 3px;
 }
 
@@ -143,6 +144,20 @@ h4 {
 .down-img {
     height: 100%;
     width: 100%;
+}
+
+.wrong-message {
+    width: 300px;
+    height: 100px;
+    background-color: #fff;
+    position: absolute;
+    border: 1.5px solid #000;
+    border-radius: 15px;
+    top: 31px;
+    left: 41%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .notification-btn {

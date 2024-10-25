@@ -1,11 +1,9 @@
 from django.shortcuts import render, redirect, reverse
 from django.conf import settings
+from django.http import JsonResponse
+from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 import requests
-
-import logging
-
-logger = logging.getLogger(__name__)
 
 from user.utils import get_client_ip
 
@@ -21,9 +19,18 @@ def welcome(request):
 
 @login_required
 def main(request):
-    logger.info('Hello! It\'s an info message!!!')
+    if request.method == 'POST':
+        if request.POST.get('changeLogin'):
+            password = request.POST.get('password')
+            new_login = request.POST.get('newLogin')
+            user = authenticate(username=request.user.username, password=password)
+            if user:
+                user.username = new_login
+                user.save()
+                return JsonResponse({'status': 201, 'message': 'username was changed successfully'})
+            return JsonResponse({'status': 403, 'message': 'password is not valid'})
     ip = get_client_ip(request)
-    data = requests.get('http://api.weatherapi.com/v1/current.json', params={'q': '123.223.34.34', 'key': settings.WEATHER_API_KEY}).json()
+    data = requests.get(settings.WEATHER_API_LINK, params={'q': '63.116.61.253', 'key': settings.WEATHER_API_KEY}).json()
     context = {
         'title': 'Tasko Main',
         'w_data': data,
