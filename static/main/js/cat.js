@@ -27,6 +27,11 @@ const date = document.querySelector('.add-task-frame').querySelector('input[name
 const btn = document.querySelector('.choose-date-btn-submit')
 const sendUrl = document.querySelector('input[name="sendUrl"]').value
 const wrongFrameMsg = document.querySelector('.wrong-message')
+const changeEmailFrame = document.querySelector('.changeEmailFrameCode')
+let changeEmailCode
+let changeEmaill
+let changeEmailPassword
+let tries = 5
 
 window.addEventListener('click', (event) => {
     if (event.target.closest('.task-delete') && delTask.classList.contains('none')) {
@@ -75,6 +80,65 @@ window.addEventListener('click', (event) => {
     else if (event.target.closest('.change-email-close-btn')) {
         event.preventDefault();
         emailFrame.classList.add('none')
+    }
+    else if (event.target.closest('.change-email-submit-btn')) {
+        event.preventDefault()
+        password = event.target.closest('.change-email-frame').querySelector('input[name="password"]').value
+        email = event.target.closest('.change-email-frame').querySelector('input[name="email"]').value
+        if (password && email) {
+            $.ajax({
+                url: sendUrl,
+                method: "post",
+                headers: {'X-CSRFToken': csrftoken},
+                data: {changeEmail: 1, password: password, email: email},
+                success: function(data) {
+                    if (data.status === 200) {
+                        changeEmailCode = data.code
+                        changeEmailFrame.classList.remove('none')
+                        changeEmailFrame.querySelector(".emailP").innerText = `Отправленно письмо на почту ${email}`
+                        changeEmailPassword = password
+                        changeEmaill = email
+                        emailFrame.classList.add('none')
+                        emailFrame.querySelector('input[name="password"]').value = ''
+                        emailFrame.querySelector('input[name="email"]').value = ''
+                    }
+                    if (data.status === 403) {
+                        wrongFrameMsg.querySelector('h2').innerText = 'Неверный пароль';
+                        wrongFrameMsg.classList.remove('none');
+                        setTimeout(() => {
+                            wrongFrameMsg.classList.add('none');
+                        }, 1500);
+                    }
+                }
+            })
+        }
+    }
+    else if (event.target.closest('.emailF')) {
+        event.preventDefault()
+        console.log(changeEmailCode)
+        if (changeEmailCode) {
+            const userCode = parseInt(changeEmailFrame.querySelector('input[name="code"]').value)
+            if (userCode === changeEmailCode) {
+                $.ajax({
+                    url: sendUrl,
+                    method: 'post',
+                    data: {successEmail: 1, email: changeEmaill, password: changeEmailPassword},
+                    headers: {'X-CSRFToken': csrftoken},
+                    success: function() {
+                        changeEmailFrame.classList.add('none')
+                        changeEmailFrame.querySelector('input[name="code"]').value = ''
+                        document.querySelector('.change-email-p').innerText = changeEmaill
+                        tries = 5
+                    }
+                })
+            } else {
+                tries -= 1
+                if (tries === 0) {
+                    window.location = '?'
+                }
+                emailFrame.querySelector('.tries').innerText = `осталось попыток ${tries}`
+            }
+        }
     }
     else if (event.target.closest('.filter-btn') && filterFrame.classList.contains('none')) {
         filterFrame.classList.remove('none')

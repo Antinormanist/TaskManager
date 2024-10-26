@@ -160,6 +160,97 @@ h4 {
     justify-content: center;
 }
 
+.changeEmailFrameCode {
+    height: 283px;
+    width: 399px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: #fff;
+    border: 2px solid black;
+    border-radius: 15px 64px 15px 64px;
+    position: absolute;
+    top: 31px;
+    left: 40%;
+}
+
+.changeEmailFrameCode label {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.changeEmailFrameCode .code {
+    height: 33px;
+    width: 71px;
+    display: flex;
+    align-items: center;
+    border: 1.5px solid #000;
+    border-radius: 15px 64px 15px 64px;
+}
+
+.changeEmailFrameCode .code input {
+    margin: 0 1rem;
+    width: 100%;
+    border: none;
+    outline: none;
+}
+
+.changeEmailFrameCode .start {
+    height: 33px;
+    width: 201px;
+    border: 1.5px solid black;
+    border-radius: 15px 64px 15px 64px;
+    background-image: linear-gradient(152.55deg, #5BD3FF 50%, #FF8C4E 50%);
+}
+
+.changeEmailFrameCode .start button {
+    width: 100%;
+    height: 100%;
+    color: #FF8C4E;
+    border: none;
+    background: none;
+    text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000,
+             1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.changeEmailFrameCode .start:hover {
+    background-image: linear-gradient(152.55deg, #51b4d8 50%, #c76e3d 50%);
+}
+
+.changeEmailFrameCode .start button:hover {
+    color: #c76e3d;
+}
+
+.changeEmailFrameCode .back {
+    height: 25px;
+    width: 70px;
+    align-self: flex-end;
+    margin-right: 1rem;
+    border: 1.5px solid #000;
+    border-radius: 15px 64px 15px 64px;
+}
+
+.changeEmailFrameCode .back:hover {
+    background-color: rgb(243, 243, 243);
+}
+
+.changeEmailFrameCode .back a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    text-decoration: none;
+    height: 100%;
+}
+
+.emailP {
+    text-align: center;
+}
+
 .notification-btn {
     width: 24px;
     height: 24px;

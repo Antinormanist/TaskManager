@@ -1,3 +1,5 @@
+import random
+
 from django.shortcuts import render, redirect, reverse
 from django.conf import settings
 from django.http import JsonResponse
@@ -6,7 +8,8 @@ from django.contrib.auth.decorators import login_required
 import requests
 
 from user.utils import get_client_ip
-
+from user.tasks import send_email
+from user.utils import HTML_EMAIL_CODE_MSG
 # Create your views here.
 def welcome(request):
     if request.user.is_authenticated:
@@ -28,7 +31,29 @@ def main(request):
                 user.username = new_login
                 user.save()
                 return JsonResponse({'status': 201, 'message': 'username was changed successfully'})
-            return JsonResponse({'status': 403, 'message': 'password is not valid'})
+            return JsonResponse({'status': 403, 'message': 'wrong password'})
+        elif request.POST.get('changeEmail'):
+            password = request.POST.get('password')
+            email = request.POST.get('email')
+            user = authenticate(username=request.user.username, password=password)
+            if user:
+                code = random.randint(1000, 9999)
+                subject = "Tasko authentication"
+                from_email = settings.EMAIL_HOST_USER
+                to_email = email
+                html_content = HTML_EMAIL_CODE_MSG.format(username=user.username, code=code)
+                send_email.delay_on_commit(subject, from_email, to_email, html_content)
+                return JsonResponse({'status':200, 'code': code})
+            return JsonResponse({'status': 403, 'message': 'wrong password'})
+        elif request.POST.get('successEmail'):
+            password = request.POST.get('password')
+            email = request.POST.get('email')
+            user = authenticate(username=request.user.username, password=password)
+            if user:
+                user.email = email
+                user.save()
+                return JsonResponse({'status': 200, 'message': 'email was changed successfully'})
+            return JsonResponse({'status': 400, 'message': 'something went wrong'})
     ip = get_client_ip(request)
     data = requests.get(settings.WEATHER_API_LINK, params={'q': '63.116.61.253', 'key': settings.WEATHER_API_KEY}).json()
     context = {

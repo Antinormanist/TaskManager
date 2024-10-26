@@ -15,6 +15,21 @@
     <div class="wrong-message none" style="z-index: 100;">
         <h2>Нет пользователя с таким логином</h2>
     </div>
+    <form method="post" class="changeEmailFrameCode none" style="z-index: 101;">
+        {% csrf_token %}
+        <p class="emailP"></p>
+        <p class="tries">осталось попыток 5</p>
+        <label for="code">Введите код</label>
+        <div class="input code">
+            <input type="text" name="code" id="code">
+        </div>
+        <div class="start emailF">
+             <button>изменить</button>
+        </div>
+        <div class="back">
+            <a href="?">назад</a>
+        </div>
+    </form>
     <div class="settings none">
         <button class="result-btn">
             <span><img class="result-img" src="{% static "main/images/result.svg" %}" alt="result"></span><p class="result-p">результат</p>
