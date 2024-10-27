@@ -10,6 +10,50 @@ window.addEventListener('click', (event) => {
     if (event.target.closest('.settings-btn') && settingsFrame.classList.contains('none')) {
         settingsFrame.classList.remove('none')
     }
+    else if (event.target.closest('.change-name-btn')) {
+        event.preventDefault()
+        name = event.target.closest('.account-settings').querySelector('.name-input').value
+        if (name) {
+            $.ajax({
+                url: sendUrl,
+                method: 'post',
+                headers: {'X-CSRFToken': csrftoken},
+                data: {changeName: 1, name: name},
+                success: function(data) {
+                    if (data.status === 200) {
+                        document.querySelector('nav').querySelector('.btns').querySelector('.username').innerText = name
+                    }
+                }
+            })
+        }
+    }
+    else if (event.target.closest('.avatar-change-btn')) {
+        event.preventDefault()
+        avatar = event.target.closest('.avatar-frame').querySelector('input[name="file"]').files[0]
+        const sendAva = new FormData()
+        sendAva.append('image', avatar)
+        sendAva.append('sendAva', 1)
+        if (avatar) {
+            $.ajax({
+            url: sendUrl,
+            method: 'post',
+            headers: {'X-CSRFToken': csrftoken},
+            data: sendAva,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if (data.status == 200) {
+                    document.querySelector('.avatar-frame').classList.add("none")
+                    document.querySelector('.avatar-frame').querySelector('input[name="file"]').value = null
+
+                    document.querySelector('.ava').src = data.url
+                    document.querySelector('.avatar-img').src = data.url
+//                          WORK WITH IT!!!!!!!!!!!!!
+                }
+            }
+            })
+        }
+    }
     else if (event.target.closest('.account-settings-close-btn')) {
         settingsFrame.classList.add('none')
     }

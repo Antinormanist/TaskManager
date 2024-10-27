@@ -204,6 +204,14 @@ h4 {
     background-image: linear-gradient(152.55deg, #5BD3FF 50%, #FF8C4E 50%);
 }
 
+.avatar-img {
+    border-radius: 10px;
+}
+
+.ava {
+    border-radius: 15px;
+}
+
 .changeEmailFrameCode .start button {
     width: 100%;
     height: 100%;

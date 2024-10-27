@@ -129,6 +129,7 @@
     <div style="z-index: 6;" class="account-settings none">
         <div class="change-info">
             <form class="name-form" method="post">
+                {% csrf_token %}
                 <p>Имя</p>
                 <input class="name-input" type="text" name="name" value="{% if user.firstname%}{{ user.firstname }}{% endif %}">
                 <button class="btn-change change-name-btn"><img src="{% static "main/images/edit.svg" %}" alt="pencil">изменить</button>
@@ -146,7 +147,7 @@
             <button class="delete-account btn-subred">удалить аккаунт</button>
         </div>
         <div class="change-pfp">
-            <img class="ava" src="{% static "main/images/avatar.svg" %}" alt="Avatar">
+            <img class="ava" src="{% if user.avatar %}{{ user.avatar.url }}{% else %}{% static "main/images/avatar.svg" %}{% endif %}" alt="Avatar">
             <button class="btn-change change-pfp-btn"><img src="{% static "main/images/edit.svg" %}" alt="pencil">изменить</button>
             <button class="account-settings-close-btn btn-back">отмена</button>
         </div>
@@ -158,7 +159,7 @@
         <button class="account-delete-sumbit-close-btn btn-back">отмена</button>
         <button class="account-delete-sumbit-delete-btn btn-subred">удалить</button>
     </form>
-    <form method="post" style="z-index: 7;" class="avatar-frame none">
+    <form method="post" style="z-index: 7;" class="avatar-frame none" enctype="multipart/form-data">
         {% csrf_token %}
         <label class="input-custom" for="inp">выбрать файл</label>
         <input id="inp" type="file" name="file" title="выбрать файл">
@@ -569,7 +570,7 @@
     <nav>
         <div class="nav">
             <div class="btns">
-                <img class="avatar-img" src="{% static "main/images/avatar.svg" %}" alt="avatar">
+                <img class="avatar-img" src="{% if user.avatar %}{{ user.avatar.url }}{% else %}{% static "main/images/avatar.svg" %}{% endif %}" alt="avatar">
                 <h3 class="username">{% if user.firstname %}{{ user.firstname|truncatechars:7 }}{% else %}{{ user.username|truncatechars:7 }}{% endif %}</h3>
                 <button class="down-btn">
                     <img class="down-img" src="{% static "main/images/down.svg" %}" alt="open">

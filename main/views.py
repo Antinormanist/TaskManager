@@ -54,6 +54,22 @@ def main(request):
                 user.save()
                 return JsonResponse({'status': 200, 'message': 'email was changed successfully'})
             return JsonResponse({'status': 400, 'message': 'something went wrong'})
+        elif request.POST.get('changeName'):
+            name = request.POST.get('name')
+            if name:
+                request.user.firstname = name
+                request.user.save()
+                return JsonResponse({'status': 200, 'message': 'name was changed successfully'})
+            return JsonResponse({'status': 400, 'message': 'something went wrong'})
+        elif request.POST.get('sendAva'):
+            avatar = request.FILES.get('image')
+            if avatar:
+                request.user.delete_avatar()
+                request.user.avatar = avatar
+                request.user.save()
+                url = request.user.avatar.url
+                return JsonResponse({'status': 200, 'message': 'avatar was changed successfully', 'url': url})
+            return JsonResponse({'status': 400, 'message': 'something went wrong'})
     ip = get_client_ip(request)
     data = requests.get(settings.WEATHER_API_LINK, params={'q': '63.116.61.253', 'key': settings.WEATHER_API_KEY}).json()
     context = {

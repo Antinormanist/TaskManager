@@ -158,7 +158,6 @@ window.addEventListener('click', (event) => {
         event.preventDefault();
         password = event.target.closest('.change-login-frame').querySelector('input[name="password"]').value.trim();
         newLogin = event.target.closest('.change-login-frame').querySelector('input[name="login"]').value.trim();
-        console.log(password, newLogin);
         if (password && newLogin) {
             $.ajax({
                 url: sendUrl,
@@ -167,7 +166,6 @@ window.addEventListener('click', (event) => {
                 data: {changeLogin: 1, password: password, newLogin: newLogin},
                 success: function(data) {
                     if (data.status === 201) {
-                        console.log('SUCCESS', data);
                         document.querySelector('.change-username-p').innerText = newLogin;
                         document.querySelector('nav').querySelector('.username').innerText = newLogin;
                         event.target.closest('.change-login-frame').querySelector('input[name="password"]').value = ''
