@@ -48,7 +48,6 @@ window.addEventListener('click', (event) => {
 
                     document.querySelector('.ava').src = data.url
                     document.querySelector('.avatar-img').src = data.url
-//                          WORK WITH IT!!!!!!!!!!!!!
                 }
             }
             })

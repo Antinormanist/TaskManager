@@ -71,6 +71,30 @@ window.addEventListener('click', (event) => {
         event.preventDefault();
         delAcFr.classList.add('none')
     }
+    else if (event.target.closest('.account-delete-sumbit-delete-btn')) {
+        event.preventDefault();
+        password = event.target.closest('.account-delete-sumbit-frame').querySelector('input[name="password"]').value
+        if (password) {
+            $.ajax({
+                url: sendUrl,
+                method: 'post',
+                headers: {'X-CSRFToken': csrftoken},
+                data: {deleteAccount: 1, password: password},
+                success: function(data) {
+                    if (data.status === 200) {
+                        window.location = data.url
+                    }
+                    if (data.status === 400) {
+                        wrongFrameMsg.querySelector('h2').innerText = 'Неверный пароль';
+                        wrongFrameMsg.classList.remove('none');
+                        setTimeout(() => {
+                            wrongFrameMsg.classList.add('none');
+                        }, 1500);
+                    }
+                }
+            })
+        }
+    }
     else if (event.target.closest('.comment-delete-btn') && delCommentFramik.classList.contains('none')) {
         const curComFrame = event.target.closest('.comment-delete-btn').closest('.comment')
         const id = curComFrame.querySelector('input[name="id"]').value

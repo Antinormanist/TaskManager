@@ -3,7 +3,7 @@ import random
 from django.shortcuts import render, redirect, reverse
 from django.conf import settings
 from django.http import JsonResponse
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, logout
 from django.contrib.auth.decorators import login_required
 import requests
 
@@ -70,6 +70,15 @@ def main(request):
                 url = request.user.avatar.url
                 return JsonResponse({'status': 200, 'message': 'avatar was changed successfully', 'url': url})
             return JsonResponse({'status': 400, 'message': 'something went wrong'})
+        elif request.POST.get('deleteAccount'):
+            password = request.POST.get('password')
+            user = authenticate(username=request.user.username, password=password)
+            if user:
+                logout(request)
+                user.delete()
+                return JsonResponse({'status': 200, 'url': reverse('user:sign-in')})
+            return JsonResponse({'status': 400, 'message': 'wrong password'})
+
     ip = get_client_ip(request)
     data = requests.get(settings.WEATHER_API_LINK, params={'q': '63.116.61.253', 'key': settings.WEATHER_API_KEY}).json()
     context = {
