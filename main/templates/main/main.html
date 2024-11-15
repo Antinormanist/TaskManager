@@ -3,15 +3,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <scrip src="{% static "main/js/gulpfile.js" %}" async></scrip>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static "main/css/main.css" %}" %}">
+    <link rel="stylesheet" href="{% static "main/css/main.css" %}" %}" />
     <title>{{ title }}</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static "main/images/favicon.ico" %}" />
 </head>
 <body>
     <input type="hidden" name="sendUrl" value="{% url "main:main" %}">
     <input type="hidden" name="urlLogout" value="{% url "user:logout" %}">
+    <input type="hidden" name="comrad" value="{% static "main/images/commonrad.svg" %}">
+    <input type="hidden" name="simrad" value="{% static "main/images/simplerad.svg" %}">
+    <input type="hidden" name="imprad" value="{% static "main/images/importantrad.svg" %}">
+    <input type="hidden" name="strrad" value="{% static "main/images/strongrad.svg" %}">
+    <input type="hidden" name="trashUrl" value="{% static "main/images/trash.svg" %}">
+    <input type="hidden" name="taskUrl" value="{% static "main/images/task.svg" %}">
+    <input type="hidden" name="addUrl" value="{% static "main/images/add.svg" %}">
     <div class="wrong-message none" style="z-index: 100;">
         <h2>Нет пользователя с таким логином</h2>
     </div>
@@ -229,9 +236,9 @@
         <input type="hidden" name="priority" value="common">
         <!-- Example of input of remind value="5/24/2025" -->
         <input type="hidden" name="remind" value="no">
-        <input type="text" name="name" placeholder="название задачи">
-        <input type="text" name="description" placeholder="описание">
-        <input type="text" name="task-time" placeholder="время на выполнение(в минутах)">
+        <input maxlength="128" type="text" name="name" placeholder="название задачи">
+        <input maxlength="256" type="text" name="description" placeholder="описание">
+        <input maxlength="6" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" type="text" name="task-time" placeholder="время на выполнение(в минутах)">
         <button class="task-priority-btn"><img src="{% static "main/images/flag.svg" %}" alt="flag"> <p>приоритет(обычный)</p></button>
         <button class="task-remind-btn"><img src="{% static "main/images/clock.svg" %}" alt="clock"> <p class="prta">напоминание(нет)</p></button>
         <div class="task-divide">
@@ -616,48 +623,96 @@
     <main>
         <div class="main">
             <!-- IF THERE ARE NO TASKS -->
-            <div class="no-task">
-                <img class="no-task-img" src="{% static "main/images/task.svg" %}" alt="task">
-                <h2>Задач на сегодня нет</h2>
-            </div>
-            <button class="add-btn">
-                <span><img class="add-img" src="{% static "main/images/add.svg" %}" alt="add"></span><h4>добавить задачу</h4>
-            </button>
-            <!-- IF THERE IS AT LEAST ONE TASK -->
-            <!-- <div class="task">
-                <input type="hidden" name="id" value="1">
-                <div class="task-infos">
-                    <button class="task-btn"><img src="{% static "main/images/strongrad.svg" %}" alt="radio" class="task-rad common-rad"></button>
-                    <h3 class="task-remind">с напоминанием</h3>
-                    <h3 class="task-time">999999 минут</h3>
+            {% if not tasks.first %}
+                <div class="no-task">
+                    <img class="no-task-img" src="{% static "main/images/task.svg" %}" alt="task">
+                    <h2>Задач на сегодня нет</h2>
                 </div>
-                <button class="task-nade">
-                    <h2 class="task-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW...(128 characters are max)</h2>
-                    <h3 class="task-description">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</h3>
+                <button class="add-btn">
+                    <span><img class="add-img" src="{% static "main/images/add.svg" %}" alt="add"></span><h4>добавить задачу</h4>
                 </button>
-                <button class="task-delete"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
-            </div> -->
+            {% else %}
+                <div class="no-task none">
+                    <img class="no-task-img" src="{% static "main/images/task.svg" %}" alt="task">
+                    <h2>Задач на сегодня нет</h2>
+                </div>
+                <button class="add-btn none">
+                    <span><img class="add-img" src="{% static "main/images/add.svg" %}" alt="add"></span><h4>добавить задачу</h4>
+                </button>
+            <!-- IF THERE IS AT LEAST ONE TASK -->
+                {% for task in tasks %}
+                    {% if not task.is_completed and not task.is_templated %}
+                        <div class="task">
+                            <input type="hidden" name="id" value="{{ task.id }}">
+                            <div class="task-infos">
+                                {% if task.priority == 'common' %}
+                                    <button class="task-btn"><img src="{% static "main/images/commonrad.svg" %}" alt="radio" class="task-rad common-rad"></button>
+                                {% elif task.priority == 'simple' %}
+                                    <button class="task-btn"><img src="{% static "main/images/simplerad.svg" %}" alt="radio" class="task-rad simple-rad"></button>
+                                {% elif task.priority == 'important' %}
+                                    <button class="task-btn"><img src="{% static "main/images/importantrad.svg" %}" alt="radio" class="task-rad important-rad"></button>
+                                {% else %}
+                                    <button class="task-btn"><img src="{% static "main/images/strongrad.svg" %}" alt="radio" class="task-rad strong-rad"></button>
+                                {% endif %}
+                                {% if task.remind %}
+                                <h3 class="task-remind">с напоминанием</h3>
+                                {% endif %}
+                                {% if task.minutes %}
+                                <h3 class="task-time">{{ task.minutes }} минут</h3>
+                                {% endif %}
+                            </div>
+                            <button class="task-nade">
+                                <h2 class="task-name">{{ task.name|truncatechars:"128"}}</h2>
+                                {% if task.description %}
+                                <h3 class="task-description">{{ task.description|truncatechars:"64" }}</h3>
+                                {% endif %}
+                            </button>
+                            <button class="task-delete"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
             <!-- DONE TASKS -->
-            <!-- <div class="done-tasks mgtop34">
+            {% if is_there_completed_task %}
+            <div class="done-tasks mgtop34">
                 <div class="task-dividerer">
                 </div>
                 <h2 class="done-tasks-h2">Выполненные таски</h2>
                 <button class="done-task-btn btn-subred">удалить все</button>
-                <div class="done-task">
-                    <input type="hidden" name="id" value="1">
-                    <div class="task-infos">
-                        <button class="task-btn"><img src="{% static "main/images/strongrad.svg" %}" alt="radio" class="task-rad common-rad"></button>
-                    <h3 class="task-remind">с напоминанием</h3>
-                    <h3 class="task-time">999999 минут</h3>
+                {% for task in tasks %}
+                    {% if not task.is_templated and task.is_completed %}
+                    <div class="done-task">
+                        <input type="hidden" name="id" value="{{ task.id }}">
+                        <div class="task-infos">
+                            {% if task.priority == 'common' %}
+                                <button class="task-btn"><img src="{% static "main/images/commonrad.svg" %}" alt="radio" class="task-rad common-rad"></button>
+                            {% elif task.priority == 'simple' %}
+                                <button class="task-btn"><img src="{% static "main/images/simplerad.svg" %}" alt="radio" class="task-rad simple-rad"></button>
+                            {% elif task.priority == 'important' %}
+                                <button class="task-btn"><img src="{% static "main/images/importantrad.svg" %}" alt="radio" class="task-rad important-rad"></button>
+                            {% else %}
+                                <button class="task-btn"><img src="{% static "main/images/strongrad.svg" %}" alt="radio" class="task-rad strong-rad"></button>
+                            {% endif %}
+                        {% if task.remind %}
+                        <h3 class="task-remind">с напоминанием</h3>
+                        {% endif %}
+                        {% if task.minutes %}
+                        <h3 class="task-time">{{ task.minutes }} минут</h3>
+                        {% endif %}
+                        </div>
+                        <button class="task-nade">
+                        <h2 class="task-name">{{ task.name|truncatechars:"128" }}</h2>
+                        {% if task.description %}
+                        <h3 class="task-description">{{ task.description|truncatechars:"64" }}</h3>
+                        {% endif %}
+                        </button>
+                        <button class="task-delete"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+                        <button class="done-task-return"><img src="{% static "main/images/return.svg" %}" alt="ret"></button>
                     </div>
-                    <button class="task-nade">
-                    <h2 class="task-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW...(128 characters are max)</h2>
-                    <h3 class="task-description">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</h3>
-                    </button>
-                    <button class="task-delete"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
-                    <button class="done-task-return"><img src="{% static "main/images/return.svg" %}" alt="ret"></button>
-                </div>
-            </div> -->
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
     </main>
 
@@ -677,6 +732,7 @@
     <script src="{% static "main/js/dog.js" %}" async></script>
     <script src="{% static "main/js/bird.js" %}" async></script>
     <script src="{% static "main/js/rabbit.js" %}" async></script>
-    <script src="{% static "main/js/clock.js" async%}"></script>
+    <script src="{% static "main/js/clock.js" %}" async></script>
+    <script src="{% static "main/js/const-variables.js" %}" async></script>
 </body>
 </html>

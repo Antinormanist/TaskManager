@@ -1,3 +1,4 @@
+from datetime import date
 import random
 
 from django.shortcuts import render, redirect, reverse
@@ -10,6 +11,7 @@ import requests
 from user.utils import get_client_ip
 from user.tasks import send_email
 from user.utils import HTML_EMAIL_CODE_MSG
+from .models import Task
 # Create your views here.
 def welcome(request):
     if request.user.is_authenticated:
@@ -78,12 +80,44 @@ def main(request):
                 user.delete()
                 return JsonResponse({'status': 200, 'url': reverse('user:sign-in')})
             return JsonResponse({'status': 400, 'message': 'wrong password'})
+        elif request.POST.get('createTask'):
+            name = request.POST.get('name')
+            description = request.POST.get('description')
+            minutes = request.POST.get('minutes')
+            priority = request.POST.get('priority')
+            remind = request.POST.get('remind')
+            if priority in ('common', 'simple', 'important', 'strong'):
+                task = Task.objects.create(
+                    name=name,
+                    priority=priority,
+                    user=request.user
+                )
+                if description:
+                    task.description = description
+                if minutes:
+                    minutes = int(minutes)
+                    task.minutes = minutes
+                if remind != 'no':
+                    month, day, year = map(int, remind.split('/'))
+                    task.remind = date(year, month, day)
+                task.save()
+                return JsonResponse({'status': 201, 'id': task.id, 'message': 'task was successfully created'})
+            return JsonResponse({'status': 400, 'message': 'priority is not valid'})
 
     ip = get_client_ip(request)
     data = requests.get(settings.WEATHER_API_LINK, params={'q': '63.116.61.253', 'key': settings.WEATHER_API_KEY}).json()
+
+    tasks = Task.objects.filter(user=request.user).order_by('-created_at')
+    is_there_completed_task = False
+    for task in tasks:
+        if task.is_completed:
+            is_there_completed_task = True
+            break
     context = {
         'title': 'Tasko Main',
         'w_data': data,
+        'tasks': tasks,
+        'is_there_completed_task': is_there_completed_task
     }
     if data.get('location'):
         context.update({'w_hours': int(data['location']['localtime'][-5:-3])})
