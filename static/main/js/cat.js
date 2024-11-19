@@ -33,19 +33,76 @@ let changeEmaill
 let changeEmailPassword
 let tries = 5
 
+let taskToDelete
+
 window.addEventListener('click', (event) => {
     if (event.target.closest('.task-delete') && delTask.classList.contains('none')) {
         event.preventDefault();
         const dataFrame = event.target.closest('.task-delete').closest('.done-task')
-        const id = dataFrame.querySelector('input[name="id"]').value
+        let id
+        if (dataFrame) {
+            id = dataFrame.querySelector('input[name="id"]').value
+            taskToDelete = event.target.closest('.task-delete').closest('.done-task')
+        } else {
+            id = event.target.closest('.task-delete').closest('.task').querySelector('input[name="id"]').value
+            taskToDelete = event.target.closest('.task-delete').closest('.task')
+        }
+//        ALSO CREATE OPTION FOR TEMPLATES TASK
         delTask.querySelector('input[name="id"]').value = id
-        delTask.querySelector('input[name="is-completed-task"]').value = 'true'
         delTask.classList.remove('none')
     }
     else if (event.target.closest('.task-delete-btn-back')) {
         event.preventDefault();
         delTask.querySelector('input[name="is-completed-task"]').value = 'no'
+        delTask.querySelector('input[name="id"]').value = ''
+        taskToDelete = null
         delTask.classList.add('none')
+    }
+    else if (event.target.closest('.task-delete-submit-btn')) {
+        event.preventDefault();
+        const id = delTask.querySelector('input[name="id"]').value
+        const task = taskToDelete
+        if (id && task) {
+            $.ajax({
+                url: sendUrl,
+                method: 'post',
+                headers: {'X-CSRFToken': csrftoken},
+                data: {deleteTask: 1, id: id},
+                success: function(data) {
+                    if (data.status === 204) {
+                        task.remove()
+                        delTask.classList.add('none')
+                        delTask.querySelector('input[name="id"]').value = ''
+                        taskToDelete = null
+//                        MAKE APPEARENCE OF NO TASK FRAME
+                        let count = 0
+                        const tasks = document.querySelector('.main').children
+                        for (let i = 0; i < tasks.length; i++) {
+                            const task = tasks[i]
+                            if (task.classList.contains('task')) {
+                                count += 1
+                            }
+                        }
+                        if (count === 0) {
+                            document.querySelector('.no-task').classList.remove('none')
+                            document.querySelector('.add-btn').classList.remove('none')
+                        }
+                    } else {
+                        wrongFrameMsg.querySelector('h2').innerText = 'Что - то пошло не так';
+                        wrongFrameMsg.classList.remove('none');
+                        setTimeout(() => {
+                            wrongFrameMsg.classList.add('none');
+                        }, 1500);
+                    }
+                }
+            })
+        } else {
+            wrongFrameMsg.querySelector('h2').innerText = 'Что - то пошло не так';
+            wrongFrameMsg.classList.remove('none');
+            setTimeout(() => {
+                wrongFrameMsg.classList.add('none');
+            }, 1500);
+        }
     }
     else if (event.target.closest('.template-delete') && dtempDel.classList.contains('none')) {
         const id = event.target.closest('.template-delete').closest('.template-download-template').querySelector('input[name="id"]').value

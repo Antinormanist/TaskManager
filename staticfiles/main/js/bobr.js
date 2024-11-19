@@ -84,7 +84,7 @@ window.addEventListener('click', (event) => {
                     if (data.status === 200) {
                         window.location = data.url
                     }
-                    if (data.status === 400) {
+                    else if (data.status === 400) {
                         wrongFrameMsg.querySelector('h2').innerText = 'Неверный пароль';
                         wrongFrameMsg.classList.remove('none');
                         setTimeout(() => {

@@ -103,7 +103,16 @@ def main(request):
                 task.save()
                 return JsonResponse({'status': 201, 'id': task.id, 'message': 'task was successfully created'})
             return JsonResponse({'status': 400, 'message': 'priority is not valid'})
-
+        elif request.POST.get('deleteTask'):
+            id = request.POST.get('id')
+            if isinstance(id, int) or (isinstance(id, str) and id.isdigit()):
+                id = int(id)
+                task = Task.objects.filter(id=id).first()
+                if task:
+                    task.delete()
+                    return JsonResponse({'status': 204, 'message': 'task was successfully deleted'})
+                return JsonResponse({'status': 404, 'message': 'no task with such id'})
+            return JsonResponse({'status': 400, 'message': 'id is not valid'})
     ip = get_client_ip(request)
     data = requests.get(settings.WEATHER_API_LINK, params={'q': '63.116.61.253', 'key': settings.WEATHER_API_KEY}).json()
 
