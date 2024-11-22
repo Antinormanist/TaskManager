@@ -193,13 +193,13 @@
     </form>
     <div class="filter-frame none">
         <h2>Фильтровать по...</h2>
-        <button class="filterr-btn date-inc btn-subred">дате <img src="{% static "main/images/incr.svg" %}" alt="inc"></button>
-        <button class="filterr-btn priority-inc btn-subred">приоритету <img src="{% static "main/images/incr.svg" %}" alt="inc"></button>
-        <button class="filterr-btn time-inc btn-subred">времени <img src="{% static "main/images/incr.svg" %}" alt="inc"></button>
-        <button class="filterr-btn date-decr btn-subred">дате <img src="{% static "main/images/decr.svg" %}" alt="inc"></button>
-        <button class="filterr-btn priority-decr btn-subred">приоритету <img src="{% static "main/images/decr.svg" %}" alt="inc"></button>
-        <button class="filterr-btn time-decr btn-subred">времени <img src="{% static "main/images/decr.svg" %}" alt="inc"></button>
-        <button class="filter-btn-back btn-back">сбросить</button>
+        <a class="filterr-btn date-inc btn-subred" href="?filter=di">дате <img src="{% static "main/images/incr.svg" %}" alt="inc"></a>
+        <a class="filterr-btn priority-inc btn-subred" href="?filter=pi">приоритету <img src="{% static "main/images/incr.svg" %}" alt="inc"></a>
+        <a class="filterr-btn time-inc btn-subred" href="?filter=ti">времени <img src="{% static "main/images/incr.svg" %}" alt="inc"></a>
+        <a class="filterr-btn date-decr btn-subred" href="?filter=dd">дате <img src="{% static "main/images/decr.svg" %}" alt="inc"></a>
+        <a class="filterr-btn priority-decr btn-subred" href="?filter=pd">приоритету <img src="{% static "main/images/decr.svg" %}" alt="inc"></a>
+        <a class="filterr-btn time-decr btn-subred" href="?filter=td">времени <img src="{% static "main/images/decr.svg" %}" alt="inc"></a>
+        <a class="filter-btn-back btn-back" href="?">сбросить</a>
     </div>
     <form method="post" style="z-index: 6;" class="add-task-frame none">
         {% csrf_token %}
@@ -623,7 +623,7 @@
     <main>
         <div class="main">
             <!-- IF THERE ARE NO TASKS -->
-            {% if not tasks.first %}
+            {% if not tasks.0 and not special_tasks.0 %}
                 <div class="no-task">
                     <img class="no-task-img" src="{% static "main/images/task.svg" %}" alt="task">
                     <h2>Задач на сегодня нет</h2>
@@ -640,6 +640,35 @@
                     <span><img class="add-img" src="{% static "main/images/add.svg" %}" alt="add"></span><h4>добавить задачу</h4>
                 </button>
             <!-- IF THERE IS AT LEAST ONE TASK -->
+                {% for spec_task in special_tasks %}
+                    <div class="task">
+                        <input type="hidden" name="id" value="{{ spec_task.id }}">
+                        <div class="task-infos">
+                            {% if spec_task.priority == 'common' %}
+                                <button class="task-btn"><img src="{% static "main/images/commonrad.svg" %}" alt="radio" class="task-rad common-rad"></button>
+                            {% elif spec_task.priority == 'simple' %}
+                                <button class="task-btn"><img src="{% static "main/images/simplerad.svg" %}" alt="radio" class="task-rad simple-rad"></button>
+                            {% elif spec_task.priority == 'important' %}
+                                <button class="task-btn"><img src="{% static "main/images/importantrad.svg" %}" alt="radio" class="task-rad important-rad"></button>
+                            {% else %}
+                                <button class="task-btn"><img src="{% static "main/images/strongrad.svg" %}" alt="radio" class="task-rad strong-rad"></button>
+                            {% endif %}
+                            {% if spec_task.remind %}
+                            <h3 class="task-remind">с напоминанием</h3>
+                            {% endif %}
+                            {% if spec_task.minutes %}
+                            <h3 class="task-time">{{ spec_task.minutes }} минут</h3>
+                            {% endif %}
+                        </div>
+                        <button class="task-nade">
+                            <h2 class="task-name">{{ spec_task.name|truncatechars:"128"}}</h2>
+                            {% if spec_task.description %}
+                            <h3 class="task-description">{{ spec_task.description|truncatechars:"64" }}</h3>
+                            {% endif %}
+                        </button>
+                        <button class="task-delete"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+                    </div>
+                {% endfor %}
                 {% for task in tasks %}
                     {% if not task.is_completed and not task.is_templated %}
                         <div class="task">

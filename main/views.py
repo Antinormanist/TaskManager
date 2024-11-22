@@ -12,6 +12,7 @@ from user.utils import get_client_ip
 from user.tasks import send_email
 from user.utils import HTML_EMAIL_CODE_MSG
 from .models import Task
+from .utils import priority_sort
 # Create your views here.
 def welcome(request):
     if request.user.is_authenticated:
@@ -113,18 +114,69 @@ def main(request):
                     return JsonResponse({'status': 204, 'message': 'task was successfully deleted'})
                 return JsonResponse({'status': 404, 'message': 'no task with such id'})
             return JsonResponse({'status': 400, 'message': 'id is not valid'})
+
     ip = get_client_ip(request)
     data = requests.get(settings.WEATHER_API_LINK, params={'q': '63.116.61.253', 'key': settings.WEATHER_API_KEY}).json()
-
-    tasks = Task.objects.filter(user=request.user).order_by('-created_at')
+    all_tasks = Task.objects.filter(user=request.user)
+    tasks = []
+    spec_tasks = []
+    if fltr := request.GET.get('filter'):
+        if fltr == 'di':
+            for task in all_tasks:
+                if not (task.is_completed or task.is_templated):
+                    if task.remind:
+                        spec_tasks.append(task)
+                    else:
+                        tasks.append(task)
+                else:
+                    tasks.append(task)
+            spec_tasks.sort(key=lambda x: x.remind)
+        elif fltr == 'pi':
+            tasks = sorted(all_tasks, key=priority_sort)
+        elif fltr == 'ti':
+            for task in all_tasks:
+                if not (task.is_completed or task.is_templated):
+                    if task.minutes:
+                        spec_tasks.append(task)
+                    else:
+                        tasks.append(task)
+                else:
+                    tasks.append(task)
+            spec_tasks.sort(key=lambda x: x.minutes)
+        elif fltr == 'dd':
+            for task in all_tasks:
+                if not (task.is_completed or task.is_templated):
+                    if task.remind:
+                        spec_tasks.append(task)
+                    else:
+                        tasks.append(task)
+                else:
+                    tasks.append(task)
+            spec_tasks.sort(key=lambda x: x.remind, reverse=True)
+        elif fltr == 'pd':
+            tasks = sorted(all_tasks, key=priority_sort, reverse=True)
+        elif fltr == 'td':
+            for task in all_tasks:
+                if not (task.is_completed or task.is_templated):
+                    if task.minutes:
+                        spec_tasks.append(task)
+                    else:
+                        tasks.append(task)
+                else:
+                    tasks.append(task)
+            spec_tasks.sort(key=lambda x: x.minutes, reverse=True)
+    else:
+        tasks = sorted(all_tasks, key=lambda x: x.created_at, reverse=True)
     is_there_completed_task = False
     for task in tasks:
         if task.is_completed:
             is_there_completed_task = True
             break
+    # SOLVE PROBLEM WITH TASKS AND SPEC TASKS
     context = {
         'title': 'Tasko Main',
         'w_data': data,
+        'special_tasks': spec_tasks,
         'tasks': tasks,
         'is_there_completed_task': is_there_completed_task
     }

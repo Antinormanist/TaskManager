@@ -200,10 +200,6 @@ window.addEventListener('click', (event) => {
     else if (event.target.closest('.filter-btn') && filterFrame.classList.contains('none')) {
         filterFrame.classList.remove('none')
     }
-    else if (event.target.closest('.filter-btn-back')) {
-        event.preventDefault()
-        filterFrame.classList.add('none')
-    }
     else if (event.target.closest('.change-username-btn') && loginFrame.classList.contains('none')) {
         loginFrame.classList.remove('none')
     }

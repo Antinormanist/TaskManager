@@ -973,6 +973,8 @@ main {
     justify-content: center;
     margin: 0;
     height: 26px;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 .date-inc, .date-decr {
@@ -992,6 +994,8 @@ main {
     height: 27px;
     grid-column: 2/3;
     justify-self: center;
+    text-decoration: none;
+    text-align: center;
 }
 
 .add-task-frame {
