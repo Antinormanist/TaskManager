@@ -5,6 +5,7 @@ const dtmpDow = document.querySelector('.template-download')
 const ddgfreger = document.querySelector('.template-create')
 const updateTooManyFrame = document.querySelector('.too-many-characters-frame')
 const tooManyFrame = document.querySelector('.too-many-characters-frame')
+const doneTasks = document.querySelector('.done-tasks')
 const comrad = document.querySelector('input[name="comrad"]').value
 const simrad = document.querySelector('input[name="simrad"]').value
 const imprad = document.querySelector('input[name="imprad"]').value
@@ -14,6 +15,57 @@ const mainFrame = document.querySelector('.main')
 window.addEventListener('click', (event) => {
     if (event.target.closest('.template-btn-change') && bgfgfdgfd.classList.contains('none')) {
         bgfgfdgfd.classList.remove('none')
+    }
+    else if (event.target.closest('.task-btn')) {
+//        make that task completed
+        const task = event.target.closest('.task')
+        if (task) {
+            const id = task.querySelector('input[name="id"]').value
+            if (id) {
+                $.ajax({
+                    url: sendUrl,
+                    method: 'post',
+                    headers: {'X-CSRFToken': csrftoken},
+                    data: {completeTask: 1, id: id},
+                    success: function(data) {
+                        if (data.status === 200) {
+                            const newTask = task.cloneNode(true)
+                            task.remove()
+                            let count = 0
+                            const tasks = document.querySelector('.main').children
+                            for (let i = 0; i < tasks.length; i++) {
+                                const task = tasks[i]
+                                if (task.classList.contains('task')) {
+                                    count += 1
+                                }
+                            }
+                            if (count === 0) {
+                                document.querySelector('.no-task').classList.remove('none')
+                                document.querySelector('.add-btn').classList.remove('none')
+                            }
+                            newTask.classList.remove('task')
+                            newTask.classList.add('done-task')
+                            if (doneTasks.classList.contains('none')) {
+                                doneTasks.classList.remove('none')
+                            }
+                                doneTasks.appendChild(newTask)
+                        } else if (data.status === 403) {
+                            wrongFrameMsg.querySelector('h2').innerText = 'Что-то не так. Таск с таким айди не ваш';
+                            wrongFrameMsg.classList.remove('none');
+                            setTimeout(() => {
+                                wrongFrameMsg.classList.add('none');
+                            }, 1500);
+                        } else {
+                            wrongFrameMsg.querySelector('h2').innerText = 'Что-то не так. Обновите страницу';
+                            wrongFrameMsg.classList.remove('none');
+                            setTimeout(() => {
+                                wrongFrameMsg.classList.add('none');
+                            }, 1500);
+                        }
+                    }
+                })
+            }
+        }
     }
     else if (event.target.closest('.template-change-btn-back')) {
         bgfgfdgfd.classList.add('none')

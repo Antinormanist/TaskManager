@@ -114,11 +114,24 @@ def main(request):
                     return JsonResponse({'status': 204, 'message': 'task was successfully deleted'})
                 return JsonResponse({'status': 404, 'message': 'no task with such id'})
             return JsonResponse({'status': 400, 'message': 'id is not valid'})
+        elif request.POST.get('completeTask'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                task = Task.objects.filter(id=id).first()
+                if task:
+                    if task.user == request.user:
+                        task.is_completed = True;
+                        task.save()
+                        return JsonResponse({'status': 200, 'message': 'task was completed successfully'})
+                    return JsonResponse({'status': 403, 'message': 'task with such id is not your task'})
+            return JsonResponse({'status': 400, 'message': 'could\'t get id'})
 
     ip = get_client_ip(request)
     data = requests.get(settings.WEATHER_API_LINK, params={'q': '63.116.61.253', 'key': settings.WEATHER_API_KEY}).json()
     all_tasks = Task.objects.filter(user=request.user)
     tasks = []
+    completed_tasks = []
+    templated_tasks = []
     spec_tasks = []
     if fltr := request.GET.get('filter'):
         if fltr == 'di':
@@ -128,8 +141,10 @@ def main(request):
                         spec_tasks.append(task)
                     else:
                         tasks.append(task)
+                elif task.is_completed:
+                    completed_tasks.add(task)
                 else:
-                    tasks.append(task)
+                    templated_tasks.add(task)
             spec_tasks.sort(key=lambda x: x.remind)
         elif fltr == 'pi':
             tasks = sorted(all_tasks, key=priority_sort)
@@ -140,8 +155,10 @@ def main(request):
                         spec_tasks.append(task)
                     else:
                         tasks.append(task)
+                elif task.is_completed:
+                    completed_tasks.add(task)
                 else:
-                    tasks.append(task)
+                    templated_tasks.add(task)
             spec_tasks.sort(key=lambda x: x.minutes)
         elif fltr == 'dd':
             for task in all_tasks:
@@ -150,8 +167,10 @@ def main(request):
                         spec_tasks.append(task)
                     else:
                         tasks.append(task)
+                elif task.is_completed:
+                    completed_tasks.add(task)
                 else:
-                    tasks.append(task)
+                    templated_tasks.add(task)
             spec_tasks.sort(key=lambda x: x.remind, reverse=True)
         elif fltr == 'pd':
             tasks = sorted(all_tasks, key=priority_sort, reverse=True)
@@ -162,22 +181,30 @@ def main(request):
                         spec_tasks.append(task)
                     else:
                         tasks.append(task)
+                elif task.is_completed:
+                    completed_tasks.add(task)
                 else:
-                    tasks.append(task)
+                    templated_tasks.add(task)
             spec_tasks.sort(key=lambda x: x.minutes, reverse=True)
     else:
-        tasks = sorted(all_tasks, key=lambda x: x.created_at, reverse=True)
+        for task in all_tasks:
+            if task.is_completed:
+                completed_tasks.append(task)
+            elif task.is_templated:
+                templated_tasks.append(task)
+            else:
+                tasks.append(task)
+    tasks.sort(key=lambda x: x.created_at, reverse=True)
     is_there_completed_task = False
-    for task in tasks:
-        if task.is_completed:
-            is_there_completed_task = True
-            break
-    # SOLVE PROBLEM WITH TASKS AND SPEC TASKS
+    if completed_tasks:
+        is_there_completed_task = True
     context = {
         'title': 'Tasko Main',
         'w_data': data,
         'special_tasks': spec_tasks,
         'tasks': tasks,
+        'completed_tasks': completed_tasks,
+        'templated_tasks': templated_tasks,
         'is_there_completed_task': is_there_completed_task
     }
     if data.get('location'):

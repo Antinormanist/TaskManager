@@ -645,13 +645,13 @@
                         <input type="hidden" name="id" value="{{ spec_task.id }}">
                         <div class="task-infos">
                             {% if spec_task.priority == 'common' %}
-                                <button class="task-btn"><img src="{% static "main/images/commonrad.svg" %}" alt="radio" class="task-rad common-rad"></button>
+                                <button title="to complete" class="task-btn"><img src="{% static "main/images/commonrad.svg" %}" alt="radio" class="task-rad common-rad"></button>
                             {% elif spec_task.priority == 'simple' %}
-                                <button class="task-btn"><img src="{% static "main/images/simplerad.svg" %}" alt="radio" class="task-rad simple-rad"></button>
+                                <button title="to complete" class="task-btn"><img src="{% static "main/images/simplerad.svg" %}" alt="radio" class="task-rad simple-rad"></button>
                             {% elif spec_task.priority == 'important' %}
-                                <button class="task-btn"><img src="{% static "main/images/importantrad.svg" %}" alt="radio" class="task-rad important-rad"></button>
+                                <button title="to complete" class="task-btn"><img src="{% static "main/images/importantrad.svg" %}" alt="radio" class="task-rad important-rad"></button>
                             {% else %}
-                                <button class="task-btn"><img src="{% static "main/images/strongrad.svg" %}" alt="radio" class="task-rad strong-rad"></button>
+                                <button title="to complete" class="task-btn"><img src="{% static "main/images/strongrad.svg" %}" alt="radio" class="task-rad strong-rad"></button>
                             {% endif %}
                             {% if spec_task.remind %}
                             <h3 class="task-remind">с напоминанием</h3>
@@ -675,13 +675,13 @@
                             <input type="hidden" name="id" value="{{ task.id }}">
                             <div class="task-infos">
                                 {% if task.priority == 'common' %}
-                                    <button class="task-btn"><img src="{% static "main/images/commonrad.svg" %}" alt="radio" class="task-rad common-rad"></button>
+                                    <button title="to complete" class="task-btn"><img src="{% static "main/images/commonrad.svg" %}" alt="radio" class="task-rad common-rad"></button>
                                 {% elif task.priority == 'simple' %}
-                                    <button class="task-btn"><img src="{% static "main/images/simplerad.svg" %}" alt="radio" class="task-rad simple-rad"></button>
+                                    <button title="to complete" class="task-btn"><img src="{% static "main/images/simplerad.svg" %}" alt="radio" class="task-rad simple-rad"></button>
                                 {% elif task.priority == 'important' %}
-                                    <button class="task-btn"><img src="{% static "main/images/importantrad.svg" %}" alt="radio" class="task-rad important-rad"></button>
+                                    <button title="to complete" class="task-btn"><img src="{% static "main/images/importantrad.svg" %}" alt="radio" class="task-rad important-rad"></button>
                                 {% else %}
-                                    <button class="task-btn"><img src="{% static "main/images/strongrad.svg" %}" alt="radio" class="task-rad strong-rad"></button>
+                                    <button title="to complete" class="task-btn"><img src="{% static "main/images/strongrad.svg" %}" alt="radio" class="task-rad strong-rad"></button>
                                 {% endif %}
                                 {% if task.remind %}
                                 <h3 class="task-remind">с напоминанием</h3>
@@ -708,8 +708,7 @@
                 </div>
                 <h2 class="done-tasks-h2">Выполненные таски</h2>
                 <button class="done-task-btn btn-subred">удалить все</button>
-                {% for task in tasks %}
-                    {% if not task.is_templated and task.is_completed %}
+                {% for task in completed_tasks %}
                     <div class="done-task">
                         <input type="hidden" name="id" value="{{ task.id }}">
                         <div class="task-infos">
@@ -738,9 +737,14 @@
                         <button class="task-delete"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
                         <button class="done-task-return"><img src="{% static "main/images/return.svg" %}" alt="ret"></button>
                     </div>
-                    {% endif %}
                 {% endfor %}
             </div>
+            {% else %}
+            <div class="done-tasks mgtop34 none">
+                <div class="task-dividerer">
+                </div>
+                <h2 class="done-tasks-h2">Выполненные таски</h2>
+                <button class="done-task-btn btn-subred">удалить все</button>
             {% endif %}
         </div>
     </main>

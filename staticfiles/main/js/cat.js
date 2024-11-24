@@ -87,6 +87,19 @@ window.addEventListener('click', (event) => {
                             document.querySelector('.no-task').classList.remove('none')
                             document.querySelector('.add-btn').classList.remove('none')
                         }
+                        count = 0
+                        const tasks2 = doneTasks.children
+                        for (let i = 0; i < tasks2.length; i++) {
+                            const task = tasks2[i]
+                            if (task.classList.contains('done-task')) {
+                                count += 1
+                            }
+                        }
+                        console.log(count, "hello worfurdro")
+                        console.log(tasks2)
+                        if (count === 0) {
+                            doneTasks.classList.add('none')
+                        }
                     } else {
                         wrongFrameMsg.querySelector('h2').innerText = 'Что - то пошло не так';
                         wrongFrameMsg.classList.remove('none');

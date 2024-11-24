@@ -1189,6 +1189,7 @@ main {
 
 .task-nade {
     width: 414px;
+    height: auto;
 }
 
 .task-name {
@@ -1197,6 +1198,7 @@ main {
     font-weight: 400;
     margin: 0;
     text-align: start;
+    justify-content: start;
 }
 
 .task-description, .task-remind, .task-time {
@@ -1280,8 +1282,8 @@ main {
     overflow-y: scroll;
     overflow-x: hidden;
     height: 400px;
-    display: grid;
-    grid-template-rows: 1px 30px 30px 136px;
+    display: flex;
+    /* grid-template-rows: 1px 30px 30px auto; */
     flex-direction: column;
 }
 
@@ -1289,11 +1291,15 @@ main {
     justify-self: center;
     width: 115px;
     height: 24px;
+    left: 45%;
+    position: relative
 }
 
 .done-tasks-h2 {
-    justify-self: center;
     margin: 0;
+    text-align: center;
+    left: 5%;
+    position: relative
 }
 
 .done-task .task-btn:hover, .done-task .task-nade:hover {
