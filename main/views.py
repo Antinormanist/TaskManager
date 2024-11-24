@@ -33,6 +33,8 @@ def main(request):
             if user:
                 user.username = new_login
                 user.save()
+                if request.user.firstname:
+                    return JsonResponse({'status': 201, 'message': 'username was changed successfully', 'firstname': 1})
                 return JsonResponse({'status': 201, 'message': 'username was changed successfully'})
             return JsonResponse({'status': 403, 'message': 'wrong password'})
         elif request.POST.get('changeEmail'):

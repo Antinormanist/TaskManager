@@ -12,7 +12,7 @@ window.addEventListener('click', (event) => {
     }
     else if (event.target.closest('.change-name-btn')) {
         event.preventDefault()
-        name = event.target.closest('.account-settings').querySelector('.name-input').value
+        let name = event.target.closest('.account-settings').querySelector('.name-input').value
         if (name) {
             $.ajax({
                 url: sendUrl,
@@ -21,6 +21,9 @@ window.addEventListener('click', (event) => {
                 data: {changeName: 1, name: name},
                 success: function(data) {
                     if (data.status === 200) {
+                        if (name.length >= 7) {
+                            name = name.slice(0, 6) + '...'
+                        }
                         document.querySelector('nav').querySelector('.btns').querySelector('.username').innerText = name
                     }
                 }

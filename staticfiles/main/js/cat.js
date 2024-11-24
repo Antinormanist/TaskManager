@@ -222,8 +222,8 @@ window.addEventListener('click', (event) => {
     }
     else if (event.target.closest('.change-login-submit-btn')) {
         event.preventDefault();
-        password = event.target.closest('.change-login-frame').querySelector('input[name="password"]').value.trim();
-        newLogin = event.target.closest('.change-login-frame').querySelector('input[name="login"]').value.trim();
+        const password = event.target.closest('.change-login-frame').querySelector('input[name="password"]').value.trim();
+        let newLogin = event.target.closest('.change-login-frame').querySelector('input[name="login"]').value.trim();
         if (password && newLogin) {
             $.ajax({
                 url: sendUrl,
@@ -232,8 +232,14 @@ window.addEventListener('click', (event) => {
                 data: {changeLogin: 1, password: password, newLogin: newLogin},
                 success: function(data) {
                     if (data.status === 201) {
+                        if (newLogin.length >= 7) {
+                            newLogin = newLogin.slice(0, 6) + '...'
+                        }
                         document.querySelector('.change-username-p').innerText = newLogin;
-                        document.querySelector('nav').querySelector('.username').innerText = newLogin;
+                        console.log('yaya', data.firstname)
+                        if (!(data.firstname)) {
+                            document.querySelector('nav').querySelector('.username').innerText = newLogin;
+                        }
                         event.target.closest('.change-login-frame').querySelector('input[name="password"]').value = ''
                         event.target.closest('.change-login-frame').querySelector('input[name="login"]').value = ''
                         event.target.closest('.change-login-frame').classList.add('none')
