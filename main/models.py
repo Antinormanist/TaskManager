@@ -34,3 +34,10 @@ class Template(models.Model):
 
     class Meta:
         db_table = 'templates'
+
+
+class Notification(models.Model):
+    task = models.ForeignKey(to=Task, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'notifications'
