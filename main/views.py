@@ -1,5 +1,6 @@
-from datetime import date
+import datetime
 import random
+import logging
 
 from django.shortcuts import render, redirect, reverse
 from django.conf import settings
@@ -11,8 +12,11 @@ import requests
 from user.utils import get_client_ip
 from user.tasks import send_email
 from user.utils import HTML_EMAIL_CODE_MSG
-from .models import Task
-from .utils import priority_sort
+from .models import Task, Notification
+from .utils import priority_sort, TASK_DATE_MESSAGE
+
+log = logging.getLogger(__name__)
+logging.basicConfig(filename='gyat.log', level=logging.INFO)
 # Create your views here.
 def welcome(request):
     if request.user.is_authenticated:
@@ -102,8 +106,12 @@ def main(request):
                     task.minutes = minutes
                 if remind != 'no':
                     month, day, year = map(int, remind.split('/'))
-                    task.remind = date(year, month, day)
+                    task.remind = datetime.date(year, month, day)
                 task.save()
+                if task.remind:
+                    Notification.objects.create(
+                        task=task
+                    )
                 return JsonResponse({'status': 201, 'id': task.id, 'message': 'task was successfully created'})
             return JsonResponse({'status': 400, 'message': 'priority is not valid'})
         elif request.POST.get('deleteTask'):
@@ -127,6 +135,25 @@ def main(request):
                         return JsonResponse({'status': 200, 'message': 'task was completed successfully'})
                     return JsonResponse({'status': 403, 'message': 'task with such id is not your task'})
             return JsonResponse({'status': 400, 'message': 'could\'t get id'})
+        elif request.POST.get('sendMessageDate'):
+            day = int(request.POST.get('day'))
+            month = int(request.POST.get('month'))
+            year = int(request.POST.get('year'))
+
+            # CONVERT TO INT DAYMONTHYEAR
+            date = datetime.date(year, month, day)
+            notifications = Notification.objects.filter(task__remind=date)
+            for notification in notifications:
+                user = notification.task.user
+                username = user.username
+                email = user.email
+                title = notification.task.name
+                subject = "Tasko task notification"
+                from_email = settings.EMAIL_HOST_USER
+                to_email = email
+                html_content = TASK_DATE_MESSAGE.format(username=username, task_title=title)
+                send_email.delay_on_commit(subject, from_email, to_email, html_content)
+            return JsonResponse({'message': 'who will be reading this?'})
 
     ip = get_client_ip(request)
     data = requests.get(settings.WEATHER_API_LINK, params={'q': '63.116.61.253', 'key': settings.WEATHER_API_KEY}).json()
