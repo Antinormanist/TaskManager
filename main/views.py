@@ -7,6 +7,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.core import cache
 import requests
 
 from user.utils import get_client_ip
@@ -32,6 +33,8 @@ MONTHS_STRING = {
     11: 'Ноябрь',
     12: 'Декабрь',
 }
+
+REDIS_NOTIFI = 'redis-notifi-{id}'
 # Create your views here.
 def welcome(request):
     if request.user.is_authenticated:
@@ -170,14 +173,15 @@ def main(request):
 
                 title_show = title if len(title) <= 12 else title[:12] + '...'
                 month_name = MONTHS_STRING[month]
-                NotificationShow.objects.create(
+                noti = NotificationShow.objects.create(
                     task_title=title_show,
                     user=user,
                     day=day,
                     month=month_name,
                     year=year,
-
                 )
+
+                cache.setex(REDIS_NOTIFI.format(id=noti.id), 3600 * 24 * 30, 'exists')
 
             #     SHOW IN JS ALSO IT
 
@@ -190,6 +194,14 @@ def main(request):
     completed_tasks = []
     templated_tasks = []
     spec_tasks = []
+
+    notifics = cache.caches.all()
+    notifics_curr = []
+    for cash, val in notifics.items():
+        notification = Notification.objects.get(val)
+        if notification.user == request.user:
+            notifics_curr.append(notification)
+
     if fltr := request.GET.get('filter'):
         if fltr == 'di':
             for task in all_tasks:
@@ -262,7 +274,8 @@ def main(request):
         'tasks': tasks,
         'completed_tasks': completed_tasks,
         'templated_tasks': templated_tasks,
-        'is_there_completed_task': is_there_completed_task
+        'is_there_completed_task': is_there_completed_task,
+        'notifics': notifics_curr,
     }
     if data.get('location'):
         context.update({'w_hours': int(data['location']['localtime'][-5:-3])})

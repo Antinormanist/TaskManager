@@ -117,21 +117,15 @@
         <button class="notifications-close-btn btn-back">Закрыть</button>
         <div class="notifications-divide">
         </div>
-        <h2 class="notifications-date">12 сентября 2024</h2>
-        <div class="date-divide">
-        </div>
-        <p class="notifications-notification">напоминание о таске "анаконда"</p>
-        <p class="notifications-notification">напоминание о таске "хэлоу ворлд"</p>
-        <h2 class="notifications-date">11 сентября 2024</h2>
-        <div class="date-divide">
-        </div>
-        <p class="notifications-notification">напоминание о таске "работа получ..."</p>
-        <p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p>
-        <h2 class="notifications-date">8 сентября 2024</h2>
-        <div class="date-divide">
-        </div>
-        <p class="notifications-notification">напоминание о таске "работа получ..."</p>
-        <p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p><p class="notifications-notification">напоминание о таске "работа получ..."</p>
+
+        {% for noti in notifics %}
+            <p class="notifications-notification">напоминание о таске {{ noti.task_title }}</p>
+        {% endfor %}
+<!--        <h2 class="notifications-date">12 сентября 2024</h2>-->
+<!--        <div class="date-divide">-->
+<!--        </div>-->
+<!--        <p class="notifications-notification">напоминание о таске "анаконда"</p>-->
+<!--        <p class="notifications-notification">напоминание о таске "хэлоу ворлд"</p>-->
     </div>
     <div style="z-index: 6;" class="account-settings none">
         <div class="change-info">
