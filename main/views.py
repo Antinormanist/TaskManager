@@ -140,7 +140,6 @@ def main(request):
             month = int(request.POST.get('month'))
             year = int(request.POST.get('year'))
 
-            # CONVERT TO INT DAYMONTHYEAR
             date = datetime.date(year, month, day)
             notifications = Notification.objects.filter(task__remind=date)
             for notification in notifications:

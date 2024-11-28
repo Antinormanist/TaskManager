@@ -41,3 +41,14 @@ class Notification(models.Model):
 
     class Meta:
         db_table = 'notifications'
+
+
+class NotificationShow(models.Model):
+    task_title = models.CharField(max_length=128)
+    day = models.SmallIntegerField(max_length=2)
+    month = models.SmallIntegerField(max_length=2)
+    year = models.SmallIntegerField(max_length=4)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'notificationsshow'
