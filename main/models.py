@@ -47,7 +47,7 @@ class NotificationShow(models.Model):
     task_title = models.CharField(max_length=128)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     day = models.SmallIntegerField(max_length=2)
-    month = models.SmallIntegerField(max_length=2)
+    month = models.CharField(max_length=2)
     year = models.SmallIntegerField(max_length=4)
     created_at = models.DateTimeField(auto_now_add=True)
 

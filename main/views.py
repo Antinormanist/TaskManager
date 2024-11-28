@@ -12,11 +12,26 @@ import requests
 from user.utils import get_client_ip
 from user.tasks import send_email
 from user.utils import HTML_EMAIL_CODE_MSG
-from .models import Task, Notification
+from .models import Task, Notification, NotificationShow
 from .utils import priority_sort, TASK_DATE_MESSAGE
 
 log = logging.getLogger(__name__)
 logging.basicConfig(filename='gyat.log', level=logging.INFO)
+
+MONTHS_STRING = {
+    1: 'Январь',
+    2: 'Февраль',
+    3: 'Март',
+    4: 'Апрель',
+    5: 'Май',
+    6: 'Июнь',
+    7: 'Июль',
+    8: 'Август',
+    9: 'Сентябрь',
+    10: 'Октрябрь',
+    11: 'Ноябрь',
+    12: 'Декабрь',
+}
 # Create your views here.
 def welcome(request):
     if request.user.is_authenticated:
@@ -152,6 +167,20 @@ def main(request):
                 to_email = email
                 html_content = TASK_DATE_MESSAGE.format(username=username, task_title=title)
                 send_email.delay_on_commit(subject, from_email, to_email, html_content)
+
+                title_show = title if len(title) <= 12 else title[:12] + '...'
+                month_name = MONTHS_STRING[month]
+                NotificationShow.objects.create(
+                    task_title=title_show,
+                    user=user,
+                    day=day,
+                    month=month_name,
+                    year=year,
+
+                )
+
+            #     SHOW IN JS ALSO IT
+
             return JsonResponse({'message': 'who will be reading this?'})
 
     ip = get_client_ip(request)

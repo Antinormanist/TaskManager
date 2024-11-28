@@ -74,7 +74,6 @@ window.addEventListener('click', (event) => {
                         delTask.classList.add('none')
                         delTask.querySelector('input[name="id"]').value = ''
                         taskToDelete = null
-//                        MAKE APPEARENCE OF NO TASK FRAME
                         let count = 0
                         const tasks = document.querySelector('.main').children
                         for (let i = 0; i < tasks.length; i++) {
@@ -95,8 +94,6 @@ window.addEventListener('click', (event) => {
                                 count += 1
                             }
                         }
-                        console.log(count, "hello worfurdro")
-                        console.log(tasks2)
                         if (count === 0) {
                             doneTasks.classList.add('none')
                         }
