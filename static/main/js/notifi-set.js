@@ -9,8 +9,7 @@ setInterval( function(){
 
     const hours = Number(dateTime[0])
     const minutes = Number(dateTime[1])
-
-    if (hours === 0 && minutes === 0) {
+    if (hours === 20 && minutes === 18) {
         $.ajax({
             url: sendUrl,
             method: 'post',

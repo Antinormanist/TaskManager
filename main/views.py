@@ -7,8 +7,10 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.core import cache
+from django.core.cache import cache
+from decouple import config
 import requests
+import redis
 
 from user.utils import get_client_ip
 from user.tasks import send_email
@@ -18,6 +20,8 @@ from .utils import priority_sort, TASK_DATE_MESSAGE
 
 log = logging.getLogger(__name__)
 logging.basicConfig(filename='gyat.log', level=logging.INFO)
+
+redis = redis.Redis(host=config('REDIS_HOST'), port=config('REDIS_PORT', cast=int), db=config('REDIS_KEYS_DB', cast=int, default=0), decode_responses=True)
 
 MONTHS_STRING = {
     1: 'Январь',
@@ -157,8 +161,12 @@ def main(request):
             day = int(request.POST.get('day'))
             month = int(request.POST.get('month'))
             year = int(request.POST.get('year'))
-
+            log.info('DATE')
+            log.info(day)
+            log.info(month)
+            log.info(year)
             date = datetime.date(year, month, day)
+            log.info(date)
             notifications = Notification.objects.filter(task__remind=date)
             for notification in notifications:
                 user = notification.task.user
@@ -180,10 +188,10 @@ def main(request):
                     month=month_name,
                     year=year,
                 )
-
-                cache.setex(REDIS_NOTIFI.format(id=noti.id), 3600 * 24 * 30, 'exists')
-
-            #     SHOW IN JS ALSO IT
+                log.info(noti)
+                log.info(id)
+                redis.setex(REDIS_NOTIFI.format(id=noti.id), 3600 * 24 * 30, 'exists')
+                log.info(redis.get(f'redis-notifi-{id}'))
 
             return JsonResponse({'message': 'who will be reading this?'})
 
@@ -195,12 +203,19 @@ def main(request):
     templated_tasks = []
     spec_tasks = []
 
-    notifics = cache.caches.all()
+    notifics = redis.keys('redis-notifi-*')
     notifics_curr = []
-    for cash, val in notifics.items():
-        notification = Notification.objects.get(val)
-        if notification.user == request.user:
-            notifics_curr.append(notification)
+    log.info('w' * 100)
+    log.info(notifics)
+    # HOW TO ADD TO REDIS
+    for notification in notifics:
+        log.info('q' * 99)
+        log.info(notification)
+        log.info(notification.__dir__())
+        # notific = Notification.objects.filter(id=id).first()
+        # if notific:
+        #     if notific.user == request.user:
+        #         notifics_curr.append(notific)
 
     if fltr := request.GET.get('filter'):
         if fltr == 'di':
