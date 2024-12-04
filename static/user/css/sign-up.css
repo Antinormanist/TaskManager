@@ -30,6 +30,7 @@ body .none {
     font-weight: normal;
     margin: 0;
     font-size: 2rem;
+    text-align: center;
 }
 
 .block {

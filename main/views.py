@@ -1,13 +1,13 @@
 import datetime
 import random
 import logging
+import json
 
 from django.shortcuts import render, redirect, reverse
 from django.conf import settings
 from django.http import JsonResponse
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.core.cache import cache
 from decouple import config
 import requests
 import redis
@@ -15,8 +15,8 @@ import redis
 from user.utils import get_client_ip
 from user.tasks import send_email
 from user.utils import HTML_EMAIL_CODE_MSG
-from .models import Task, Notification, NotificationShow
-from .utils import priority_sort, TASK_DATE_MESSAGE
+from .models import Task, Notification
+from .utils import priority_sort
 
 log = logging.getLogger(__name__)
 logging.basicConfig(filename='gyat.log', level=logging.INFO)
@@ -156,44 +156,30 @@ def main(request):
                         task.save()
                         return JsonResponse({'status': 200, 'message': 'task was completed successfully'})
                     return JsonResponse({'status': 403, 'message': 'task with such id is not your task'})
-            return JsonResponse({'status': 400, 'message': 'could\'t get id'})
-        elif request.POST.get('sendMessageDate'):
-            day = int(request.POST.get('day'))
-            month = int(request.POST.get('month'))
-            year = int(request.POST.get('year'))
-            log.info('DATE')
-            log.info(day)
-            log.info(month)
-            log.info(year)
-            date = datetime.date(year, month, day)
-            log.info(date)
-            notifications = Notification.objects.filter(task__remind=date)
-            for notification in notifications:
-                user = notification.task.user
-                username = user.username
-                email = user.email
-                title = notification.task.name
-                subject = "Tasko task notification"
-                from_email = settings.EMAIL_HOST_USER
-                to_email = email
-                html_content = TASK_DATE_MESSAGE.format(username=username, task_title=title)
-                send_email.delay_on_commit(subject, from_email, to_email, html_content)
-
-                title_show = title if len(title) <= 12 else title[:12] + '...'
-                month_name = MONTHS_STRING[month]
-                noti = NotificationShow.objects.create(
-                    task_title=title_show,
-                    user=user,
-                    day=day,
-                    month=month_name,
-                    year=year,
-                )
-                log.info(noti)
-                log.info(id)
-                redis.setex(REDIS_NOTIFI.format(id=noti.id), 3600 * 24 * 30, 'exists')
-                log.info(redis.get(f'redis-notifi-{id}'))
-
-            return JsonResponse({'message': 'who will be reading this?'})
+            return JsonResponse({'status': 400, 'message': 'couldn\'t get id'})
+        elif request.POST.get('returnTask'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                task = Task.objects.filter(id=id).first()
+                if task:
+                    if task.user == request.user:
+                        task.is_completed = False;
+                        task.save()
+                        return JsonResponse({'status': 200, 'message': 'task was returned successfully'})
+                    return JsonResponse({'status': 403, 'message': 'task with such id is not your task'})
+            return JsonResponse({'status': 400, 'message': 'couldn\t get id'})
+        elif request.POST.get('delAllDoneTasks'):
+            ids = request.POST.get('ids')
+            if ids:
+                ids = json.loads(ids).keys()
+                for id in ids:
+                    id = int(id)
+                    task = Task.objects.filter(id=id).first()
+                    if task and task.user == request.user:
+                        task.delete()
+                return JsonResponse({'status': 204})
+            return JsonResponse({'status': 400, 'message': 'no ids were given'})
+            # check every id and if current user is the right user and return ids that we couldn't delete and could delete
 
     ip = get_client_ip(request)
     data = requests.get(settings.WEATHER_API_LINK, params={'q': '63.116.61.253', 'key': settings.WEATHER_API_KEY}).json()
@@ -203,19 +189,7 @@ def main(request):
     templated_tasks = []
     spec_tasks = []
 
-    notifics = redis.keys('redis-notifi-*')
-    notifics_curr = []
-    log.info('w' * 100)
-    log.info(notifics)
-    # HOW TO ADD TO REDIS
-    for notification in notifics:
-        log.info('q' * 99)
-        log.info(notification)
-        log.info(notification.__dir__())
-        # notific = Notification.objects.filter(id=id).first()
-        # if notific:
-        #     if notific.user == request.user:
-        #         notifics_curr.append(notific)
+    # IF PAGE 404 RETURN TO MAIN
 
     if fltr := request.GET.get('filter'):
         if fltr == 'di':
@@ -290,7 +264,6 @@ def main(request):
         'completed_tasks': completed_tasks,
         'templated_tasks': templated_tasks,
         'is_there_completed_task': is_there_completed_task,
-        'notifics': notifics_curr,
     }
     if data.get('location'):
         context.update({'w_hours': int(data['location']['localtime'][-5:-3])})

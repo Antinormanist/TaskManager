@@ -1232,6 +1232,9 @@ main {
     .task-delete {
         visibility: visible;
     }
+    .done-task-return {
+        visibility: visible;
+    }
 }
 
 .task-delete-frame {
@@ -1312,6 +1315,11 @@ main {
 }
 
 .done-task-return {
+    height: 27px;
+    visibility: hidden;
+}
+
+.task-return {
     height: 27px;
     visibility: hidden;
 }

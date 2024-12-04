@@ -1,4 +1,5 @@
 const trashImg = document.querySelector('input[name="trashUrl"]').value
+const returnImg = document.querySelector('input[name="returnUrl"]').value
 const taskImg = document.querySelector('input[name="taskUrl"]').value
 const addImg = document.querySelector('input[name="addUrl"]').value
 let constTask = `
@@ -14,6 +15,7 @@ let constTask = `
         {description}
     </button>
     <button class="task-delete"><img src="${trashImg}" alt="del"></button>
+    <button class="task-return"><img src="${returnImg}" alt="return"></button>
 </div>
 `
 const noTaskFrame = `

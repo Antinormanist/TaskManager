@@ -17,6 +17,7 @@
     <input type="hidden" name="imprad" value="{% static "main/images/importantrad.svg" %}">
     <input type="hidden" name="strrad" value="{% static "main/images/strongrad.svg" %}">
     <input type="hidden" name="trashUrl" value="{% static "main/images/trash.svg" %}">
+    <input type="hidden" name="returnUrl" value="{% static "main/images/return.svg" %}">
     <input type="hidden" name="taskUrl" value="{% static "main/images/task.svg" %}">
     <input type="hidden" name="addUrl" value="{% static "main/images/add.svg" %}">
     <div class="wrong-message none" style="z-index: 100;">
@@ -113,19 +114,6 @@
         <button class="account-close-btn btn-back">отмена</button>
         <button class="account-exit-btn btn-subred">выйти</button>
     </div>
-    <div style="z-index: 6;" class="notifications-frame none">
-        <button class="notifications-close-btn btn-back">Закрыть</button>
-        <div class="notifications-divide">
-        </div>
-
-        {% for noti in notifics %}
-            <p class="notifications-notification">напоминание о таске {{ noti.task_title }}</p>
-        {% endfor %}
-<!--        <h2 class="notifications-date">12 сентября 2024</h2>-->
-<!--        <div class="date-divide">-->
-<!--        </div>-->
-<!--        <p class="notifications-notification">напоминание о таске "анаконда"</p>-->
-<!--        <p class="notifications-notification">напоминание о таске "хэлоу ворлд"</p>-->
     </div>
     <div style="z-index: 6;" class="account-settings none">
         <div class="change-info">
@@ -576,9 +564,6 @@
                 <button class="down-btn">
                     <img class="down-img" src="{% static "main/images/down.svg" %}" alt="open">
                 </button>
-                <button class="notification-btn">
-                    <img class="notification-img" src="{% static "main/images/notifications.svg" %}" alt="notification">
-                </button>
                 <button class="add-btn2">
                     <span><img class="add2-img" src="{% static "main/images/add_circle.svg" %}" alt="add"></span><h4>добавить задачу</h4>
                 </button>
@@ -661,6 +646,7 @@
                             {% endif %}
                         </button>
                         <button class="task-delete"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+                        <button class="task-return"><img src="{% static "main/images/return.svg" %}" alt="ret"></button>
                     </div>
                 {% endfor %}
                 {% for task in tasks %}
@@ -691,6 +677,7 @@
                                 {% endif %}
                             </button>
                             <button class="task-delete"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
+                            <button class="task-return"><img src="{% static "main/images/return.svg" %}" alt="ret"></button>
                         </div>
                     {% endif %}
                 {% endfor %}
@@ -761,6 +748,5 @@
     <script src="{% static "main/js/rabbit.js" %}" async></script>
     <script src="{% static "main/js/clock.js" %}" async></script>
     <script src="{% static "main/js/const-variables.js" %}" async></script>
-    <script src="{% static "main/js/notifi-set.js" %}" async></script>
 </body>
 </html>

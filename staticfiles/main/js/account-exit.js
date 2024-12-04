@@ -45,6 +45,8 @@ window.addEventListener('click', (event) => {
                             }
                             newTask.classList.remove('task')
                             newTask.classList.add('done-task')
+                            newTask.querySelector('.task-return').classList.add('done-task-return')
+                            newTask.querySelector('.task-return').classList.remove('task-return')
                             if (doneTasks.classList.contains('none')) {
                                 doneTasks.classList.remove('none')
                             }
@@ -67,6 +69,54 @@ window.addEventListener('click', (event) => {
             }
         }
     }
+    else if (event.target.closest('.done-task-return')){
+        const doneTask = event.target.closest('.done-task')
+        const task = doneTask.cloneNode(true)
+        doneTask.remove()
+        task.classList.add('task')
+        task.classList.remove('done-task')
+        task.querySelector('.done-task-return').classList.add('task-return')
+        task.querySelector('.done-task-return').classList.remove('done-task-return')
+
+        const id = parseInt(task.querySelector('input[name="id"]').value)
+
+        $.ajax({
+            url: sendUrl,
+            method: 'post',
+            headers: {'X-CSRFToken': csrftoken},
+            data: {returnTask: 1, id: id}
+        })
+        document.querySelector('.main').insertAdjacentElement('afterbegin', task)
+//        REMOVE NO TASK FRAME IF N O T SKTAM FRME IS EXIST
+        const noTask = document.querySelector('.no-task')
+        const noBtn = document.querySelector('.add-btn')
+        let taskCount = 0
+        const kids = document.querySelector('.main').children
+        for (let i = 0; i < kids.length; i++)
+        {
+            if (kids[i].classList.contains('task')){
+                taskCount += 1
+            }
+        }
+        if (!(noTask.classList.contains('none')) && taskCount >= 1){
+            noTask.classList.add('none')
+            noBtn.classList.add('none')
+        }
+//        REMOVE COMPLETED TASK FRME IF NOT TAKS
+        const completeFrame = document.querySelector('.done-tasks')
+        const doneKids = completeFrame.children
+        taskCount = 0
+        for (let i = 0; i < doneKids.length; i++)
+        {
+            if (doneKids[i].classList.contains('done-task')){
+                taskCount += 1
+            }
+        }
+
+        if (!(completeFrame.classList.contains('none')) && taskCount == 0){
+            completeFrame.classList.add('none')
+        }
+    }
     else if (event.target.closest('.template-change-btn-back')) {
         bgfgfdgfd.classList.add('none')
     }
@@ -78,6 +128,50 @@ window.addEventListener('click', (event) => {
         event.preventDefault();
         ddgrthreth.querySelector('input[name="is-template"]').value = 'no'
         ddgrthreth.classList.add('none')
+    }
+    else if (event.target.closest('.done-task-btn')){
+        const kids = document.querySelector('.done-tasks').children
+        let templateIdsToDel = {}
+        for (let i = 0; i < kids.length; i++){
+            const dTask = kids[i]
+            if (dTask.classList.contains('done-task')){
+                const id = parseInt(dTask.querySelector('input[name="id"]').value)
+                templateIdsToDel[id] = 'exists'
+            }
+        }
+        // SEND AJAX
+        $.ajax({
+            url: sendUrl,
+            method: 'post',
+            headers: {'X-CSRFToken': csrftoken},
+
+            // CAN'T REMOVE FROM HTML
+            data: {delAllDoneTasks: 1, ids: JSON.stringify(templateIdsToDel)},
+            success: function(data){
+                if (data.status === 204){
+                    const completeFrame = document.querySelector('.done-tasks')
+                    const doneKids = completeFrame.children
+                    let taskCount = 0
+                    for (let i = 0; i < doneKids.length; i++)
+                    {
+                        if (doneKids[i].classList.contains('done-task')){
+                            taskCount += 1
+                        }
+                    }
+
+                    if (!(completeFrame.classList.contains('none')) && taskCount == 0){
+                        completeFrame.classList.add('none')
+                    }
+                    window.location = '?'
+                } else {
+                    wrongFrameMsg.querySelector('h2').innerText = 'Что - то пошло не так, обновите страницу';
+                    wrongFrameMsg.classList.remove('none');
+                    setTimeout(() => {
+                        wrongFrameMsg.classList.add('none');
+                    }, 1500);
+                }
+            },
+        })
     }
     else if (event.target.closest('.task-add-btn')) {
         event.preventDefault()
