@@ -139,7 +139,7 @@ window.addEventListener('click', (event) => {
                 templateIdsToDel[id] = 'exists'
             }
         }
-        if (templateIdsToDel.length >= 1){
+        if (Object.keys(templateIdsToDel).length >= 1){
             // SEND AJAX
             $.ajax({
                 url: sendUrl,

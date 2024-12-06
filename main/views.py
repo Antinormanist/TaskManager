@@ -179,7 +179,6 @@ def main(request):
                         task.delete()
                 return JsonResponse({'status': 204})
             return JsonResponse({'status': 400, 'message': 'no ids were given'})
-            # check every id and if current user is the right user and return ids that we couldn't delete and could delete
 
     ip = get_client_ip(request)
     data = requests.get(settings.WEATHER_API_LINK, params={'q': '63.116.61.253', 'key': settings.WEATHER_API_KEY}).json()
