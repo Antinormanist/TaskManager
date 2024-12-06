@@ -25,6 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
+# CONFIGURE NGINX AND DEBUG TO fALSE
 DEBUG = config('DEBUG', cast=bool)
 
 ALLOWED_HOSTS = ['*']
@@ -127,9 +129,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static/'
-]
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'static/'
+# ]
 STATIC_ROOT = BASE_DIR / 'staticfiles/'
 
 MEDIA_ROOT = BASE_DIR / 'avatars/'

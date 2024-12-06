@@ -1,0 +1,19 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <input type="hidden" name="mainUrl" value="{{ main_url }}">
+    <h1>Something went wrong. Trying to redirect you...</h1>
+    <p>If nothing happens in 5 second, try to re-visit the site</p>
+
+    <script src="{% static "main/js/error404.js" %}"></script>
+</body>
+</html>

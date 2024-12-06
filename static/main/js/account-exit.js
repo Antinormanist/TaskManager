@@ -139,39 +139,41 @@ window.addEventListener('click', (event) => {
                 templateIdsToDel[id] = 'exists'
             }
         }
-        // SEND AJAX
-        $.ajax({
-            url: sendUrl,
-            method: 'post',
-            headers: {'X-CSRFToken': csrftoken},
+        if (templateIdsToDel.length >= 1){
+            // SEND AJAX
+            $.ajax({
+                url: sendUrl,
+                method: 'post',
+                headers: {'X-CSRFToken': csrftoken},
 
-            // CAN'T REMOVE FROM HTML
-            data: {delAllDoneTasks: 1, ids: JSON.stringify(templateIdsToDel)},
-            success: function(data){
-                if (data.status === 204){
-                    const completeFrame = document.querySelector('.done-tasks')
-                    const doneKids = completeFrame.children
-                    let taskCount = 0
-                    for (let i = 0; i < doneKids.length; i++)
-                    {
-                        if (doneKids[i].classList.contains('done-task')){
-                            taskCount += 1
+                // CAN'T REMOVE FROM HTML
+                data: {delAllDoneTasks: 1, ids: JSON.stringify(templateIdsToDel)},
+                success: function(data){
+                    if (data.status === 204){
+                        const completeFrame = document.querySelector('.done-tasks')
+                        const doneKids = completeFrame.children
+                        let taskCount = 0
+                        for (let i = 0; i < doneKids.length; i++)
+                        {
+                            if (doneKids[i].classList.contains('done-task')){
+                                taskCount += 1
+                            }
                         }
-                    }
 
-                    if (!(completeFrame.classList.contains('none')) && taskCount == 0){
-                        completeFrame.classList.add('none')
+                        if (!(completeFrame.classList.contains('none')) && taskCount == 0){
+                            completeFrame.classList.add('none')
+                        }
+                        window.location = '?'
+                    } else {
+                        wrongFrameMsg.querySelector('h2').innerText = 'Что - то пошло не так, обновите страницу';
+                        wrongFrameMsg.classList.remove('none');
+                        setTimeout(() => {
+                            wrongFrameMsg.classList.add('none');
+                        }, 1500);
                     }
-                    window.location = '?'
-                } else {
-                    wrongFrameMsg.querySelector('h2').innerText = 'Что - то пошло не так, обновите страницу';
-                    wrongFrameMsg.classList.remove('none');
-                    setTimeout(() => {
-                        wrongFrameMsg.classList.add('none');
-                    }, 1500);
-                }
-            },
-        })
+                },
+            })
+        }
     }
     else if (event.target.closest('.task-add-btn')) {
         event.preventDefault()

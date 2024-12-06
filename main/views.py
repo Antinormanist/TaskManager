@@ -189,8 +189,6 @@ def main(request):
     templated_tasks = []
     spec_tasks = []
 
-    # IF PAGE 404 RETURN TO MAIN
-
     if fltr := request.GET.get('filter'):
         if fltr == 'di':
             for task in all_tasks:
@@ -268,3 +266,12 @@ def main(request):
     if data.get('location'):
         context.update({'w_hours': int(data['location']['localtime'][-5:-3])})
     return render(request, 'main/main.html', context)
+
+
+def error_404_page(request, exception):
+    log.info(request.path)
+    context = {
+        'title': 'error',
+        'main_url': reverse('main:main')
+    }
+    return render(request, 'main/404.html', context)
