@@ -42,5 +42,10 @@ window.addEventListener('click', (event) => {
     }
     else if (event.target.closest('.exit')) {
         result.classList.add('none')
+        result.querySelector('.info-uncompleted').querySelector('.minutes').innerHTML = ""
+        result.querySelector('.info-completed').querySelector('.minutes').innerHTML = ""
+
+        result.querySelector('.info-uncompleted').querySelector('.no-time').innerHTML = ""
+        result.querySelector('.info-completed').querySelector('.no-time').innerHTML = ""
     }
 })

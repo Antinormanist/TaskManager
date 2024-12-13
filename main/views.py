@@ -179,6 +179,18 @@ def main(request):
                         task.delete()
                 return JsonResponse({'status': 204})
             return JsonResponse({'status': 400, 'message': 'no ids were given'})
+        elif request.POST.get('getTaskInfo'):
+            id = request.POST.get('id')
+            if id:
+                id = int(id)
+                task = Task.objects.filter(id=id)
+                if task.first():
+                    task = task.first()
+                    time = task.minutes
+                    priority = task.priority
+                    return JsonResponse({'status': 200, 'time': time, 'priority': priority})
+                return JsonResponse({'status': 400, 'message': 'couldn\'t get task'})
+            return JsonResponse({'status': 400, 'message': 'couldn\'t get id'})
 
     ip = get_client_ip(request)
     data = requests.get(settings.WEATHER_API_LINK, params={'q': '63.116.61.253', 'key': settings.WEATHER_API_KEY}).json()
@@ -197,11 +209,18 @@ def main(request):
                     else:
                         tasks.append(task)
                 elif task.is_completed:
-                    completed_tasks.add(task)
+                    completed_tasks.append(task)
                 else:
-                    templated_tasks.add(task)
+                    templated_tasks.append(task)
             spec_tasks.sort(key=lambda x: x.remind)
         elif fltr == 'pi':
+            for task in all_tasks:
+                if not (task.is_completed or task.is_templated):
+                    tasks.append(task)
+                elif task.is_completed:
+                    completed_tasks.append(task)
+                else:
+                    templated_tasks.append(task)
             tasks = sorted(all_tasks, key=priority_sort)
         elif fltr == 'ti':
             for task in all_tasks:
@@ -211,9 +230,9 @@ def main(request):
                     else:
                         tasks.append(task)
                 elif task.is_completed:
-                    completed_tasks.add(task)
+                    completed_tasks.append(task)
                 else:
-                    templated_tasks.add(task)
+                    templated_tasks.append(task)
             spec_tasks.sort(key=lambda x: x.minutes)
         elif fltr == 'dd':
             for task in all_tasks:
@@ -223,11 +242,18 @@ def main(request):
                     else:
                         tasks.append(task)
                 elif task.is_completed:
-                    completed_tasks.add(task)
+                    completed_tasks.append(task)
                 else:
-                    templated_tasks.add(task)
+                    templated_tasks.append(task)
             spec_tasks.sort(key=lambda x: x.remind, reverse=True)
         elif fltr == 'pd':
+            for task in all_tasks:
+                if not (task.is_completed or task.is_templated):
+                    tasks.append(task)
+                elif task.is_completed:
+                    completed_tasks.append(task)
+                else:
+                    templated_tasks.append(task)
             tasks = sorted(all_tasks, key=priority_sort, reverse=True)
         elif fltr == 'td':
             for task in all_tasks:
@@ -237,9 +263,9 @@ def main(request):
                     else:
                         tasks.append(task)
                 elif task.is_completed:
-                    completed_tasks.add(task)
+                    completed_tasks.append(task)
                 else:
-                    templated_tasks.add(task)
+                    templated_tasks.append(task)
             spec_tasks.sort(key=lambda x: x.minutes, reverse=True)
     else:
         for task in all_tasks:
@@ -249,7 +275,7 @@ def main(request):
                 templated_tasks.append(task)
             else:
                 tasks.append(task)
-    tasks.sort(key=lambda x: x.created_at, reverse=True)
+        tasks.sort(key=lambda x: x.created_at, reverse=True)
     is_there_completed_task = False
     if completed_tasks:
         is_there_completed_task = True
