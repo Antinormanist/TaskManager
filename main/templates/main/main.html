@@ -271,7 +271,7 @@
                 <button class="mth112 mbg2">ноябрь</button>
                 <button class="mth122 mbg2">декабрь</button>
             </div>
-            <input type="text" name="day" placeholder="день">
+            <input class="day2-f" type="text" name="day" placeholder="день">
             <button class="remind-changer-month"><p>сентябрь</p><img src="{% static "main/images/down.svg" %}" alt="down"></button>
             <input class="year2" type="text" name="year" placeholder="год">
             <button class="remind-changer-btn-back btn-back">отмена</button>
@@ -291,6 +291,7 @@
         </div>
         <div class="btns-and-comments">
             <form method="post" class="save-detail">
+                {% csrf_token %}
                 <button class="detail-btn-back btn-back">отмена</button>
                 <button class="detail-btn-subred btn-subred">сохранить</button>
             </form>

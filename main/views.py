@@ -191,6 +191,43 @@ def main(request):
                     return JsonResponse({'status': 200, 'time': time, 'priority': priority})
                 return JsonResponse({'status': 400, 'message': 'couldn\'t get task'})
             return JsonResponse({'status': 400, 'message': 'couldn\'t get id'})
+        elif request.POST.get('getInfoForTaskFrame'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                task = Task.objects.filter(id=id).first()
+                if task:
+                    remind = ''
+                    if task.remind:
+                        day, month, year = task.remind.day, task.remind.month, task.remind.year
+                        remind = f'{day}|{month}|{year}'
+                    return JsonResponse({'status': 200, 'name': task.name, 'description': task.description, 'priority': task.priority, 'remind': remind})
+                return JsonResponse({'status': 400, 'message': 'couldn\'t get task'})
+            return JsonResponse({'status': 400, 'message': 'couldn\'t get id'})
+        elif request.POST.get('taskInfoChange'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                name = request.POST.get('name')
+                description = request.POST.get('description')
+                priority = request.POST.get('priority')
+                remind = request.POST.get('remind') # mm/dd/yyyy
+                task = Task.objects.filter(id=id).first()
+                if task:
+                    if name:
+                        task.name = name
+                    if description:
+                        task.description = description
+                    if priority in ('common', 'simple', 'important', 'strong'):
+                        task.priority = priority
+                    if remind:
+                        remind = remind.split('|')
+                        if len(remind) == 3:
+                            month, day, year = map(int, remind)
+                            date = datetime(year. month, day)
+                            task.remind = date
+                    task.save()
+                    return JsonResponse({'status': 200, 'message': 'task was successfully changed'})
+                return JsonResponse({'status': 400, 'message': 'couldn\t get task'})
+            return JsonResponse({'status': 400, 'message': 'couldn\t get id'})
 
     ip = get_client_ip(request)
     data = requests.get(settings.WEATHER_API_LINK, params={'q': '63.116.61.253', 'key': settings.WEATHER_API_KEY}).json()

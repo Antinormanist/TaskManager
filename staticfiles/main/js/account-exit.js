@@ -313,6 +313,37 @@ window.addEventListener('click', (event) => {
         event.preventDefault();
         dfgdgdfgregergqweqweqweqwwe.classList.add('none')
     }
+    else if (event.target.closest('.detail-btn-subred')){
+        event.preventDefault();
+        const fm = document.querySelector('.task-detail-info')
+
+        const id = fm.querySelector('input[name="id"]').value
+
+        const priority = fm.querySelector('input[name="priority"]').value
+        const remind = fm.querySelector('input[name="remind"]').value
+        const name = fm.querySelector('.name-inp').value
+        const description = fm.querySelector('.description-inp').value
+
+        // ajax
+        $.ajax({
+            url: sendUrl,
+            method: 'post',
+            headers: {'X-CSRFToken': csrftoken},
+            data: {taskInfoChange: 1, id: id, priority: priority, remind: remind, name: name, description: description},
+            success: function(data){
+                if (data.status === 200){
+                    window.location = '?'
+                } else {
+                    wrongFrameMsg.querySelector('h2').innerText = 'Проблема с приоритетом';
+                    wrongFrameMsg.classList.remove('none');
+                    setTimeout(() => {
+                        wrongFrameMsg.classList.add('none');
+                    }, 1500);
+                }
+            }
+        })
+
+    }
 })
 
 window.addEventListener('mouseover', (event) => {

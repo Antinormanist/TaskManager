@@ -235,7 +235,6 @@ window.addEventListener('click', (event) => {
             green.style.width = 2.3 * percent + "px"
         }
 
-
         if (taskTime){
             if ([11, 12, 13, 14].includes(taskTime % 100)){
                 PDoneTaskFrame.querySelector('.minutes').innerHTML = `${taskTime} минут`

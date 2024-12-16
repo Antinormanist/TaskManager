@@ -1730,6 +1730,14 @@ main {
 .year2 {
     width: 33px;
     height: 15px;
+    border: 1.5px solid #000;
+    border-radius: 5px;
+}
+
+.day2-f {
+    margin-left: 4px;
+    border: 1.5px solid #000;
+    border-radius: 5px;
 }
 
 .remind-changer-month {
