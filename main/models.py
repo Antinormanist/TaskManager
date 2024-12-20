@@ -41,3 +41,15 @@ class Notification(models.Model):
 
     class Meta:
         db_table = 'notifications'
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True)
+    task = models.ForeignKey(to=Task, on_delete=models.CASCADE, null=True)
+    comment = models.CharField(max_length=357)
+    data = models.DateField(auto_now_add=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'comments'
