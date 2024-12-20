@@ -20,6 +20,8 @@
     <input type="hidden" name="returnUrl" value="{% static "main/images/return.svg" %}">
     <input type="hidden" name="taskUrl" value="{% static "main/images/task.svg" %}">
     <input type="hidden" name="addUrl" value="{% static "main/images/add.svg" %}">
+    <input type="hidden" name="changeIconLinkUrl" value="{% static "main/images/edit2.svg" %}">
+
     <div class="wrong-message none" style="z-index: 100;">
         <h2>Нет пользователя с таким логином</h2>
     </div>
@@ -278,8 +280,8 @@
             <button class="remind-changer-btn-submit btn-subred">изменить напоминание</button>
         </div>
         <div class="namedescription">
-            <textarea class="name-inp" type="text" name="name">WWWWWWWWWWWWWWWW</textarea>
-            <textarea class="description-inp" type="text" name="description">WWWWWWWWWa</textarea>
+            <textarea class="name-inp" type="text" name="name"></textarea>
+            <textarea class="description-inp" type="text" name="description"></textarea>
         </div>
         <div class="priority-remind">
             <p class="ppp">Приоритет</p>
@@ -299,7 +301,7 @@
                 <img class="" src="{% static "main/images/right.svg" %}" alt="right">
                 <img class="none" src="{% static "main/images/down.svg" %}" alt="down">
                 <p>Комментарии</p>
-                <p class="weak-p">99+</p>
+                <p class="weak-p"></p>
             </button>
             <div class="comment-divider none">
             </div>
@@ -308,41 +310,10 @@
                     <textarea type="text" name="comment" placeholder="комментарий"></textarea>
                     <button class="comment-btn-subred btn-subred">комментировать</button>
                 </form>
-                <div class="comment">
-                    <input type="hidden" name="id" value="1">
-                    <img class="comment-avatar" src="{% static "main/images/avatar.svg" %}" alt="ava">
-                    <div class="comment-head">
-                        <h3 class="comment-login">WWWWWWWWWWWWWWWWWWWW...</h3>
-                        <p class="comment-time">Сегодня 20:01</p>
-                        <button class="comment-edit-btn"><img src="{% static "main/images/edit2.svg" %}" alt="edit"></button>
-                        <button class="comment-delete-btn"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
-                    </div>
-                    <form method="post" class="change-comment-form none">
-                        <textarea name="new-comment" placeholder="комментарий">qwe</textarea>
-                        <button class="change-comment-btn-back btn-back">отмена</button>
-                        <button class="change-comment-btn-subred btn-subred">изменить</button>
-                    </form>
-                    <p class="comment-comment">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW...</p>
-                </div>
-                <div class="comment">
-                    <input type="hidden" name="id" value="2">
-                    <img class="comment-avatar" src="{% static "main/images/avatar.svg" %}" alt="ava">
-                    <div class="comment-head">
-                        <h3 class="comment-login">WWWWWWWWWWWWWWWWWWWW...</h3>
-                        <p class="comment-time">Сегодня 20:01</p>
-                        <button class="comment-edit-btn"><img src="{% static "main/images/edit2.svg" %}" alt="edit"></button>
-                        <button class="comment-delete-btn"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
-                    </div>
-                    <form method="post" class="change-comment-form none">
-                        <textarea name="new-comment" placeholder="комментарий">qwe</textarea>
-                        <button class="change-comment-btn-back btn-back">отмена</button>
-                        <button class="change-comment-btn-subred btn-subred">изменить</button>
-                    </form>
-                    <p class="comment-comment">Каепаба997</p>
-                </div>
             </div>
         </div>
         <form method="post" class="delete-comment none">
+            {% csrf_token %}
             <h2>Удалить комментарий?</h2>
             <input type="hidden" name="id">
             <button class="delete-comment-btn-back btn-back">отмена</button>
@@ -601,6 +572,7 @@
             </button>
         </div>
     </nav>
+    <input class="qpla" type="hidden" value="{% static "main/images/avatar.svg" %}">
     <main>
         <div class="main">
             <!-- IF THERE ARE NO TASKS -->

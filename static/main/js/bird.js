@@ -124,5 +124,12 @@ window.addEventListener('click', (event) => {
     else if (event.target.closest('.detail-btn-back')) {
         openTa.querySelector('input[name="is-template"]').value = 'no'
         openTa.classList.add('none')
+
+        const things = openTa.querySelector('.comments-more').children
+        for (const elem of things){
+            if (elem.classList.contains('comment')){
+                elem.remove()
+            }
+        }
     }
 })

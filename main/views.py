@@ -15,7 +15,7 @@ import redis
 from user.utils import get_client_ip
 from user.tasks import send_email
 from user.utils import HTML_EMAIL_CODE_MSG
-from .models import Task, Notification
+from .models import Task, Notification, Comment
 from .utils import priority_sort
 
 log = logging.getLogger(__name__)
@@ -200,7 +200,26 @@ def main(request):
                     if task.remind:
                         day, month, year = task.remind.day, task.remind.month, task.remind.year
                         remind = f'{day}|{month}|{year}'
-                    return JsonResponse({'status': 200, 'name': task.name, 'description': task.description, 'priority': task.priority, 'remind': remind})
+
+                    comments = []
+                    for t in Comment.objects.filter(task__id=task.id):
+                        a = {}
+                        a['day'] = t.data.day
+                        a['month'] = t.data.month
+                        a['year'] = t.data.year
+
+                        a['id'] = t.id
+                        # THERE IS A PROBLEM WITH THAT FUCKING AVATAR
+                        if t.user and t.user.avatar:
+                            a['userImage'] = t.user.avatar.url
+                        if t.user:
+                            a['username'] = t.user.username
+                        a['comment'] = t.comment
+
+                        comments.append(a)
+                    # json comments
+                    comments = json.dumps(comments)
+                    return JsonResponse({'status': 200, 'name': task.name, 'description': task.description, 'priority': task.priority, 'remind': remind, 'comments': comments})
                 return JsonResponse({'status': 400, 'message': 'couldn\'t get task'})
             return JsonResponse({'status': 400, 'message': 'couldn\'t get id'})
         elif request.POST.get('taskInfoChange'):
@@ -228,6 +247,43 @@ def main(request):
                     return JsonResponse({'status': 200, 'message': 'task was successfully changed'})
                 return JsonResponse({'status': 400, 'message': 'couldn\t get task'})
             return JsonResponse({'status': 400, 'message': 'couldn\t get id'})
+        elif request.POST.get('createComment'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                task = Task.objects.filter(id=id).first()
+                if task:
+                    comment = request.POST.get('comment')
+                    com = Comment.objects.create(
+                        user=request.user,
+                        task=task,
+                        comment=comment,
+                    )
+                    date = com.data
+                    a = {}
+                    day, month, year = date.day, date.month, date.year
+                    a['day'] = day
+                    a['month'] = month,
+                    a['year'] = year
+                    a['id'] = com.id
+                    a['username'] = request.user.username
+                    if request.user.avatar:
+                        a['img'] = request.user.avatar.url
+                    return JsonResponse({'status': 201, 'info': json.dumps(a)})
+                    # return JsonResponse({'status': 201, 'id': com.id, 'day': day, 'month': month, 'year': year, 'img': request.user.avatar.url, 'username': request.user.username})
+                return JsonResponse({'status': 400, 'message': 'couldn\t get task with such id'})
+            return JsonResponse({'status': 400, 'message': 'couldn\t get id'})
+        elif request.POST.get('deleteCommentO'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                comm = Comment.objects.filter(id=id).first()
+                if comm:
+                    if comm.user == request.user:
+                        comm.delete()
+                        return JsonResponse({'status': 204, 'message': 'comment was successfully deleted'})
+                    return JsonResponse({'status': 403, 'message': 'comment with such id is not your comment'})
+                return JsonResponse({'status': 400, 'message': 'couldn\t get comment with such id'})
+            return JsonResponse({'status': 400, 'message': 'couldn\t get id'})
+
 
     ip = get_client_ip(request)
     data = requests.get(settings.WEATHER_API_LINK, params={'q': '63.116.61.253', 'key': settings.WEATHER_API_KEY}).json()

@@ -31,6 +31,59 @@ window.addEventListener('click', (event) => {
                     taskFramik.classList.remove('none')
                     taskFramik.querySelector('input[name="id"]').value = id
 
+                    const comments = JSON.parse(data.comments)
+
+                    const commsPlace = taskFramik.querySelector('.btns-and-comments').querySelector('.comments-more')
+                    const addComm = taskFramik.querySelector('.make-comment')
+
+                    let amountCom = comments.length
+                    if (99 < amountCom){
+                        amountCom = '99+'
+                    }
+                    // amount of comments
+                    taskFramik.querySelector('.commentaries-btn').querySelector('.weak-p').innerHTML = amountCom
+
+                    comments.forEach((elem) => {
+                        const day = elem.day
+                        const month = elem.month
+                        const year = elem.year
+                        let imga
+                        let usar
+                        if (elem.userImage){
+                            imga = elem.userImage
+                        } else {
+                            imga = document.querySelector('.qpla').value
+                        }
+                        if (elem.username){
+                            usar = elem.username
+                        } else {
+                            user = "Неизвестный"
+                        }
+
+                        const comment = `<div class="comment">
+                            <input type="hidden" name="id" value="${elem.id}">
+                            <img class="comment-avatar" src="${imga}" alt="ava">
+                            <div class="comment-head">
+                                <h3 class="comment-login">${usar}</h3>
+                                <p class="comment-time">${day}.${month}.${year}</p>
+                                <button class="comment-edit-btn"><img src=${changeIconLink} alt="edit"></button>
+                                <button class="comment-delete-btn"><img src=${trashIconLink} alt="del"></button>
+                            </div>
+                            <div class="change-comment-form none">
+                                <textarea name="new-comment" placeholder="комментарий"></textarea>
+                                <button class="change-comment-btn-back btn-back">отмена</button>
+                                <button class="change-comment-btn-subred btn-subred">изменить</button>
+                            </div>
+                            <p class="comment-comment">${elem.comment}</p>
+                        </div>`
+                        const parser = new DOMParser()
+                        let node = parser.parseFromString(comment, 'text/html')
+                        node = node.body.firstChild
+
+                        commsPlace.insertBefore(node, addComm.nextSibling)
+                    })
+
+
                     const name = data.name
                     const description = data.description
                     const priority = data.priority
@@ -45,9 +98,6 @@ window.addEventListener('click', (event) => {
                         fm.querySelector('.detail-remind-btn').querySelector('p').innerHTML = remind
                     }
 
-                    // CHANGE THERI STYLE(ADD BORDER-RADIUS) AND CHANGING PRIORITY AND REMIND AND MAKE COMMENTARIES
-
-
                     fm.querySelector('input[name="priority"]').value = priority
                     if (priority === 'common'){
                         fm.querySelector('.detail-priority-btn').querySelector('p').innerHTML = 'обычный'
@@ -58,7 +108,6 @@ window.addEventListener('click', (event) => {
                     } else {
                         fm.querySelector('.detail-priority-btn').querySelector('p').innerHTML = 'сильный'
                     }
-                    // continue here
                     fm.querySelector('.namedescription').querySelector('.name-inp').innerHTML = name
                     fm.querySelector('.namedescription').querySelector('.description-inp').innerHTML = description;
 
@@ -71,7 +120,6 @@ window.addEventListener('click', (event) => {
                 }
             }
         })
-        // WE NEED SEND API REQUEST TO BACKEND TO GET OTHER INFOS
     }
     else if (event.target.closest('.detail-btn-back')) {
         event.preventDefault();

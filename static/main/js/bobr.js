@@ -7,6 +7,9 @@ const priorityPrint = document.querySelector('.task-priority-btn').querySelector
 const delAcFr = document.querySelector('.account-delete-sumbit-frame')
 const delCommentFramik = document.querySelector('.delete-comment')
 
+const trashIconLink = document.querySelector('input[name="trashUrl"]').value
+const changeIconLink = document.querySelector('input[name="changeIconLinkUrl"]').value
+
 window.addEventListener('click', (event) => {
     if (event.target.closest('.exit-btn') && accountExitFrame.classList.contains('none')) {
         accountExitFrame.classList.remove('none')
@@ -18,6 +21,107 @@ window.addEventListener('click', (event) => {
                 window.location = data.url
             }
         })
+    }
+    else if (event.target.closest('.delete-comment-btn-subred')){
+        event.preventDefault()
+        const id = event.target.closest('.delete-comment-btn-subred').closest('.delete-comment').querySelector('input[name="id"]').value
+        const task = event.target.closest('.delete-comment-btn-subred')
+
+
+        if (id){
+            $.ajax({
+                url: sendUrl,
+                method: 'post',
+                headers: {'X-CSRFToken': csrftoken},
+                data: {deleteCommentO: 1, id: id},
+                success: function(data){
+                    if (data.status === 204){
+                        const kids = document.querySelector('.comments-more').children
+                        for (const elem of kids){
+                            if (elem.querySelector('input[name="id"]') && elem.querySelector('input[name="id"]').value === id){
+                                elem.remove()
+                                const p = document.querySelector('.task-detail-info').querySelector('.commentaries-btn').querySelector('.weak-p')
+                                if (p.innerHTML[p.innerHTML.length - 1] === '+'){
+
+                                } else {
+                                    p.innerHTML = parseInt(p.innerHTML) - 1
+                                }
+                                // REMOVE ONE AMOUNT OF COMMENTARIES FROM GENERAL AMOUNT
+                                break
+                            }
+                        }
+                        document.querySelector('.delete-comment').classList.add('none')
+                    }
+                }
+            })
+        }
+    }
+    else if (event.target.closest('.comment-btn-subred')){
+        event.preventDefault()
+        const comm = event.target.closest('.comment-btn-subred').closest('.make-comment').querySelector('textarea').value
+        const taskId = event.target.closest('.task-detail-info').querySelector('input[name="id"]').value
+        if (comm){
+            $.ajax({
+                url: sendUrl,
+                method: 'post',
+                headers: {'X-CSRFToken': csrftoken},
+                data: {createComment: 1, comment: comm, id: taskId},
+                success: function(data){
+                    if (data.status === 201){
+                        // increase comments amount by 1
+                        const p = document.querySelector('.task-detail-info').querySelector('.commentaries-btn').querySelector('.weak-p')
+                        if (p.innerHTML[p.innerHTML.length - 1] === '+'){
+
+                        } else if (p.innerHTML === '99'){
+                            p.innerHTML = '99+'
+                        } else {
+                            p.innerHTML = parseInt(p.innerHTML) + 1
+                        }
+
+                        const ert = JSON.parse(data.info)
+                        let username = ert.username
+                        if (20 < username){
+                            username = username.slice(0, 20) + '...'
+                        }
+                        const day = ert.day
+                        const month = ert.month
+                        const year = ert.year
+                        const d = day + '.' + month + '.' + year
+
+                        let imga
+                        if (ert.img){
+                            imga = ert.img
+                        } else {
+                            imga = document.querySelector('.qpla').value
+                        }
+
+                        const comment = `<div class="comment">
+                            <input type="hidden" name="id" value="${ert.id}">
+                            <img class="comment-avatar" src="${imga}" alt="ava">
+                            <div class="comment-head">
+                                <h3 class="comment-login">${username}</h3>
+                                <p class="comment-time">${d}</p>
+                                <button class="comment-edit-btn"><img src=${changeIconLink} alt="edit"></button>
+                                <button class="comment-delete-btn"><img src=${trashIconLink} alt="del"></button>
+                            </div>
+                            <div class="change-comment-form none">
+                                <textarea name="new-comment" placeholder="комментарий"></textarea>
+                                <button class="change-comment-btn-back btn-back">отмена</button>
+                                <button class="change-comment-btn-subred btn-subred">изменить</button>
+                            </div>
+                            <p class="comment-comment">${comm}</p>
+                        </div>`
+
+                        const addComm = document.querySelector('.make-comment')
+
+                        const parser = new DOMParser()
+                        let node = parser.parseFromString(comment, 'text/html')
+                        node = node.body.firstChild
+                        document.querySelector('.comments-more').insertBefore(node, addComm.nextSibling)
+                    }
+                }
+            })
+        }
     }
     else if (event.target.closest('.account-close-btn')) {
         accountExitFrame.classList.add('none')
