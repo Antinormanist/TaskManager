@@ -271,16 +271,26 @@ window.addEventListener('click', (event) => {
     else if (event.target.closest('.change-comment-btn-subred')) {
         event.preventDefault();
         const comment = document.querySelector('.change-comment-form').querySelector('textarea').value
-        if (2000 < comment.length) {
+        if (357 < comment.length) {
             updateTooManyFrame.classList.remove('none')
-            if (99999 < comment.length) {
-                updateTooManyFrame.querySelector('.user-characters').innerText = '99999..'
-            } else {
-                updateTooManyFrame.querySelector('.user-characters').innerText = comment.length
-            }
             setTimeout(() => {
                 updateTooManyFrame.classList.add('none')
             }, 3000)
+        } else if (comment){
+            const id = event.target.closest('.change-comment-btn-subred').closest('.comment').querySelector('input[name="id"]').value
+            $.ajax({
+                url: sendUrl,
+                method: 'post',
+                headers: {'X-CSRFToken': csrftoken},
+                data: {changeCommentO: 1, id: id, text: comment},
+                success: function(data){
+                    if (data.status === 200){
+                        event.target.closest('.change-comment-btn-subred').closest('.comment').querySelector('.comment-comment').classList.remove('none')
+                        event.target.closest('.change-comment-btn-subred').closest('.comment').querySelector('.change-comment-form').classList.add('none')
+                        event.target.closest('.change-comment-btn-subred').closest('.comment').querySelector('.comment-comment').innerHTML = comment
+                    }
+                }
+            })
         }
     }
     else if (event.target.closest('.comment-btn-subred')) {

@@ -283,6 +283,19 @@ def main(request):
                     return JsonResponse({'status': 403, 'message': 'comment with such id is not your comment'})
                 return JsonResponse({'status': 400, 'message': 'couldn\t get comment with such id'})
             return JsonResponse({'status': 400, 'message': 'couldn\t get id'})
+        elif request.POST.get('changeCommentO'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                comment = Comment.objects.filter(id=id).first()
+                if comment:
+                    if comment.user == request.user:
+                        text = request.POST.get('text')
+                        comment.comment = text
+                        comment.save()
+                        return JsonResponse({'status': 200, 'message': 'comment was successfully changed'})
+                    return JsonResponse({'status': 403, 'message': 'comment with such id is not your comment'})
+                return JsonResponse({'status': 400, 'message': 'couldn\t get comment with such id'})
+            return JsonResponse({'status': 400, 'message': 'couldn\t get id'})
 
 
     ip = get_client_ip(request)
