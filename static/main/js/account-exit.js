@@ -12,12 +12,88 @@ const imprad = document.querySelector('input[name="imprad"]').value
 const strrad = document.querySelector('input[name="strrad"]').value
 const mainFrame = document.querySelector('.main')
 
-window.addEventListener('click', (event) => {
+async function createTemplateAndTasks(event) {
+    event.preventDefault();
+    const name = event.target.closest('.template-create-subred1').closest('.template-create').querySelector('.template-create-name').value;
+    const description = event.target.closest('.template-create-subred1').closest('.template-create').querySelector('.template-create-description').value;
+
+    console.log(name, description);
+
+    if (name) {
+        try {
+            // Отправляем AJAX-запрос на создание шаблона
+            const createTemplateResponse = await $.ajax({
+                url: sendUrl,
+                method: 'post',
+                headers: { 'X-CSRFToken': csrftoken },
+                data: { createTemplate: 1, name: name, description: description }
+            });
+            console.log('lets go', createTemplateResponse.status)
+            if (createTemplateResponse.status === 201) {
+                const id = createTemplateResponse.id;
+                const tasks = event.target.closest('.template-create-subred1').closest('.template-create').querySelector('.template-create-tasks').children;
+
+                console.log('TEMPLATE WAS CREATED');
+
+                for (const elem of tasks) {
+                    if (elem.classList.contains('task')) {
+                        const taskName = elem.querySelector('.task-name').innerHTML;
+                        let taskDescription = '';
+                        if (elem.querySelector('.task-description')) {
+                            taskDescription = elem.querySelector('.task-description').innerHTML;
+                        }
+                        const remind = elem.querySelector('input[name="remind"]').value;
+                        const priority = elem.querySelector('input[name="priority"]').value;
+                        const minutes = elem.querySelector('input[name="time"]').value;
+                        const remSplit = remind.split('/'); // mm/dd/yyyy
+                        let day, month, year;
+
+                        if (remSplit.length === 3) {
+                            month = remSplit[0];
+                            day = remSplit[1];
+                            year = remSplit[2];
+                        }
+
+                        console.log('LETS SEND AJAX for task');
+
+                        // Отправляем AJAX-запрос на создание задачи
+                        const createTaskResponse = await $.ajax({
+                            url: sendUrl,
+                            method: 'post',
+                            headers: { 'X-CSRFToken': csrftoken },
+                            data: {
+                                CreateTemplateTask: 1,
+                                templateId: id,
+                                name: taskName,
+                                description: taskDescription,
+                                day: day,
+                                month: month,
+                                year: year,
+                                priority: priority,
+                                minutes: minutes
+                            }
+                        });
+
+                        if (createTaskResponse.status === 201) {
+                            console.log("WE DID IT for task!");
+                        }
+                    }
+                }
+            } else {
+            }
+        } catch (error) {
+            console.log(error, "qwe")
+            console.log(error.responseText)
+            console.log(error.status, 'status')
+        }
+    }
+}
+
+window.addEventListener('click', async (event) => {
     if (event.target.closest('.template-btn-change') && bgfgfdgfd.classList.contains('none')) {
         bgfgfdgfd.classList.remove('none')
     }
     else if (event.target.closest('.task-btn')) {
-//        make that task completed
         const task = event.target.closest('.task')
         if (task) {
             const id = task.querySelector('input[name="id"]').value
@@ -87,7 +163,6 @@ window.addEventListener('click', (event) => {
             data: {returnTask: 1, id: id}
         })
         document.querySelector('.main').insertAdjacentElement('afterbegin', task)
-//        REMOVE NO TASK FRAME IF N O T SKTAM FRME IS EXIST
         const noTask = document.querySelector('.no-task')
         const noBtn = document.querySelector('.add-btn')
         let taskCount = 0
@@ -102,7 +177,6 @@ window.addEventListener('click', (event) => {
             noTask.classList.add('none')
             noBtn.classList.add('none')
         }
-//        REMOVE COMPLETED TASK FRME IF NOT TAKS
         const completeFrame = document.querySelector('.done-tasks')
         const doneKids = completeFrame.children
         taskCount = 0
@@ -140,13 +214,11 @@ window.addEventListener('click', (event) => {
             }
         }
         if (Object.keys(templateIdsToDel).length >= 1){
-            // SEND AJAX
             $.ajax({
                 url: sendUrl,
                 method: 'post',
                 headers: {'X-CSRFToken': csrftoken},
 
-                // CAN'T REMOVE FROM HTML
                 data: {delAllDoneTasks: 1, ids: JSON.stringify(templateIdsToDel)},
                 success: function(data){
                     if (data.status === 204){
@@ -175,6 +247,76 @@ window.addEventListener('click', (event) => {
             })
         }
     }
+    else if (event.target.closest('.task-delet')){
+        const task = event.target.closest('.task-delet').closest('.task')
+        task.remove()
+        const children = document.querySelector('.template-create').querySelector('.template-create-tasks').children
+        if (children.length === 4){
+            document.querySelector('.template-create').querySelector('.template-create-tasks').querySelector('.template-create-no-task-message').classList.remove('none')
+        }
+    }
+    else if (event.target.closest('.template-create-subred1')){
+        event.preventDefault()
+//        await createTemplateAndTasks(event);
+        const name = event.target.closest('.template-create-subred1').closest('.template-create').querySelector('.template-create-name').value
+        const description = event.target.closest('.template-create-subred1').closest('.template-create').querySelector('.template-create-description').value
+
+        if (name){
+            $.ajax({
+                url: sendUrl,
+                method: 'post',
+                headers: {'X-CSRFToken': csrftoken},
+                data: {createTemplate: 1, name: name, description: description},
+                async: false,
+                success: function(data){
+                    if (data.status === 201){
+                        const tasks = event.target.closest('.template-create-subred1').closest('.template-create').querySelector('.template-create-tasks').children
+                        for (elem of tasks) {
+                            if (elem.classList.contains('task')){
+                                const name = elem.querySelector('.task-name').innerHTML
+                                let description = ''
+                                if (elem.querySelector('.task-description')){
+                                    description = elem.querySelector('.task-description').innerHTML
+                                }
+                                const remind = elem.querySelector('input[name="remind"]').value
+                                const priority = elem.querySelector('input[name="priority"]').value
+                                const minutes = elem.querySelector('input[name="time"]').value
+                                const remSplit = remind.split('/') // mm/dd/yyyy
+                                let day
+                                let month
+                                let year
+
+                                if (remSplit.length === 3){
+                                    month = remSplit[0]
+                                    day = remSplit[1]
+                                    year = remSplit[2]
+                                }
+                                $.ajax({
+                                    url: sendUrl,
+                                    method: 'post',
+                                    headers: {'X-CSRFToken': csrftoken},
+                                    data: {CreateTemplateTask: 1, templateId: data.id, name: name, description: description, day: day, month: month, year: year, priority: priority, minutes: minutes},
+                                    async: false,
+                                })
+                            }
+                        }
+
+                        const frame = document.querySelector('.template-create')
+                        const children = frame.querySelector('.template-create-tasks').children
+                        for (const kid of children){
+                            if (kid.classList.contains('task')){
+                                kid.remove()
+                            }
+                        }
+                        frame.querySelector('.template-create-name').value = ''
+                        frame.querySelector('.template-create-description').value = ''
+
+                        frame.classList.add('none')
+                    }
+                }
+            })
+        }
+    }
     else if (event.target.closest('.task-add-btn')) {
         event.preventDefault()
         const name = document.querySelector('.add-task-frame').querySelector('input[name="name"]').value
@@ -182,17 +324,101 @@ window.addEventListener('click', (event) => {
         let minutes = document.querySelector('.add-task-frame').querySelector('input[name="task-time"]').value
         const priority = document.querySelector('.add-task-frame').querySelector('input[name="priority"]').value
         const remind = document.querySelector('.add-task-frame').querySelector('input[name="remind"]').value
-        if (document.querySelector('.add-task-frame').querySelector('input[name="is-template"]').value === 'yes') {
-            const a = 1
+        if (document.querySelector('.add-task-frame').querySelector('input[name="is-template"]').value === 'true') {
+            let task = `
+            <div class="task">
+                {id}
+                {pri}
+                {rem}
+                {tm}
+                <div class="task-infos">
+                    {priority}
+                    {remind}
+                    {minutes}
+                </div>
+                <div class="task-nad">
+                    {name}
+                    {description}
+                </div>
+                <button class="task-delet"><img src="${trashImg}" alt="del"></button>
+                <button class="task-return"><img src="${returnImg}" alt="return"></button>
+            </div>
+            `
+            task = task.replace('{name}', `<h2 class='task-name'>${name}</h2>`)
+
+            minutes = minutes.replace(/^0+/, '')
+
+            if (priority === 'common') {
+                task = task.replace('{priority}', `<button class='task-btn'><img src=${comrad} alt='radio' class='task-rad common-rad'></button>`)
+            } else if (priority === 'simple') {
+                task = task.replace('{priority}', `<button class='task-btn'><img src=${simrad} alt='radio' class='task-rad simple-rad'></button>`)
+            } else if (priority === 'important') {
+                task = task.replace('{priority}', `<button class='task-btn'><img src=${imprad} alt='radio' class='task-rad important-rad'></button>`)
+            } else if (priority === 'strong') {
+                task = task.replace('{priority}', `<button class='task-btn'><img src=${strrad} alt='radio' class='task-rad strong-rad'></button>`)
+            }
+            task = task.replace('{pri}', `<input type="hidden" name="priority" value="${priority}">`)
+            if (description) {
+                let trunct_desc = description.slice(0, 64)
+                if (trunct_desc.length === 64) {
+                    trunct_desc += '...'
+                }
+                task = task.replace('{description}', `<h3 class='task-description'>${trunct_desc}</h3>`)
+            } else {
+                task = task.replace('{description}', '')
+            }
+            if (minutes) {
+                task = task.replace('{minutes}', `<h3 class='task-time'>${minutes} минут</h3>`)
+            } else {
+                task = task.replace('{minutes}', '')
+            }
+            task = task.replace('{tm}', `<input type="hidden" name="time" value="${minutes}">`)
+            if (remind !== 'no') {
+                task = task.replace('{remind}', "<h3 class='task-remind'>с напоминанием</h3>")
+            } else {
+                task = task.replace('{remind}', '')
+            }
+            task = task.replace('{rem}', `<input type="hidden" name="remind" value="${remind}">`)
+            task = task.replace('{id}', `<input type="hidden" name="id" value="">`)
+
+            document.querySelector('.template-create').querySelector('.template-create-no-task-message').classList.add('none')
+            document.querySelector('.template-create').querySelector('.template-create-tasks').insertAdjacentHTML('beforeend', task)
+
+            document.querySelector('.add-task-frame').querySelector('input[name="name"]').value = ''
+            document.querySelector('.add-task-frame').querySelector('input[name="description"]').value = ''
+            document.querySelector('.add-task-frame').querySelector('input[name="task-time"]').value = ''
+            document.querySelector('.add-task-frame').querySelector('input[name="remind"]').value = 'no'
+            document.querySelector('.add-task-frame').querySelector('input[name="priority"]').value = 'common'
+            document.querySelector('.task-priority-btn').querySelector('p').innerText = 'приоритет(обычный)'
+            document.querySelector('.task-remind-btn').querySelector('p').innerText = 'напоминание(нет)'
+
+            document.querySelector('.add-task-frame').classList.add('none')
+
         } else {
+            let task = `
+            <div class="task">
+                {id}
+                <div class="task-infos">
+                    {priority}
+                    {remind}
+                    {minutes}
+                </div>
+                <div class="task-nad">
+                    {name}
+                    {description}
+                </div>
+                <button class="task-delet"><img src="${trashImg}" alt="del"></button>
+                <button class="task-return"><img src="${returnImg}" alt="return"></button>
+            </div>
+            `
             if (name) {
                 $.ajax({
                     url: sendUrl,
                     method: 'post',
                     headers: {'X-CSRFToken': csrftoken},
-                    data: {createTask: 1, name: name, description: description, minutes: minutes, priority: priority, remind: remind},
-                    success: function(data) {
-                        if (data.status === 201) {
+                    data: {createTask: 1, name: name, description: description, priority: priority, remind: remind, minutes: minutes},
+                    success: function(data){
+                        if (data.status === 201){
                             let task = constTask
                             task = task.replace('{name}', `<h2 class='task-name'>${name}</h2>`)
                             task = task.replace('{id}', `<input type="hidden" name="id" value="${data.id}">`)
@@ -240,12 +466,6 @@ window.addEventListener('click', (event) => {
                             document.querySelector('.task-remind-btn').querySelector('p').innerText = 'напоминание(нет)'
 
                             document.querySelector('.add-task-frame').classList.add('none')
-                        } else if (data.status === 400) {
-                            wrongFrameMsg.querySelector('h2').innerText = 'Проблема с приоритетом';
-                            wrongFrameMsg.classList.remove('none');
-                            setTimeout(() => {
-                                wrongFrameMsg.classList.add('none');
-                            }, 1500);
                         }
                     }
                 })
@@ -257,12 +477,19 @@ window.addEventListener('click', (event) => {
     }
     else if (event.target.closest('.template-create-back')) {
         // TO EMPTY ALL TASKS INSIDE IT
-        const tasks = ddgfreger.querySelector('.template-create-tasks').querySelectorAll('.template-create-task')
-        tasks.forEach((elem) => {
-            elem.remove()
-        })
+        const frame = document.querySelector('.template-create')
+        // CONTINUE HERE. GET TO KNOW HOW TO GET CHILDREN USING AJAX AND NOT VANILA JS
+        const children = frame.querySelector('.template-create-tasks').childNodes
+        for (const kid of children){
+            if (kid.classList && kid.classList.contains('task')){
+                kid.remove()
+            }
+        }
+        frame.querySelector('.template-create-name').value = ''
+        frame.querySelector('.template-create-description').value = ''
+
+        frame.classList.add('none')
         document.querySelector('.template-create-no-task-message').classList.remove('none')
-        ddgfreger.classList.add('none')
     }
     else if (event.target.closest('.done-task-return')) {
         const id = event.target.closest('.done-task-return').closest('.done-task').querySelector('input[name="id"]').value

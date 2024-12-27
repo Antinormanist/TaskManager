@@ -227,8 +227,6 @@ window.addEventListener('click', (event) => {
         // MAKE GREEN BAR PERCENT!!!
         // 14.5px
         const green = bar.querySelector('.green')
-        console.log(green)
-        console.log(2.3 * percent)
         if (amountDone + amountTasks === 0){
             green.style.width = '230px'
         } else {
@@ -254,6 +252,7 @@ window.addEventListener('click', (event) => {
     }
     else if (event.target.closest('.task-delete-btn-back')) {
         event.preventDefault();
+        event.target.closest('.task-delete-submit-btn').closest('.task-detail-frame').querySelector('input[name="is-temp"]').value = 'no'
         delTask.querySelector('input[name="is-completed-task"]').value = 'no'
         delTask.querySelector('input[name="id"]').value = ''
         taskToDelete = null

@@ -15,7 +15,7 @@ import redis
 from user.utils import get_client_ip
 from user.tasks import send_email
 from user.utils import HTML_EMAIL_CODE_MSG
-from .models import Task, Notification, Comment
+from .models import Task, Notification, Comment, Template
 from .utils import priority_sort
 
 log = logging.getLogger(__name__)
@@ -296,7 +296,46 @@ def main(request):
                     return JsonResponse({'status': 403, 'message': 'comment with such id is not your comment'})
                 return JsonResponse({'status': 400, 'message': 'couldn\t get comment with such id'})
             return JsonResponse({'status': 400, 'message': 'couldn\t get id'})
+        elif request.POST.get('createTemplate'):
+            name = request.POST.get('name')
+            description = request.POST.get('description')
+            temp = Template.objects.create(
+                name=name,
+                description=description,
+                user=request.user
+            )
+            return JsonResponse({'status': 201, 'id': temp.id, 'message': 'template was created successfully'})
+        elif request.POST.get('CreateTemplateTask'):
+            if template_id := request.POST.get('templateId'):
+                template_id = int(template_id)
+                if name := request.POST.get('name'):
+                    template = Template.objects.filter(id=template_id).first()
+                    if template:
+                        if template.user == request.user:
+                            description = request.POST.get('description')
+                            priority = request.POST.get('priority')
+                            day, month, year = request.POST.get('day'), request.POST.get('month'), request.POST.get('year')
+                            minutes = request.POST.get('minutes')
+                            task = Task.objects.create(
+                                is_templated=True,
+                                template=template,
+                                name=name,
+                                priority=priority,
+                                user=request.user
+                            )
+                            if description:
+                                task.description = description
+                            if minutes and minutes.isdigit():
+                                task.minutes = int(minutes)
+                            if day and month and year and day.isdigit() and month.isdigit() and year.isdigit():
+                                task.remind = datetime.date(year, month, day)
+                            task.save()
 
+                            return JsonResponse({'status': 201, 'message': 'task was created successfully'})
+                        return JsonResponse({'status': 403, 'message': 'template with such id is not current user\'s template'})
+                    return JsonResponse({'status': 400, 'message': 'couldn\t get template with such id'})
+                return JsonResponse({'status': 400, 'message': 'couldn\t get task\'s name'})
+            return JsonResponse({'status': 400, 'message': 'couldn\t get template\'s id'})
 
     ip = get_client_ip(request)
     data = requests.get(settings.WEATHER_API_LINK, params={'q': '63.116.61.253', 'key': settings.WEATHER_API_KEY}).json()
@@ -382,6 +421,9 @@ def main(request):
             else:
                 tasks.append(task)
         tasks.sort(key=lambda x: x.created_at, reverse=True)
+
+
+
     is_there_completed_task = False
     if completed_tasks:
         is_there_completed_task = True

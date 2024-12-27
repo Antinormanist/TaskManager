@@ -22,7 +22,7 @@
     <input type="hidden" name="addUrl" value="{% static "main/images/add.svg" %}">
     <input type="hidden" name="changeIconLinkUrl" value="{% static "main/images/edit2.svg" %}">
 
-    <div class="wrong-message none" style="z-index: 100;">
+    <div class="wrong-message none" style="z-index: 9999999999999999999999999999;">
         <h2>Нет пользователя с таким логином</h2>
     </div>
     <form method="post" class="changeEmailFrameCode none" style="z-index: 101;">
@@ -231,7 +231,7 @@
         <button class="task-close-btn btn-back">отмена</button>
         <button class="task-add-btn btn-subred">добавить задачу</button>
     </form>
-    <form method="post" class="task-delete-frame none">
+    <form method="post" style="z-index: 99999" class="task-delete-frame none">
         {% csrf_token %}
         <input type="hidden" name="id">
         <input type="hidden" name="is-completed-task" value="no">
@@ -399,43 +399,8 @@
             <div class="template-create-divider">&#8203
             </div>
             <!-- IF NO TASKS -->
-            <p class="template-create-no-task-message none">Здесь будут таски</p>
+            <p class="template-create-no-task-message">Здесь будут таски</p>
             <!-- IF TASKS -->
-            <div class="template-create-task">
-                <input type="hidden" name="id" value="1">
-                <div class="tprt-info">
-                    <p class="template-create-task-priority pcb1">обычный</p>
-                    <p class="template-create-task-remind">с напоминанием</p>
-                    <p class="template-create-task-time">99999... минут</p>
-                </div>
-                <div class="template-create-task-name-and-description">
-                    <p class="template-create-task-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</p>
-                    <p class="template-create-task-description">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</p>
-                </div>
-                <button class="template-create-delete-btn"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
-            </div>
-            <div class="template-create-task">
-                <input type="hidden" name="id" value="2">
-                <div class="tprt-info">
-                    <p class="template-create-task-priority pcb3">важный</p>
-                    <p class="template-create-task-time">99999... минут</p>
-                </div>
-                <div class="template-create-task-name-and-description">
-                    <p class="template-create-task-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</p>
-                    <p class="template-create-task-description">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</p>
-                </div>
-                <button class="template-create-delete-btn"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
-            </div>
-            <div class="template-create-task">
-                <input type="hidden" name="id" value="3">
-                <div class="tprt-info">
-                    <p class="template-create-task-priority pcb4">сильный</p>
-                </div>
-                <div class="template-create-task-name-and-description">
-                    <p class="template-create-task-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</p>
-                </div>
-                <button class="template-create-delete-btn"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
-            </div>
         </div>
         <div class="template-create-btns">
             <button class="template-create-subred1 btn-subred">создать шаблон</button>

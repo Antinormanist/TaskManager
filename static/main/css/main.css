@@ -1192,6 +1192,11 @@ main {
     height: auto;
 }
 
+.task-nad {
+    width: 414px;
+    height: auto;
+}
+
 .task-name {
     font-size: 16px;
     word-break: break-all;
@@ -1228,8 +1233,16 @@ main {
     visibility: hidden;
 }
 
+.task-delet {
+    height: 27px;
+    visibility: hidden;
+}
+
 .task:hover {
     .task-delete {
+        visibility: visible;
+    }
+    .task-delet {
         visibility: visible;
     }
     .done-task-return {
