@@ -190,6 +190,7 @@
         {% csrf_token %}
         <!-- INPUT FOR TEMPLATE -->
         <input type="hidden" name="is-template" value="no">
+        <input type="hidden" name="is-template-extr" value="no">
         <div class="choose-priority none">
             <button class="priority-choose-btn pcb1">обычный</button>
             <button class="priority-choose-btn pcb2">простой</button>
@@ -410,22 +411,6 @@
     </div>
     <div style="z-index:2;" class="template-change none">
         <div class="template-change-templates">
-            <div class="template-change-template">
-                <input type="hidden" name="id" value="1">
-                <button class="template-change-template-btn">
-                    <h2 class="template-change-template-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW...(32 is max)</h2>
-                    <p class="template-change-template-description">WWWWWWWWWWWWWWWW...(16 is max)</p>
-                </button>
-                <button class="template-change-template-delete-btn"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
-            </div>
-            <div class="template-change-template">
-                <input type="hidden" name="id" value="2">
-                <button class="template-change-template-btn">
-                    <h2 class="template-change-template-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW...(32 is max)</h2>
-                    <p class="template-change-template-description">WWWWWWWWWWWWWWWW...(16 is max)</p>
-                </button>
-                <button class="template-change-template-delete-btn"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
-            </div>
         </div>
         <button class="template-change-btn-back btn-back">отмена</button>
     </div>
@@ -440,38 +425,8 @@
         {% csrf_token %}
         <input type="hidden" name="id">
         <div class="inf-and-tasks">
-            <textarea name="name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</textarea>
-            <textarea name="description">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</textarea>
-            <div class="template-change-divider">
-            </div>
-            <div class="template-change-task">
-                <input type="hidden" name="id" value="1">
-                <button class="template-change-task-btn">
-                    <div class="left-bar">
-                        <img class="template-change-task-priority" src="{% static "main/images/simplerad.svg" %}" alt="simple">
-                        <p class="template-change-task-remind">с напоминанием</p>
-                        <p class="template-change-task-time">999999... минут</p>
-                    </div>
-                    <div class="right-bar">
-                        <p class="template-change-task-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</p>
-                        <p class="template-change-task-description">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</p>
-                    </div>
-                </button>
-                <button class="template-change-task-delete-btn2"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
-            </div>
-            <div class="template-change-task">
-                <input type="hidden" name="id" value="2">
-                <button class="template-change-task-btn">
-                    <div class="left-bar">
-                        <img class="template-change-task-priority" src="{% static "main/images/importantrad.svg" %}" alt="simple">
-                    </div>
-                    <div class="right-bar">
-                        <p class="template-change-task-name">Купить пончек</p>
-                        <p class="template-change-task-description">Седня</p>
-                    </div>
-                </button>
-                <button class="template-change-task-delete-btn2"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
-            </div>
+            <textarea name="name" cols="20" maxlength="128" placeholder="Имя..."></textarea>
+            <textarea name="description" cols="20" maxlength="256" placeholder="Описание..."></textarea>
         </div>
         <div class="template-change-one-btns">
             <button class="tcobdel btn-subred">удалить шаблон</button>
@@ -480,7 +435,7 @@
             <button class="tcobback btn-back">отмена</button>
         </div>
     </form>
-    <form method="post" class="template-change-delete-template-frame none">
+    <form method="post" style="z-index:99999999999" class="template-change-delete-template-frame none">
         {% csrf_token %}
         <input type="hidden" name="id">
         <h2>Удалить шаблон?</h2>

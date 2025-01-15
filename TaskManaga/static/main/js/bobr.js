@@ -60,7 +60,14 @@ window.addEventListener('click', (event) => {
         event.preventDefault()
         const comm = event.target.closest('.comment-btn-subred').closest('.make-comment').querySelector('textarea').value
         const taskId = event.target.closest('.task-detail-info').querySelector('input[name="id"]').value
-        if (comm){
+        if (357 < comm.length) {
+            updateTooManyFrame.classList.remove('none')
+            updateTooManyFrame.querySelector('.max-characters').innerHTML = "Максимум можно 357 символов"
+            setTimeout(() => {
+                updateTooManyFrame.classList.add('none')
+                updateTooManyFrame.querySelector('.max-characters').innerHTML = "Максимум можно 2000 символов"
+            }, 3000)
+        } else if (comm){
             $.ajax({
                 url: sendUrl,
                 method: 'post',

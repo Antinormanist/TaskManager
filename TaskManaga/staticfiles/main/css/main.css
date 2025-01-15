@@ -2294,6 +2294,7 @@ main {
 
 .inf-and-tasks {
     display: grid;
+    grid-template-rows: 80px 80px auto;
     overflow-x: hidden;
     overflow-y: scroll;
 }
@@ -2342,7 +2343,7 @@ main {
 .template-change-template-one .template-change-task-remind, .template-change-template-one .template-change-task-time {
     opacity: 0.5;
     margin-right: 4px;
-} 
+}
 
 .right-bar {
     width: 420px;
@@ -2441,6 +2442,12 @@ main {
     margin-top: 1.5rem;
 }
 
+.template-change-task:hover {
+    .task-delet {
+        visibility: visible;
+    }
+}
+
 /* MEDIA QUERIES */
 
 @media screen and (max-width: 1024px) {
@@ -2477,4 +2484,24 @@ main {
         .remind-changer {
             left: 60%;
         }
+}
+
+@media screen and (max-height: 980px){
+    .add-btn {
+        top: 55%;
+    }
+    .nav {
+        grid-template-rows: 160px 2px 400px 263px;
+    }
+}
+
+@media screen and (max-height: 1049px){
+    .task-detail-info {
+        top: 0.25rem;
+        grid-template-rows: 500px;
+    }
+
+    .namedescription {
+        height: 350px;
+    }
 }

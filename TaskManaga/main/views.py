@@ -328,7 +328,7 @@ def main(request):
                             if minutes and minutes.isdigit():
                                 task.minutes = int(minutes)
                             if day and month and year and day.isdigit() and month.isdigit() and year.isdigit():
-                                task.remind = datetime.date(year, month, day)
+                                task.remind = datetime.date(int(year), int(month), int(day))
                             task.save()
 
                             return JsonResponse({'status': 201, 'message': 'task was created successfully'})
@@ -336,6 +336,202 @@ def main(request):
                     return JsonResponse({'status': 400, 'message': 'couldn\t get template with such id'})
                 return JsonResponse({'status': 400, 'message': 'couldn\t get task\'s name'})
             return JsonResponse({'status': 400, 'message': 'couldn\t get template\'s id'})
+        elif request.POST.get('getAllTemplates'):
+            template_org = []
+            templates = Template.objects.filter(user=request.user)
+            for template in templates:
+                template_org.append(
+                    {'id': template.id, 'name': template.name, 'description': template.description}
+                )
+
+            return JsonResponse({'status': 200, 'templates': json.dumps(template_org)})
+        elif request.POST.get('DeleteChangeTask'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                template = Template.objects.filter(id=id).first()
+                if template:
+                    if template.user == request.user:
+                        template.delete()
+                        return JsonResponse({'status': 204, 'message': 'template was deleted successfully'})
+                    return JsonResponse({'status': 403, 'message': 'template with such id is not current user\'s template'})
+                return JsonResponse({'status': 400, 'message': 'couldn\t get template with such id'})
+            return JsonResponse({'status': 400, 'message': 'couldn\'t get id'})
+        elif request.POST.get('getSpecTemplteData'):
+            if id := request.POST.get('id'):
+                template = Template.objects.filter(id=id).first()
+                if template:
+                    if template.user == request.user:
+                        tasks = []
+                        user_tasks = Task.objects.filter(template=template)
+                        for task in user_tasks:
+                            date = task.remind
+                            if date:
+                                remind = str(date.day) + '|' + str(date.month) + '|' + str(date.year)
+                            else:
+                                remind = ''
+                            tasks.append(
+                                {
+                                    'id': task.id,
+                                    'name': task.name,
+                                    'description': task.description,
+                                    'minutes': task.minutes,
+                                    'priority': task.priority,
+                                    'remind': remind
+                                }
+                            )
+                        return JsonResponse({'status': 200, 'name': template.name, 'description': template.description, 'tasks': tasks})
+                    return JsonResponse({'status': 403, 'message': 'template with such id is not current user\'s template'})
+                return JsonResponse({'status': 400, 'message': 'couldn\t get template with such id'})
+            return JsonResponse({'status': 400, 'message': 'couldn\t get template\'s id'})
+        elif request.POST.get('deleteBBGTask'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                task = Task.objects.filter(id=id).first()
+                if task:
+                    if task.user == request.user:
+                        task.delete()
+                        return JsonResponse({'status': 204, 'message': 'task was successfully deleted'})
+                    return JsonResponse({'status': 403, 'message': 'template with such id is not current user\'s task'})
+                return JsonResponse({'status': 400, 'message': 'couldn\t get task with such id'})
+            return JsonResponse({'status': 400, 'message': 'couldn\t get task\'s id'})
+        elif request.POST.get('deleteTemplateChanging'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                template = Template.objects.filter(id=id).first()
+                if template:
+                    if template.user == request.user:
+                        template.delete()
+                        return JsonResponse({'status': 204, 'message': 'template was successfully deleted'})
+                    return JsonResponse({'status': 403, 'message': 'template with such id is not current user\'s template'})
+                return JsonResponse({'status': 400, 'message': 'couldn\t get template with such id'})
+            return JsonResponse({'status': 400, 'message': 'couldn\t get template\'s id'})
+        elif request.POST.get('updateTemplateName'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                template = Template.objects.filter(id=id).first()
+                if template:
+                    if template.user == request.user:
+                        name = request.POST.get('name')
+                        desc = request.POST.get('description')
+                        template.name = name
+                        template.description = desc or ''
+                        template.save()
+                        return JsonResponse({'status': 200, 'message': 'template was successfully updated'})
+                    return JsonResponse({'status': 403, 'message': 'template with such id is not current user\'s template'})
+                return JsonResponse({'status': 400, 'message': 'couldn\t get template with such id'})
+            return JsonResponse({'status': 400, 'message': 'couldn\t get template\'s id'})
+        elif request.POST.get('updateTemplateTasks'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                template = Template.objects.filter(id=id).first()
+                if template:
+                    if template.user == request.user:
+                        name = request.POST.get('name')
+                        description = request.POST.get('description')
+                        template.name = name
+                        template.description = description or ''
+                        template.save()
+
+                        tasks = json.loads(request.POST.get('tasksInf'))
+                        ids = set(task['id'] for task in tasks)
+                        to_delete = []
+                        for task in Task.objects.filter(template=template):
+                            if str(task.id) not in ids:
+                                to_delete.append(task)
+                        for task in tasks:
+                            id = task['id']
+                            if id:
+                                # task_obj = Task.objects.get(id=id)
+                                # task_obj.name = task['name']
+                                # task_obj.description = task['description']
+                                # task_obj.priority = task['priority']
+                                # if minutes:
+                                #     task_obj.minutes = int(minutes)
+                                # if remind != 'no':
+                                #     d, m, y = map(int, remind.split('/'))
+                                #     if d and m and y:
+                                #         task_obj.remind = datetime.date(y, m, d)
+                                #
+                                # task_obj.save()
+                                pass
+                            else:
+                                minutes = task['minutes']
+                                remind = task['remind']
+                                new_task = Task.objects.create(
+                                    name=task['name'],
+                                    description=task['description'],
+                                    priority=task['priority'],
+                                    template=template,
+                                    user=request.user,
+                                    is_templated=True,
+                                )
+                                if minutes:
+                                    new_task.minutes = int(minutes)
+                                if remind != 'no':
+                                    d, m, y = map(int, remind.split('/'))
+                                    if d and m and y:
+                                        new_task.remind = datetime.date(y, m, d)
+                                new_task.save()
+                        for task in to_delete:
+                            task.delete()
+
+                        return JsonResponse({'status': 200, 'message': 'tasks were successfully updated'})
+                    return JsonResponse({'status': 403, 'message': 'template with such id is not current user\'s template'})
+                return JsonResponse({'status': 400, 'message': 'couldn\t get template with such id'})
+            return JsonResponse({'status': 400, 'message': 'couldn\t get template\'s id'})
+        elif request.POST.get('getTemplateChangeInfo'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                template = Template.objects.filter(id=id).first()
+                if template:
+                    if template.user == request.user:
+                        name = template.name
+                        description = template.description
+                        tasks = []
+                        tasks_query = Task.objects.filter(template=template)
+                        for task in tasks_query:
+                            if task.remind:
+                                d, m, y = task.remind.day, task.remind.month, task.remind.year
+                                remind = str(d) + '/' + str(m) + '/' + str(y)
+                            else:
+                                remind = ''
+                            tasks.append(
+                                {
+                                    'id': task.id,
+                                    'name': task.name,
+                                    'description': task.description,
+                                    'priority': task.priority,
+                                    'minutes': task.minutes,
+                                    'remind': remind,
+                                }
+                            )
+                        return JsonResponse({'status': 200, 'name': name, 'description': description, 'tasks': json.dumps(tasks)})
+                    return JsonResponse({'status': 403, 'message': 'template with such id is not current user\'s template'})
+                return JsonResponse({'status': 400, 'message': 'couldn\t get template with such id'})
+            return JsonResponse({'status': 400, 'message': 'couldn\t get template\'s id'})
+        elif request.POST.get('DeleteTaskDeletTask'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                task = Task.objects.filter(id=id).first()
+                if task:
+                    if task.user == request.user:
+                        task.delete()
+                        return JsonResponse({'status': 204})
+                    return JsonResponse({'status': 403, 'message': 'task with such id is not current user\'s task'})
+                return JsonResponse({'status': 400, 'message': 'couldn\t get task with such id'})
+            return JsonResponse({'status': 400, 'message': 'couldn\t get task\'s id'})
+        elif request.POST.get('DeleteSubrTemp'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                template = Template.objects.filter(id=id).first()
+                if template:
+                    if template.user == request.user:
+                        template.delete()
+                        return JsonResponse({'status': 204})
+                    return JsonResponse({'status': 403, 'message': 'template with such id is not current user\'s template'})
+                return JsonResponse({'status': 400, 'message': 'couldn\t get template with such id'})
+            return JsonResponse({'status': 400, 'message': 'couldn\t get template\'s id'})
+
 
     ip = get_client_ip(request)
     data = requests.get(settings.WEATHER_API_LINK, params={'q': '63.116.61.253', 'key': settings.WEATHER_API_KEY}).json()

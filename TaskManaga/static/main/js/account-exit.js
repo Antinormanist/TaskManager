@@ -17,7 +17,6 @@ async function createTemplateAndTasks(event) {
     const name = event.target.closest('.template-create-subred1').closest('.template-create').querySelector('.template-create-name').value;
     const description = event.target.closest('.template-create-subred1').closest('.template-create').querySelector('.template-create-description').value;
 
-    console.log(name, description);
 
     if (name) {
         try {
@@ -28,7 +27,6 @@ async function createTemplateAndTasks(event) {
                 headers: { 'X-CSRFToken': csrftoken },
                 data: { createTemplate: 1, name: name, description: description }
             });
-            console.log('lets go', createTemplateResponse.status)
             if (createTemplateResponse.status === 201) {
                 const id = createTemplateResponse.id;
                 const tasks = event.target.closest('.template-create-subred1').closest('.template-create').querySelector('.template-create-tasks').children;
@@ -91,7 +89,53 @@ async function createTemplateAndTasks(event) {
 
 window.addEventListener('click', async (event) => {
     if (event.target.closest('.template-btn-change') && bgfgfdgfd.classList.contains('none')) {
+    // FIX IT, IT DOUBLES SOME TEMPLATES
         bgfgfdgfd.classList.remove('none')
+
+        const template = `
+        <div class="template-change-template">
+                <input type="hidden" name="id" value="{id}">
+                <button class="template-change-template-btn">
+                    {name}
+                    {description}
+                </button>
+                <button class="template-change-template-delete-btn"><img src="${trashImg}" alt="del"></button>
+        </div>
+        `
+        $.ajax({
+            url: sendUrl,
+            method: 'post',
+            headers: {'X-CSRFToken': csrftoken},
+            data: {getAllTemplates: 1},
+            success: function(data){
+                if (data.status === 200){
+
+                    const templates = JSON.parse(data.templates)
+                    for (temp of templates){
+                        let templateOrg = template
+                        templateOrg = templateOrg.replace('{id}', temp.id)
+                        if (32 < temp.name.length){
+                            templateOrg = templateOrg.replace('{name}', `<h2 class="template-change-template-name">${temp.name.slice(0, 32)}</h2>`)
+                        } else {
+                            templateOrg = templateOrg.replace('{name}', `<h2 class="template-change-template-name">${temp.name}</h2>`)
+                        }
+                        let description = temp.description
+                        if (description){
+                            if (16 < description.length){
+                                templateOrg = templateOrg.replace('{description}', `<p class="template-change-template-description">${description.slice(0, 16)}</p>`)
+                            } else {
+                                templateOrg = templateOrg.replace('{description}', `<p class="template-change-template-description">${description}</p>`)
+                            }
+                        } else {
+                            templateOrg = templateOrg.replace('{description}', '')
+                        }
+
+                        // place
+                        document.querySelector('.template-change-templates').insertAdjacentHTML('beforeend', templateOrg)
+                    }
+                }
+            }
+        })
     }
     else if (event.target.closest('.task-btn')) {
         const task = event.target.closest('.task')
@@ -193,6 +237,28 @@ window.addEventListener('click', async (event) => {
     }
     else if (event.target.closest('.template-change-btn-back')) {
         bgfgfdgfd.classList.add('none')
+        document.querySelector('.template-change-templates').innerHTML = ""
+    }
+    else if (event.target.closest('.template-change-btn-subred2')){
+        event.preventDefault()
+        const id = event.target.closest('.template-change-delete-frame').querySelector('input[name="id"]').value
+        for (temp of document.querySelector('.template-change-templates').children){
+            if (temp.querySelector('input[name="id"]').value === id){
+                $.ajax({
+                    url: sendUrl,
+                    method: 'post',
+                    headers: {'X-CSRFToken': csrftoken},
+                    data: {DeleteChangeTask: 1, id: id},
+                    success: function(data){
+                        if (data.status === 204){
+                            temp.remove()
+                            event.target.closest('.template-change-delete-frame').classList.add('none')
+                        }
+                    }
+                })
+                break
+            }
+        }
     }
     else if (event.target.closest('.template-create-subred2') && ddgrthreth.classList.contains('none')) {
         ddgrthreth.querySelector('input[name="is-template"]').value = 'true'
@@ -201,6 +267,7 @@ window.addEventListener('click', async (event) => {
     else if (event.target.closest('.task-close-btn')) {
         event.preventDefault();
         ddgrthreth.querySelector('input[name="is-template"]').value = 'no'
+        ddgrthreth.querySelector('input[name="is-template-extr"]').value = 'no'
         ddgrthreth.classList.add('none')
     }
     else if (event.target.closest('.done-task-btn')){
@@ -248,16 +315,28 @@ window.addEventListener('click', async (event) => {
         }
     }
     else if (event.target.closest('.task-delet')){
+        event.preventDefault()
         const task = event.target.closest('.task-delet').closest('.task')
-        task.remove()
-        const children = document.querySelector('.template-create').querySelector('.template-create-tasks').children
-        if (children.length === 4){
-            document.querySelector('.template-create').querySelector('.template-create-tasks').querySelector('.template-create-no-task-message').classList.remove('none')
+        if (task){
+            task.remove()
+            const children = document.querySelector('.template-create').querySelector('.template-create-tasks').children
+            if (children.length === 4){
+                document.querySelector('.template-create').querySelector('.template-create-tasks').querySelector('.template-create-no-task-message').classList.remove('none')
+            }
+        } else {
+            const Etask = event.target.closest('.task-delet').closest('.template-change-task')
+            const id = Etask.querySelector('input[name="id"]').value
+            $.ajax({
+                url: sendUrl,
+                method: 'post',
+                headers: {'X-CSRFToken': csrftoken},
+                data: {DeleteTaskDeletTask: 1, id: id},
+            })
+            Etask.remove()
         }
     }
     else if (event.target.closest('.template-create-subred1')){
         event.preventDefault()
-//        await createTemplateAndTasks(event);
         const name = event.target.closest('.template-create-subred1').closest('.template-create').querySelector('.template-create-name').value
         const description = event.target.closest('.template-create-subred1').closest('.template-create').querySelector('.template-create-description').value
 
@@ -312,6 +391,7 @@ window.addEventListener('click', async (event) => {
                         frame.querySelector('.template-create-description').value = ''
 
                         frame.classList.add('none')
+                        window.location = '?'
                     }
                 }
             })
@@ -324,7 +404,78 @@ window.addEventListener('click', async (event) => {
         let minutes = document.querySelector('.add-task-frame').querySelector('input[name="task-time"]').value
         const priority = document.querySelector('.add-task-frame').querySelector('input[name="priority"]').value
         const remind = document.querySelector('.add-task-frame').querySelector('input[name="remind"]').value
-        if (document.querySelector('.add-task-frame').querySelector('input[name="is-template"]').value === 'true') {
+
+        let inp_clear = true;
+        if (document.querySelector('.add-task-frame').querySelector('input[name="is-template-extr"]').value === 'true'){
+            let task = `
+            <div class="template-change-task">
+                {id}
+                {pri}
+                {rem}
+                {tm}
+                <div class="task-infos">
+                    {priority}
+                    {remind}
+                    {minutes}
+                </div>
+                <div class="task-nad">
+                    {name}
+                    {description}
+                </div>
+                <button class="task-delet"><img src="${trashImg}" alt="del"></button>
+                <button class="task-return"><img src="${returnImg}" alt="return"></button>
+            </div>
+            `
+            if (name){
+                task = task.replace('{name}', `<h2 class='task-name'>${name}</h2>`)
+
+                minutes = minutes.replace(/^0+/, '')
+
+                if (priority === 'common') {
+                    task = task.replace('{priority}', `<button class='task-btn'><img src=${comrad} alt='radio' class='task-rad common-rad'></button>`)
+                } else if (priority === 'simple') {
+                    task = task.replace('{priority}', `<button class='task-btn'><img src=${simrad} alt='radio' class='task-rad simple-rad'></button>`)
+                } else if (priority === 'important') {
+                    task = task.replace('{priority}', `<button class='task-btn'><img src=${imprad} alt='radio' class='task-rad important-rad'></button>`)
+                } else if (priority === 'strong') {
+                    task = task.replace('{priority}', `<button class='task-btn'><img src=${strrad} alt='radio' class='task-rad strong-rad'></button>`)
+                }
+                task = task.replace('{pri}', `<input type="hidden" name="priority" value="${priority}">`)
+                if (description) {
+                    task = task.replace('{description}', `<h3 class='task-description'>${description}</h3>`)
+                } else {
+                    task = task.replace('{description}', '')
+                }
+                if (minutes) {
+                    task = task.replace('{minutes}', `<h3 class='task-time'>${minutes} минут</h3>`)
+                } else {
+                    task = task.replace('{minutes}', '')
+                }
+                task = task.replace('{tm}', `<input type="hidden" name="time" value="${minutes}">`)
+                if (remind !== 'no') {
+                    task = task.replace('{remind}', "<h3 class='task-remind'>с напоминанием</h3>")
+                } else {
+                    task = task.replace('{remind}', '')
+                }
+                task = task.replace('{rem}', `<input type="hidden" name="remind" value="${remind}">`)
+                task = task.replace('{id}', `<input type="hidden" name="id" value="">`)
+
+                document.querySelector('.inf-and-tasks').insertAdjacentHTML('beforeend', task)
+
+                document.querySelector('.add-task-frame').querySelector('input[name="name"]').value = ''
+                document.querySelector('.add-task-frame').querySelector('input[name="description"]').value = ''
+                document.querySelector('.add-task-frame').querySelector('input[name="task-time"]').value = ''
+                document.querySelector('.add-task-frame').querySelector('input[name="remind"]').value = 'no'
+                document.querySelector('.add-task-frame').querySelector('input[name="priority"]').value = 'common'
+                document.querySelector('.task-priority-btn').querySelector('p').innerText = 'приоритет(обычный)'
+                document.querySelector('.task-remind-btn').querySelector('p').innerText = 'напоминание(нет)'
+
+                document.querySelector('.add-task-frame').classList.add('none')
+            } else {
+                inp_clear = false;
+            }
+        }
+        else if (document.querySelector('.add-task-frame').querySelector('input[name="is-template"]').value === 'true') {
             let task = `
             <div class="task">
                 {id}
@@ -344,55 +495,59 @@ window.addEventListener('click', async (event) => {
                 <button class="task-return"><img src="${returnImg}" alt="return"></button>
             </div>
             `
-            task = task.replace('{name}', `<h2 class='task-name'>${name}</h2>`)
+            if (name){
+                task = task.replace('{name}', `<h2 class='task-name'>${name}</h2>`)
 
-            minutes = minutes.replace(/^0+/, '')
+                minutes = minutes.replace(/^0+/, '')
 
-            if (priority === 'common') {
-                task = task.replace('{priority}', `<button class='task-btn'><img src=${comrad} alt='radio' class='task-rad common-rad'></button>`)
-            } else if (priority === 'simple') {
-                task = task.replace('{priority}', `<button class='task-btn'><img src=${simrad} alt='radio' class='task-rad simple-rad'></button>`)
-            } else if (priority === 'important') {
-                task = task.replace('{priority}', `<button class='task-btn'><img src=${imprad} alt='radio' class='task-rad important-rad'></button>`)
-            } else if (priority === 'strong') {
-                task = task.replace('{priority}', `<button class='task-btn'><img src=${strrad} alt='radio' class='task-rad strong-rad'></button>`)
-            }
-            task = task.replace('{pri}', `<input type="hidden" name="priority" value="${priority}">`)
-            if (description) {
-                let trunct_desc = description.slice(0, 64)
-                if (trunct_desc.length === 64) {
-                    trunct_desc += '...'
+                if (priority === 'common') {
+                    task = task.replace('{priority}', `<button class='task-btn'><img src=${comrad} alt='radio' class='task-rad common-rad'></button>`)
+                } else if (priority === 'simple') {
+                    task = task.replace('{priority}', `<button class='task-btn'><img src=${simrad} alt='radio' class='task-rad simple-rad'></button>`)
+                } else if (priority === 'important') {
+                    task = task.replace('{priority}', `<button class='task-btn'><img src=${imprad} alt='radio' class='task-rad important-rad'></button>`)
+                } else if (priority === 'strong') {
+                    task = task.replace('{priority}', `<button class='task-btn'><img src=${strrad} alt='radio' class='task-rad strong-rad'></button>`)
                 }
-                task = task.replace('{description}', `<h3 class='task-description'>${trunct_desc}</h3>`)
-            } else {
-                task = task.replace('{description}', '')
-            }
-            if (minutes) {
-                task = task.replace('{minutes}', `<h3 class='task-time'>${minutes} минут</h3>`)
-            } else {
-                task = task.replace('{minutes}', '')
-            }
-            task = task.replace('{tm}', `<input type="hidden" name="time" value="${minutes}">`)
-            if (remind !== 'no') {
-                task = task.replace('{remind}', "<h3 class='task-remind'>с напоминанием</h3>")
-            } else {
-                task = task.replace('{remind}', '')
-            }
-            task = task.replace('{rem}', `<input type="hidden" name="remind" value="${remind}">`)
-            task = task.replace('{id}', `<input type="hidden" name="id" value="">`)
+                task = task.replace('{pri}', `<input type="hidden" name="priority" value="${priority}">`)
+                if (description) {
+                    let trunct_desc = description.slice(0, 64)
+                    if (trunct_desc.length === 64) {
+                        trunct_desc += '...'
+                    }
+                    task = task.replace('{description}', `<h3 class='task-description'>${trunct_desc}</h3>`)
+                } else {
+                    task = task.replace('{description}', '')
+                }
+                if (minutes) {
+                    task = task.replace('{minutes}', `<h3 class='task-time'>${minutes} минут</h3>`)
+                } else {
+                    task = task.replace('{minutes}', '')
+                }
+                task = task.replace('{tm}', `<input type="hidden" name="time" value="${minutes}">`)
+                if (remind !== 'no') {
+                    task = task.replace('{remind}', "<h3 class='task-remind'>с напоминанием</h3>")
+                } else {
+                    task = task.replace('{remind}', '')
+                }
+                task = task.replace('{rem}', `<input type="hidden" name="remind" value="${remind}">`)
+                task = task.replace('{id}', `<input type="hidden" name="id" value="">`)
 
-            document.querySelector('.template-create').querySelector('.template-create-no-task-message').classList.add('none')
-            document.querySelector('.template-create').querySelector('.template-create-tasks').insertAdjacentHTML('beforeend', task)
+                document.querySelector('.template-create').querySelector('.template-create-no-task-message').classList.add('none')
+                document.querySelector('.template-create').querySelector('.template-create-tasks').insertAdjacentHTML('beforeend', task)
 
-            document.querySelector('.add-task-frame').querySelector('input[name="name"]').value = ''
-            document.querySelector('.add-task-frame').querySelector('input[name="description"]').value = ''
-            document.querySelector('.add-task-frame').querySelector('input[name="task-time"]').value = ''
-            document.querySelector('.add-task-frame').querySelector('input[name="remind"]').value = 'no'
-            document.querySelector('.add-task-frame').querySelector('input[name="priority"]').value = 'common'
-            document.querySelector('.task-priority-btn').querySelector('p').innerText = 'приоритет(обычный)'
-            document.querySelector('.task-remind-btn').querySelector('p').innerText = 'напоминание(нет)'
+                document.querySelector('.add-task-frame').querySelector('input[name="name"]').value = ''
+                document.querySelector('.add-task-frame').querySelector('input[name="description"]').value = ''
+                document.querySelector('.add-task-frame').querySelector('input[name="task-time"]').value = ''
+                document.querySelector('.add-task-frame').querySelector('input[name="remind"]').value = 'no'
+                document.querySelector('.add-task-frame').querySelector('input[name="priority"]').value = 'common'
+                document.querySelector('.task-priority-btn').querySelector('p').innerText = 'приоритет(обычный)'
+                document.querySelector('.task-remind-btn').querySelector('p').innerText = 'напоминание(нет)'
 
-            document.querySelector('.add-task-frame').classList.add('none')
+                document.querySelector('.add-task-frame').classList.add('none')
+            } else {
+                inp_clear = false;
+            }
 
         } else {
             let task = `
@@ -469,11 +624,70 @@ window.addEventListener('click', async (event) => {
                         }
                     }
                 })
+            } else {
+                inp_clear = false;
             }
+        }
+        if (inp_clear){
+            document.querySelector('.add-task-frame').querySelector('input[name="is-template"]').value = 'no'
+            document.querySelector('.add-task-frame').querySelector('input[name="is-template-extr"]').value = 'no'
         }
     }
     else if (event.target.closest('.template-btn-create') && ddgfreger.classList.contains('none')) {
         ddgfreger.classList.remove('none')
+    }
+    else if (event.target.closest('.tcobsave')){
+        event.preventDefault()
+        const id = event.target.closest('.template-change-template-one').querySelector('input[name="id"]').value
+        const name = event.target.closest('.template-change-template-one').querySelector('.inf-and-tasks').querySelector('textarea[name="name"]').value
+        const description = event.target.closest('.template-change-template-one').querySelector('.inf-and-tasks').querySelector('textarea[name="description"]').value
+
+        let tasksInf = []
+        const kids = event.target.closest('.template-change-template-one').querySelector('.inf-and-tasks').children
+        for (kid of kids){
+            if (kid.classList.contains('template-change-task')){
+                const tId = kid.querySelector('input[name="id"]').value
+                const name = kid.querySelector('.task-nad').querySelector('.task-name').innerHTML
+                let description = ''
+                if (kid.querySelector('.task-nad').querySelector('.task-description')){
+                    description = kid.querySelector('.task-nad').querySelector('.task-description').innerHTML
+                }
+                // HERE
+                if (kid.querySelector('input[name="priority"]')){
+                    const priority = kid.querySelector('input[name="priority"]').value
+                    const remind = kid.querySelector('input[name="remind"]').value
+                    const minutes = kid.querySelector('input[name="time"]').value
+                    tasksInf.push({
+                        id: tId,
+                        name: name,
+                        description: description,
+                        priority: priority,
+                        remind: remind,
+                        minutes: minutes
+                    })
+                } else {
+                    tasksInf.push({
+                        id: tId,
+                        name: name,
+                    })
+                }
+            }
+        }
+        $.ajax({
+            url: sendUrl,
+            method: 'post',
+            headers: {'X-CSRFToken': csrftoken},
+            data: {updateTemplateTasks: 1, id: id, name: name, description: description, tasksInf: JSON.stringify(tasksInf)},
+            success: function(data){
+                if (data.status === 200){
+                    document.querySelector('.template-change-template-one').querySelector('input[name="id"]').value = ''
+                    document.querySelector('.add-task-frame').classList.add('none')
+                    // CHECK
+                    document.querySelector('.tcobback').click()
+                    document.querySelector('.template-change').querySelector('.template-change-btn-back').click()
+                }
+            }
+        })
     }
     else if (event.target.closest('.template-create-back')) {
         // TO EMPTY ALL TASKS INSIDE IT
@@ -500,8 +714,10 @@ window.addEventListener('click', async (event) => {
         const comment = document.querySelector('.change-comment-form').querySelector('textarea').value
         if (357 < comment.length) {
             updateTooManyFrame.classList.remove('none')
+            updateTooManyFrame.querySelector('.max-characters').innerHTML = "Максимум можно 357 символов"
             setTimeout(() => {
                 updateTooManyFrame.classList.add('none')
+                updateTooManyFrame.querySelector('.max-characters').innerHTML = "Максимум можно 2000 символов"
             }, 3000)
         } else if (comment){
             const id = event.target.closest('.change-comment-btn-subred').closest('.comment').querySelector('input[name="id"]').value
