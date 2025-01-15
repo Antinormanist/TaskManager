@@ -1,0 +1,67 @@
+version: "3.9"
+services:
+  postgres:
+    image:
+      postgres
+    container_name: "postgres"
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d ${DB_NAME} -U ${DB_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/c/Users/Joey/Desktop/backend:/var/www/html
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+  redis:
+    image:
+      redis
+    container_name: "redis"
+    ports:
+      - "6379:6379"
+  celery:
+    build:
+      context: ./taskManaga
+      dockerfile: Dockerfile
+    container_name: "celery"
+    depends_on:
+      - redis
+    env_file:
+      - ./.env
+    command: sh -c "celery -A taskManager worker -l INFO"
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: "nginx"
+    volumes_from:
+      - django
+    depends_on:
+      - django
+    ports:
+      - "80:80"
+  django:
+    build:
+      context: ./taskManaga
+      dockerfile: Dockerfile
+    container_name: "django"
+    depends_on:
+      postgres:
+        condition:
+          service_healthy
+    volumes:
+      - "./:/app"
+    env_file:
+      - ./.env
+    ports:
+      - "8000:8000"
+    command: sh -c "python taskManaga/manage.py makemigrations && \
+                    python taskManaga/manage.py migrate --noinput && \
+                    python taskManaga/manage.py collectstatic --noinput && \
+                    cd ./taskManaga && gunicorn taskManager.wsgi:application --bind 0.0.0.0:8000"
+volumes:
+  postgres_data:
