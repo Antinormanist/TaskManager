@@ -11,6 +11,7 @@ const simrad = document.querySelector('input[name="simrad"]').value
 const imprad = document.querySelector('input[name="imprad"]').value
 const strrad = document.querySelector('input[name="strrad"]').value
 const mainFrame = document.querySelector('.main')
+const circleImg = document.querySelector('input[name="circleImg"]').value
 
 async function createTemplateAndTasks(event) {
     event.preventDefault();
@@ -752,9 +753,53 @@ window.addEventListener('click', async (event) => {
         }
     }
     else if (event.target.closest('.template-btn-open') && dtmpDow.classList.contains('none')) {
+        const template = `
+        <div class="template-download-template">
+            <input type="hidden" name="id" value="{id}">
+            <button class="template-btn2">
+                {name}
+                {description}
+            </button>
+            <button class="template-delete"><img src="${trashImg}" alt="del"></button>
+            <button class="template-select"><img src="${circleImg}" alt="select"></button>
+        </div>
+        `
+        $.ajax({
+            url: sendUrl,
+            method: 'post',
+            headers: {'X-CSRFToken': csrftoken},
+            data: {LoadTemplatesYes: 1},
+            success: function(data){
+                if (data.status === 200){
+                    const templates = JSON.parse(data.templates)
+                    for (temp of templates){
+                        const id = temp.id
+                        let name = temp.name
+                        let description = temp.description
+                        t = template
+                        t = t.replace('{id}', id)
+                        if (32 < name.length){
+                            name = name.slice(0, 32)
+                        }
+                        t = t.replace('{name}', `<h2 class="template-name">${name}</h2>`)
+                        if (16 < description.length){
+                            const desc_cut = description.slice(0, 16)
+                            t = t.replace('{description}', `<p class="template-description">${desc_cut}</p>`)
+                        } else {
+                            t = t.replace('{description}', '')
+                        }
+
+                        // PLACE A TEMPLATE TO THE FRAME
+                        const place = document.querySelector('.template-download-templates')
+                        place.insertAdjacentHTML('beforeend', t)
+                    }
+                }
+            }
+        })
         dtmpDow.classList.remove('none')
     }
     else if (event.target.closest('.template-download2-back')) {
+        document.querySelector('.template-download-templates').innerHTML = ''
         dtmpDow.classList.add('none')
     }
     else if (event.target.closest('.template-create-delete-btn') && dfgdgdfgregergqweqweqweqwwe.classList.contains('none')) {

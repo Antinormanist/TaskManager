@@ -29,6 +29,7 @@ const sendUrl = document.querySelector('input[name="sendUrl"]').value
 const wrongFrameMsg = document.querySelector('.wrong-message')
 const changeEmailFrame = document.querySelector('.changeEmailFrameCode')
 const bar = document.querySelector('.task-results').querySelector('.bar')
+//const returnImg = document.querySelector('input[name="returnImg"]').value
 
 let changeEmailCode
 let changeEmaill
@@ -252,7 +253,7 @@ window.addEventListener('click', (event) => {
     }
     else if (event.target.closest('.task-delete-btn-back')) {
         event.preventDefault();
-        event.target.closest('.task-delete-submit-btn').closest('.task-detail-frame').querySelector('input[name="is-temp"]').value = 'no'
+//        event.target.closest('.task-delete-submit-btn').closest('.task-detail-frame').querySelector('input[name="is-temp"]').value = 'no'
         delTask.querySelector('input[name="is-completed-task"]').value = 'no'
         delTask.querySelector('input[name="id"]').value = ''
         taskToDelete = null
@@ -270,12 +271,30 @@ window.addEventListener('click', (event) => {
                 data: {deleteTask: 1, id: id},
                 success: function(data) {
                     if (data.status === 204) {
-                        task.remove()
                         delTask.classList.add('none')
                         delTask.querySelector('input[name="id"]').value = ''
                         taskToDelete = null
                         let count = 0
                         const tasks = document.querySelector('.main').children
+
+                        for (let j = 0; j < 5; j++){
+                            for (let i = 0; i < tasks.length; i++) {
+                                const task = tasks[i]
+                                if (task.classList.contains('task') && task.querySelector('input[name="id"]') && task.querySelector('input[name="id"]').value === id){
+                                    task.remove()
+                                }
+                            }
+                        }
+                        const dTaD = document.querySelector('.done-tasks').children
+
+                        for (let j = 0; j < 5; j++){
+                            for (let i = 0; i < dTaD.length; i++) {
+                                const task = dTaD[i]
+                                if (task.classList.contains('done-task') && task.querySelector('input[name="id"]') && task.querySelector('input[name="id"]').value === id){
+                                    task.remove()
+                                }
+                            }
+                        }
                         for (let i = 0; i < tasks.length; i++) {
                             const task = tasks[i]
                             if (task.classList.contains('task')) {
@@ -307,11 +326,32 @@ window.addEventListener('click', (event) => {
                 }
             })
         } else {
-            wrongFrameMsg.querySelector('h2').innerText = 'Что - то пошло не так';
-            wrongFrameMsg.classList.remove('none');
-            setTimeout(() => {
-                wrongFrameMsg.classList.add('none');
-            }, 1500);
+            delTask.classList.add('none')
+            delTask.querySelector('input[name="id"]').value = ''
+            const tasks = document.querySelector('.main').children
+            for (let j = 0; j < 5; j++){
+                for (let i = 0; i < tasks.length; i++) {
+                    const task = tasks[i]
+                    if (task.classList.contains('task') && task.querySelector('input[name="id"]') && task.querySelector('input[name="id"]').value === id){
+                        task.remove()
+                    }
+                }
+            }
+            const dTaD = document.querySelector('.done-tasks').children
+
+            for (let j = 0; j < 5; j++){
+                for (let i = 0; i < dTaD.length; i++) {
+                    const task = dTaD[i]
+                    if (task.classList.contains('done-task') && task.querySelector('input[name="id"]') && task.querySelector('input[name="id"]').value === id){
+                        task.remove()
+                    }
+                }
+            }
+//            wrongFrameMsg.querySelector('h2').innerText = 'Что - то пошло не так';
+//            wrongFrameMsg.classList.remove('none');
+//            setTimeout(() => {
+//                wrongFrameMsg.classList.add('none');
+//            }, 1500);
         }
     }
     else if (event.target.closest('.template-delete') && dtempDel.classList.contains('none')) {
@@ -319,9 +359,205 @@ window.addEventListener('click', (event) => {
         dtempDel.querySelector('input[name="id"]').value = id
         dtempDel.classList.remove('none')
     }
+    else if (event.target.closest('.template-select')){
+        event.preventDefault()
+        const temp = event.target.closest('.template-download-template')
+        if (temp.classList.contains('selected')){
+            temp.classList.remove('selected')
+            temp.classList.remove('mouse-selected')
+        } else {
+            temp.classList.add('selected')
+            temp.classList.remove('mouse-not-selected')
+        }
+    }
+    else if (event.target.closest('.bbs')){
+        event.preventDefault()
+        const id = event.target.closest('.delete-template-submit').querySelector('input[name="id"]').value
+        if (id) {
+            $.ajax({
+                url: sendUrl,
+                method: 'post',
+                headers: {'X-CSRFToken': csrftoken},
+                data: {DeleteDownloadTemplate: 1, id: id},
+                success: function(data){
+                    if (data.status === 204){
+                        document.querySelector('.delete-template-submit').querySelector('input[name="id"]').value = ''
+                        document.querySelector('.delete-template-submit').classList.add('none')
+                        const kids = document.querySelector('.template-download-templates').children
+                        for (const kid of kids){
+                            if (kid.querySelector('input[name="id"]') && kid.querySelector('input[name="id"]').value === id){
+                                kid.remove()
+                                break
+                            }
+                        }
+                        const ids = JSON.parse(data.ids)
+                        const tasksDe = document.querySelector('.main').children
+                        for (let j = 0; j < 5; j++){
+                            for (let id of ids){
+                                id = id.toString()
+                                for (const task of tasksDe){
+                                    if (task.classList.contains('task') && task.querySelector('input[name="id"]') && task.querySelector('input[name="id"]').value === id){
+                                        task.remove()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            })
+        }
+    }
     else if (event.target.closest('.bbc')) {
         event.preventDefault();
         dtempDel.classList.add('none')
+    }
+    else if (event.target.closest('.template-download2-download')){
+        event.preventDefault()
+        const kids = document.querySelector('.template-download-templates').children
+        for (const temp of kids){
+            if (temp.classList.contains('selected')){
+                const id = temp.querySelector('input[name="id"]').value
+                $.ajax({
+                    url: sendUrl,
+                    method: 'post',
+                    headers: {'X-CSRFToken': csrftoken},
+                    data: {GetTasksOfTempDownload: 1, id: id},
+                    success: function(data){
+                        if (data.status === 200){
+                            const tasks = JSON.parse(data.tasks)
+                            if (tasks[0]){
+                                document.querySelector('.no-task').classList.add('none')
+                                document.querySelector('.add-btn').classList.add('none')
+                            }
+                            for (const task of tasks){
+                                const taskFrame = `
+                                <div class="task">
+                                    <input type="hidden" name="id" value="{id}">
+                                    <div class="task-infos">
+                                        {priority}
+                                        {remind}
+                                        {minutes}
+                                    </div>
+                                    <button class="task-nadeFa">
+                                        {name}
+                                        {description}
+                                    </button>
+                                    <button class="task-delete"><img src="${trashImg}" alt="del"></button>
+                                    <button class="task-return"><img src="${returnImg}" alt="ret"></button>
+                                </div>
+                                `
+
+                                ts = taskFrame
+                                ts = ts.replace('{id}', task.id)
+                                ts = ts.replace('{name}', `<h2 class="task-name">${task.name}</h2>`)
+                                let description = task.description
+                                if (description && 64 < description.length){
+                                    description = description.slice(0, 64) + '...'
+                                } else {
+                                    description = ''
+                                }
+                                ts = ts.replace('{description}', `<h3 class="task-description">${description}</h3>`)
+                                const priority = task.priority
+                                if (priority === 'common'){
+                                    ts = ts.replace('{priority}', `<button title="to complete" class=""><img src="${comrad}" alt="radio" class="common-rad"></button>`)
+                                } else if (priority === 'simple'){
+                                    ts = ts.replace('{priority}', `<button title="to complete" class=""><img src="${simrad}" alt="radio" class="simple-rad"></button>`)
+                                } else if (priority === 'important'){
+                                    ts = ts.replace('{priority}', `<button title="to complete" class=""><img src="${imprad}" alt="radio" class="important-rad"></button>`)
+                                } else {
+                                    ts = ts.replace('{priority}', `<button title="to complete" class=""><img src="${strrad}" alt="radio" class="strong-rad"></button>`)
+                                }
+                                if (task.remind){
+                                    ts = ts.replace('{remind}', `<h3 class="task-remind">с напоминанием</h3>`)
+                                } else {
+                                    ts = ts.replace('{remind}', '')
+                                }
+                                if (task.minutes){
+                                    ts = ts.replace('{minutes}', `<h3 class="task-time">${task.minutes} минут</h3>`)
+                                } else {
+                                    ts = ts.replace('{minutes}', '')
+                                }
+
+                                document.querySelector('.main').insertAdjacentHTML('afterbegin', ts)
+                            }
+                        }
+                    }
+                })
+            }
+        }
+    }
+    else if (event.target.closest('.template-download2-download-all')){
+        event.preventDefault()
+        const kids = document.querySelector('.template-download-templates').children
+        for (const temp of kids){
+            const id = temp.querySelector('input[name="id"]').value
+            $.ajax({
+                url: sendUrl,
+                method: 'post',
+                headers: {'X-CSRFToken': csrftoken},
+                data: {GetTasksOfTempDownload: 1, id: id},
+                success: function(data){
+                    if (data.status === 200){
+                        const tasks = JSON.parse(data.tasks)
+                        if (tasks[0]){
+                            document.querySelector('.no-task').classList.add('none')
+                            document.querySelector('.add-btn').classList.add('none')
+                        }
+                        for (const task of tasks){
+                            const taskFrame = `
+                            <div class="task">
+                                <input type="hidden" name="id" value="{id}">
+                                <div class="task-infos">
+                                    {priority}
+                                    {remind}
+                                    {minutes}
+                                </div>
+                                <button class="task-nade">
+                                    {name}
+                                    {description}
+                                </button>
+                                <button class="task-delete"><img src="${trashImg}" alt="del"></button>
+                                <button class="task-return"><img src="${returnImg}" alt="ret"></button>
+                            </div>
+                            `
+
+                            ts = taskFrame
+                            ts = ts.replace('{id}', task.id)
+                            ts = ts.replace('{name}', `<h2 class="task-name">${task.name}</h2>`)
+                            let description = task.description
+                            if (description && 64 < description.length){
+                                description = description.slice(0, 64) + '...'
+                            } else {
+                                description = ''
+                            }
+                            ts = ts.replace('{description}', `<h3 class="task-description">${description}</h3>`)
+                            const priority = task.priority
+                            if (priority === 'common'){
+                                ts = ts.replace('{priority}', `<button title="to complete" class="task-btn"><img src="${comrad}" alt="radio" class="task-rad common-rad"></button>`)
+                            } else if (priority === 'simple'){
+                                ts = ts.replace('{priority}', `<button title="to complete" class="task-btn"><img src="${simrad}" alt="radio" class="task-rad simple-rad"></button>`)
+                            } else if (priority === 'important'){
+                                ts = ts.replace('{priority}', `<button title="to complete" class="task-btn"><img src="${imprad}" alt="radio" class="task-rad important-rad"></button>`)
+                            } else {
+                                ts = ts.replace('{priority}', `<button title="to complete" class="task-btn"><img src="${strrad}" alt="radio" class="task-rad strong-rad"></button>`)
+                            }
+                            if (task.remind){
+                                ts = ts.replace('{remind}', `<h3 class="task-remind">с напоминанием</h3>`)
+                            } else {
+                                ts = ts.replace('{remind}', '')
+                            }
+                            if (task.minutes){
+                                ts = ts.replace('{minutes}', `<h3 class="task-time">${task.minutes} минут</h3>`)
+                            } else {
+                                ts = ts.replace('{minutes}', '')
+                            }
+
+                            document.querySelector('.main').insertAdjacentHTML('afterbegin', ts)
+                        }
+                    }
+                }
+            })
+        }
     }
     else if (event.target.closest('.comment-edit-btn')) {
         const frame = event.target.closest('.comment')
@@ -433,7 +669,6 @@ window.addEventListener('click', (event) => {
                             newLogin = newLogin.slice(0, 6) + '...'
                         }
                         document.querySelector('.change-username-p').innerText = newLogin;
-                        console.log('yaya', data.firstname)
                         if (!(data.firstname)) {
                             document.querySelector('nav').querySelector('.username').innerText = newLogin;
                         }

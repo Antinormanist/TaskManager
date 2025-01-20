@@ -1192,6 +1192,11 @@ main {
     height: auto;
 }
 
+.task-nadeFa {
+    width: 414px;
+    height: auto;
+}
+
 .task-nad {
     width: 414px;
     height: auto;
@@ -1301,6 +1306,7 @@ main {
     display: flex;
     /* grid-template-rows: 1px 30px 30px auto; */
     flex-direction: column;
+    position: absolute;
 }
 
 .done-task-btn {
@@ -1965,6 +1971,7 @@ main {
     min-height: 16px;
     grid-template-columns: 96px 493px;
     grid-template-rows: ; */
+    margin-top: 0.5rem;
     display: flex;
 }
 
@@ -2503,5 +2510,11 @@ main {
 
     .namedescription {
         height: 350px;
+    }
+}
+
+@media screen and (max-height: 1100px){
+    .done-tasks {
+        margin-top: 37rem;
     }
 }

@@ -10,6 +10,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="{% static "main/images/favicon.ico" %}" />
 </head>
 <body>
+    <input type="hidden" name="returnImg" value="{% static "main/images/return.svg" %}">
+    <input type="hidden" name="circleImg" value="{% static "main/images/circle.svg" %}">
     <input type="hidden" name="sendUrl" value="{% url "main:main" %}">
     <input type="hidden" name="urlLogout" value="{% url "user:logout" %}">
     <input type="hidden" name="comrad" value="{% static "main/images/commonrad.svg" %}">
@@ -341,48 +343,18 @@
             <p class="template-template-description">Шаблон описание</p>
             <div class="divider23">
             </div>
-            <div class="template-task">
-                <div class="prt-info">
-                    <p class="template-task-priority pcb2">простой</p>
-                    <p class="template-task-remind">с напоминанием</p>
-                    <p class="template-task-time">99999... минут</p>
-                </div>
-                <div class="template-name-and-description">
-                    <p class="template-task-name">Купить Данте дакимакуру</p>
-                    <p class="template-task-description">Пройти Lona RPG</p>
-                </div>
-            </div>
         </div>
         <div class="template-frame-btns">
             <button class="dwn-btn-with btn-subred">загрузить, добавив к остальным таскам</button>
-            <button class="dwn-btn-archive btn-subred">загрузить, архивировав остальные таски</button>
             <button class="dwn-btn-close btn-back">отмена</button>
         </div>
     </form>
     <div style="z-index:2;" class="template-download none">
         <div class="template-download-templates">
-            <div class="template-download-template selected">
-                <input type="hidden" name="id" value="1">
-                <button class="template-btn2">
-                    <h2 class="template-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW...</h2>
-                    <p class="template-description">WWWWWWWWWWWWWWWW...</p>
-                </button>
-                <button class="template-delete"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
-                <button class="template-select"><img src="{% static "main/images/circle.svg" %}" alt="select"></button>
-            </div>
-            <div class="template-download-template">
-                <input type="hidden" name="id" value="2">
-                <button class="template-btn2">
-                    <h2 class="template-name">WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW...</h2>
-                    <p class="template-description">WWWWWWWWWWWWWWWW...</p>
-                </button>
-                <button class="template-delete"><img src="{% static "main/images/trash.svg" %}" alt="del"></button>
-                <button class="template-select"><img src="{% static "main/images/circle.svg" %}" alt="select"></button>
-            </div>
         </div>
         <div class="template-download-btns">
-            <button class="template-download2-donwload-all btn-subred">загрузить всё</button>
-            <button class="template-download2-donwload btn-subred">загрузить</button>
+            <button class="template-download2-download-all btn-subred">загрузить всё</button>
+            <button class="template-download2-download btn-subred">загрузить</button>
             <button class="template-download2-back btn-back">отмена</button>
         </div>
     </div>

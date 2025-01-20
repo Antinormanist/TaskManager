@@ -531,6 +531,67 @@ def main(request):
                     return JsonResponse({'status': 403, 'message': 'template with such id is not current user\'s template'})
                 return JsonResponse({'status': 400, 'message': 'couldn\t get template with such id'})
             return JsonResponse({'status': 400, 'message': 'couldn\t get template\'s id'})
+        elif request.POST.get('LoadTemplatesYes'):
+            ts = list(Template.objects.filter(user=request.user))
+            templates = []
+            for t in ts:
+                templates.append({
+                    'id': t.id,
+                    'name': t.name,
+                    'description': t.description,
+                })
+            return JsonResponse({'status': 200, 'templates': json.dumps(templates)})
+        elif request.POST.get('DeleteDownloadTemplate'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                template = Template.objects.filter(id=id).first()
+                if template:
+                    if template.user == request.user:
+                        ids = []
+                        for task in Task.objects.filter(template=template):
+                            ids.append(task.id)
+                        template.delete()
+                        return JsonResponse({'status': 204, 'ids': json.dumps(ids)})
+                    return JsonResponse({'status': 403, 'message': 'template with such id is not current user\'s template'})
+                return JsonResponse({'status': 400, 'message': 'couldn\t get template with such id'})
+            return JsonResponse({'status': 400, 'message': 'couldn\t get template\'s id'})
+        elif request.POST.get('GetTasksOfTempDownload'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                template = Template.objects.filter(id=id).first()
+                if template:
+                    if template.user == request.user:
+                        tasks = []
+                        for task in Task.objects.filter(template=template):
+                            remind = task.remind
+                            if remind:
+                                remind = str(remind.day) + '/' + str(remind.month) + '/' + str(remind.year)
+                            else:
+                                remind = ''
+                            tasks.append({
+                                'id': task.id,
+                                'name': task.name,
+                                'description': task.description,
+                                'priority': task.priority,
+                                'minutes': task.minutes,
+                                'remind': remind,
+                            })
+                        return JsonResponse({'status': 200, 'tasks': json.dumps(tasks)})
+                    return JsonResponse({'status': 403, 'message': 'template with such id is not current user\'s template'})
+                return JsonResponse({'status': 400, 'message': 'couldn\t get template with such id'})
+            return JsonResponse({'status': 400, 'message': 'couldn\t get template\'s id'})
+        elif request.POST.get('GetTemplateBt2Inf'):
+            if id := request.POST.get('id'):
+                id = int(id)
+                template = Template.objects.filter(id=id).first()
+                if template:
+                    if template.user == request.user:
+                        name = template.name
+                        description = template.description
+                        return JsonResponse({'status': 200, 'name': name, 'description': description})
+                    return JsonResponse({'status': 403, 'message': 'template with such id is not current user\'s template'})
+                return JsonResponse({'status': 400, 'message': 'couldn\t get template with such id'})
+            return JsonResponse({'status': 400, 'message': 'couldn\t get template\'s id'})
 
 
     ip = get_client_ip(request)
